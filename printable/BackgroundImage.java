@@ -15,30 +15,39 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 
-package graphic;
+package graphic.printable;
 
-import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import graphic.Fenetre;
+import robot.RobotReal;
 
 /**
- * Quelques couleurs prédéfinies
+ * Image de fond
  * @author pf
  *
  */
 
-public enum Couleur {
-	BLANC(new Color(255, 255, 255, 255)),
-	NOIR(new Color(0, 0, 0, 255)),
-	GRIS(new Color(50, 50, 50, 200)),
-	BLEU(new Color(0, 0, 200, 255)),
-	JAUNE(new Color(200, 200, 0, 255)),
-	ROUGE(new Color(200, 0, 0, 255)),
-	VIOLET(new Color(200, 0, 200, 255)),
-	VERT(new Color(0, 200, 0, 255));
-	
-	public final Color couleur;
-	
-	private Couleur(Color couleur)
+public class BackgroundImage implements Printable
+{
+	private Image image;
+
+	public BackgroundImage(Image image)
 	{
-		this.couleur = couleur;
+		this.image = image;
 	}
+	
+	@Override
+	public void print(Graphics g, Fenetre f, RobotReal robot)
+	{
+		g.drawImage(image, 0, 0, f);
+	}
+
+	@Override
+	public Layer getLayer()
+	{
+		return Layer.IMAGE_BACKGROUND;
+	}
+
 }

@@ -15,29 +15,30 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 
-package graphic;
+package graphic.printable;
 
-import java.awt.Graphics;
-
-import robot.RobotReal;
+import java.awt.Color;
 
 /**
- * Élément affichable
+ * Quelques couleurs prédéfinies
  * @author pf
  *
  */
 
-public interface Printable
-{
-	/**
-	 * Affiche cet objet
-	 * @param g
-	 */
-	public void print(Graphics g, Fenetre f, RobotReal robot);
+public enum Couleur {
+	BLANC(new Color(255, 255, 255, 255)),
+	NOIR(new Color(0, 0, 0, 255)),
+	GRIS(new Color(50, 50, 50, 200)),
+	BLEU(new Color(0, 0, 200, 255)),
+	JAUNE(new Color(200, 200, 0, 255)),
+	ROUGE(new Color(200, 0, 0, 255)),
+	VIOLET(new Color(200, 0, 200, 255)),
+	VERT(new Color(0, 200, 0, 255));
 	
-	/**
-	 * Récupère le layer sur lequel afficher l'objet
-	 * @return
-	 */
-	public Layer getLayer();
+	public final Color couleur;
+	
+	private Couleur(Color couleur)
+	{
+		this.couleur = couleur;
+	}
 }
