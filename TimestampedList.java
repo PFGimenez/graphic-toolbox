@@ -17,23 +17,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 package graphic;
 
-import container.Service;
-import graphic.printable.Layer;
-import graphic.printable.Printable;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Une interface qui permet de regrouper le print buffer déporté et celui qui ne l'est pas
+ * Une liste de listes d'objets timestampées
  * @author pf
  *
  */
 
-public interface PrintBufferInterface extends Service {
-
-	public void clearSupprimables();
-	public void addSupprimable(Printable o);
-	public void addSupprimable(Printable o, Layer l);
-	public void add(Printable o);
-	public void removeSupprimable(Printable o);
-	public void destructor();
-
+public class TimestampedList implements Serializable
+{
+	private static final long serialVersionUID = -5167892162649965305L;
+	private List<Long> timestamps = new ArrayList<Long>();
+	private List<List<Serializable>> listes = new ArrayList<List<Serializable>>();
+	
+	public void add(List<Serializable> o)
+	{
+		timestamps.add(System.currentTimeMillis());
+		listes.add(o);
+	}
+	
+	public long getTimestamp(int index)
+	{
+		return timestamps.get(index);
+	}
+	
+	public List<Serializable> getListe(int index)
+	{
+		return listes.get(index);
+	}
+	
+	public int size()
+	{
+		return timestamps.size();
+	}
+	
 }
