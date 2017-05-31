@@ -1,15 +1,5 @@
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>
  */
 
 package graphic;
@@ -19,14 +9,7 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.*;
 import config.Config;
-import config.ConfigInfo;
-import container.Service;
-import container.dependances.GUIClass;
 import graphic.printable.BackgroundImage;
-import robot.RobotReal;
-import utils.Log;
-import utils.Vec2RO;
-import utils.Vec2RW;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -43,7 +26,7 @@ import java.util.ArrayList;
  *
  */
 
-public class Fenetre extends JPanel implements Service, GUIClass
+public class Fenetre extends JPanel
 {
 
 	/**
@@ -54,7 +37,6 @@ public class Fenetre extends JPanel implements Service, GUIClass
 	 */
 
 	private static final long serialVersionUID = 1L;
-	protected Log log;
 	private PrintBuffer buffer;
 
 	private boolean afficheFond;
@@ -62,33 +44,34 @@ public class Fenetre extends JPanel implements Service, GUIClass
 	private JFrame frame;
 	private WindowExit exit;
 	private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-	private RobotReal robot;
 	private boolean needInit = true;
 	private double zoom;
+	private FocusPoint center;
 	private Vec2RO deltaBasGauche, deltaHautDroite;
 	private String backgroundPath;
 	private Vec2RW coinBasGaucheEcran = new Vec2RW(-1500, 0);
 	private Vec2RW coinHautDroiteEcran = new Vec2RW(1500, 2000);
 
 
-	public Fenetre(Log log, RobotReal robot, PrintBuffer buffer, Config config)
+	public Fenetre(PrintBuffer buffer, Config config, FocusPoint center)
 	{
-		this.log = log;
-		this.robot = robot;
 		this.buffer = buffer;
 
-		afficheFond = config.getBoolean(ConfigInfo.GRAPHIC_BACKGROUND);
-		backgroundPath = config.getString(ConfigInfo.GRAPHIC_BACKGROUND_PATH);
-		zoom = config.getDouble(ConfigInfo.GRAPHIC_ZOOM);
+		afficheFond = config.getBoolean(ConfigInfoGraphic.BACKGROUND);
+		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
+		zoom = config.getDouble(ConfigInfoGraphic.ZOOM);
+		if(center == null)
+			zoom = 0;
 		if(zoom != 0)
 		{
+			this.center = center;
 			double deltaX, deltaY;
 			deltaX = 1500 / zoom;
 			deltaY = 1000 / zoom;
 			deltaBasGauche = new Vec2RO(-deltaX, -deltaY);
 			deltaHautDroite = new Vec2RO(deltaX, deltaY);
 		}
-		sizeX = config.getInt(ConfigInfo.GRAPHIC_SIZE_X);
+		sizeX = config.getInt(ConfigInfoGraphic.SIZE_X);
 		sizeY = 2 * sizeX / 3;
 	}
 
@@ -124,7 +107,6 @@ public class Fenetre extends JPanel implements Service, GUIClass
 			}
 			catch(IOException e)
 			{
-				e.printStackTrace(log.getPrintWriter());
 				e.printStackTrace();
 			}
 		}
@@ -158,9 +140,9 @@ public class Fenetre extends JPanel implements Service, GUIClass
 		super.paintComponent(g);
 
 		g.clearRect(0, 0, sizeX, sizeY);
-		if(zoom != 0 && robot.isCinematiqueInitialised())
+		if(zoom != 0)
 		{
-			Vec2RO positionRobot = robot.getCinematique().getPosition();
+			Vec2RO positionRobot = center.getPosition();
 			Vec2RO currentCenter = positionRobot;
 //			Vec2RO currentCenter = new Vec2RO((int)(positionRobot.getX() / petitDeltaX) * petitDeltaX, (int)(positionRobot.getY() / petitDeltaY) * petitDeltaY);
 
@@ -169,7 +151,7 @@ public class Fenetre extends JPanel implements Service, GUIClass
 			currentCenter.copy(coinHautDroiteEcran);
 			coinHautDroiteEcran.plus(deltaHautDroite);
 		}
-		buffer.print(g, this, robot);
+		buffer.print(g, this);
 		g.clearRect(XtoWindow(-4500), YtoWindow(4000), distanceXtoWindow(3*3000), distanceYtoWindow(2000));
 		g.clearRect(XtoWindow(-4500), YtoWindow(2000), distanceXtoWindow(3000), distanceYtoWindow(2000));
 		g.clearRect(XtoWindow(-4500), YtoWindow(0000), distanceXtoWindow(3*3000), distanceYtoWindow(2000));
@@ -221,7 +203,7 @@ public class Fenetre extends JPanel implements Service, GUIClass
 		{
 			if(!needInit && !exit.alreadyExited)
 			{
-				log.debug("Attente de l'arrêt de la fenêtre…");
+				System.out.println("Attente de l'arrêt de la fenêtre…");
 				exit.wait(5000);
 			}
 		}
@@ -245,7 +227,7 @@ public class Fenetre extends JPanel implements Service, GUIClass
 	{
 		if(!images.isEmpty())
 		{
-			log.debug("Sauvegarde du gif de " + images.size() + " images…");
+			System.out.println("Sauvegarde du gif de " + images.size() + " images…");
 			ImageOutputStream output;
 			try
 			{
@@ -292,7 +274,7 @@ public class Fenetre extends JPanel implements Service, GUIClass
 					writer.close();
 					output.close();
 				}
-				log.debug("Sauvegarde finie !");
+				System.out.println("Sauvegarde finie !");
 
 			}
 			catch(FileNotFoundException e)

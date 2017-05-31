@@ -1,15 +1,5 @@
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>
  */
 
 package graphic;
@@ -23,15 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import graphic.printable.Couleur;
 import graphic.printable.Layer;
 import graphic.printable.Printable;
 import graphic.printable.Segment;
-import obstacles.types.ObstacleCircular;
-import pathfinding.chemin.CheminPathfinding;
-import pathfinding.chemin.IteratorCheminPathfinding;
-import robot.RobotReal;
-import utils.Log;
 
 /**
  * PrintBuffer prévu pour l'externalisation de l'affichage
@@ -44,18 +28,14 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 {
 	private List<ArrayList<Serializable>> elementsAffichablesSupprimables = new ArrayList<ArrayList<Serializable>>();
 	private List<ArrayList<Serializable>> elementsAffichables = new ArrayList<ArrayList<Serializable>>();
-	private RobotReal robot = null;
-	private IteratorCheminPathfinding iterChemin = null;
 	private TimestampedList sauvegarde;
 
-	protected Log log;
 	private ObjectOutputStream file;
 	private String filename;
 
-	public ExternalPrintBuffer(Log log)
+	public ExternalPrintBuffer()
 	{
-		this.log = log;
-		sauvegarde = new TimestampedList(log.getDateInitiale());
+		sauvegarde = new TimestampedList(System.currentTimeMillis());
 		for(int i = 0; i < Layer.values().length; i++)
 		{
 			elementsAffichablesSupprimables.add(new ArrayList<Serializable>());
@@ -112,16 +92,7 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 
 	private void add(Printable o, Layer l, List<ArrayList<Serializable>> list)
 	{
-		if(o instanceof RobotReal)
-		{
-			robot = ((RobotReal) o);
-			notify();
-		}
-		else if(o instanceof CheminPathfinding)
-		{
-			iterChemin = new IteratorCheminPathfinding((CheminPathfinding) o);
-		}
-		else if(o instanceof Serializable)
+		if(o instanceof Serializable)
 		{
 			list.get(l.ordinal()).add((Serializable) o);
 			notify();
@@ -145,14 +116,6 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 	{
 		List<Serializable> o = new ArrayList<Serializable>();
 
-		if(robot != null)
-		{
-			o.add(robot.getCinematique().clone());
-			o.add(robot.getAngles());
-			o.add(robot.getVector());
-			// log.debug(o.get(0));
-		}
-
 		for(int i = 0; i < Layer.values().length; i++)
 		{
 			for(Serializable p : elementsAffichablesSupprimables.get(i))
@@ -173,16 +136,6 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 				o.add(Layer.values()[i]);
 			}
 		}
-
-		if(iterChemin != null)
-		{
-			iterChemin.reinit();
-			while(iterChemin.hasNext())
-			{
-				o.add(new ObstacleCircular(iterChemin.next().getPosition(), 8, Couleur.TRAJECTOIRE));
-				o.add(Layer.MIDDLE);
-			}
-		}
 		return o;
 	}
 
@@ -195,7 +148,7 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 	public synchronized void write() throws IOException
 	{
 		List<Serializable> o = prepareList();
-		// log.debug("Ajout de "+o.size()+" objets, date =
+		// System.out.println("Ajout de "+o.size()+" objets, date =
 		// "+System.currentTimeMillis());
 		sauvegarde.add(o);
 	}
@@ -215,7 +168,7 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 	@Override
 	public synchronized void destructor()
 	{
-		log.debug("Sauvegarde de la vidéo en cours… ÇA PEUT PRENDRE DU TEMPS !");
+		System.out.println("Sauvegarde de la vidéo en cours… ÇA PEUT PRENDRE DU TEMPS !");
 
 		try
 		{
@@ -236,13 +189,12 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 					catch(InterruptedException e1)
 					{
 						e1.printStackTrace();
-						e1.printStackTrace(log.getPrintWriter());
 					}
 					fichier = new FileOutputStream(filename);
 				}
 				catch(FileNotFoundException e1)
 				{
-					log.critical("Erreur (1) lors de la création du fichier : " + e1);
+					System.err.println("Erreur (1) lors de la création du fichier : " + e1);
 					return;
 				}
 			}
@@ -252,11 +204,11 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 			file.close();
 			Runtime.getRuntime().exec("cp "+filename+" videos/last.dat");
 
-			log.debug("Sauvegarde de la vidéo terminée");
+			System.out.println("Sauvegarde de la vidéo terminée");
 		}
 		catch(IOException e)
 		{
-			log.critical("Erreur lors de la sauvegarde du buffer graphique ! " + e);
+			System.err.println("Erreur lors de la sauvegarde du buffer graphique ! " + e);
 		}
 	}
 
