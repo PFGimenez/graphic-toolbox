@@ -23,14 +23,6 @@ public class Segment implements Printable, Serializable
 	private Vec2RO a, b;
 	private Layer l;
 	private Color c;
-
-	public Segment(Vec2RO a, Vec2RO b, Couleur c)
-	{
-		this.a = a;
-		this.b = b;
-		this.l = c.l;
-		this.c = c.couleur;
-	}
 	
 	@Override
 	public Segment clone()
@@ -65,10 +57,10 @@ public class Segment implements Printable, Serializable
 		return "Segment entre " + a + " et " + b;
 	}
 
-	public void setColor(Couleur c)
+	public void setColor(Layer l, Color c)
 	{
-		this.l = c.l;
-		this.c = c.couleur;
+		this.l = l;
+		this.c = c;
 	}
 
 }

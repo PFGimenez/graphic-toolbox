@@ -49,7 +49,10 @@ public enum ConfigInfoGraphic implements ConfigInfo
 	PRODUCE_GIF(false), // produit un gif ?
 	GIF_FILENAME("output.gif"), // le nom du fichier du gif généré
 	BACKGROUND(true), // affiche d'image de la table
-	SIZE_X(1000), // taille par défaut (sans image) de la fenêtre
+	SIZE_X_WINDOW(900), // taille par défaut (sans image) de la fenêtre
+	SIZE_Y_WINDOW(600), // taille par défaut (sans image) de la fenêtre
+	SIZE_X_TABLE(3000),
+	SIZE_Y_TABLE(2000),
 	ALL_OBSTACLES(false), // affiche absolument tous les obstacles créés
 	ROBOT_AND_SENSORS(true), // affiche le robot et ses capteurs
 	CERCLE_ARRIVEE(false), // affiche le cercle d'arrivée

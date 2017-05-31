@@ -4,12 +4,12 @@
 
 package graphic;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import config.Config;
-import graphic.printable.Couleur;
 import graphic.printable.Layer;
 import graphic.printable.Printable;
 
@@ -107,17 +107,17 @@ public class PrintBuffer implements PrintBufferInterface
 		for(int i = 0; i < Layer.values().length; i++)
 		{
 			if(afficheFond)
-				g.setColor(Couleur.VERT.couleur);
+				g.setColor(Color.GREEN);
 			else
-				g.setColor(Couleur.NOIR.couleur);
+				g.setColor(Color.BLACK);
 
 			for(Printable p : elementsAffichablesSupprimables.get(i))
 				p.print(g, f);
 
 			if(afficheFond)
-				g.setColor(Couleur.VERT.couleur);
+				g.setColor(Color.GREEN);
 			else
-				g.setColor(Couleur.NOIR.couleur);
+				g.setColor(Color.BLACK);
 
 			for(Printable p : elementsAffichables.get(i))
 				p.print(g, f);
@@ -125,7 +125,7 @@ public class PrintBuffer implements PrintBufferInterface
 		if(time)
 		{
 			g.setFont(new Font("Courier New", 1, 36));
-			g.setColor(Couleur.NOIR.couleur);
+			g.setColor(Color.BLACK);
 			g.drawString("Date : " + Long.toString(System.currentTimeMillis() - initTime), f.XtoWindow(600), f.YtoWindow(1900));
 		}
 	}

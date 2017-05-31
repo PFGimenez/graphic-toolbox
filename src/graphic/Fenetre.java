@@ -49,30 +49,37 @@ public class Fenetre extends JPanel
 	private FocusPoint center;
 	private Vec2RO deltaBasGauche, deltaHautDroite;
 	private String backgroundPath;
-	private Vec2RW coinBasGaucheEcran = new Vec2RW(-1500, 0);
-	private Vec2RW coinHautDroiteEcran = new Vec2RW(1500, 2000);
+	private Vec2RW coinBasGaucheEcran;
+	private Vec2RW coinHautDroiteEcran;
 
 
-	public Fenetre(PrintBuffer buffer, Config config, FocusPoint center)
+	public Fenetre(FocusPoint center)
 	{
-		this.buffer = buffer;
+		Config config = new Config(ConfigInfoGraphic.values(), "graphic.conf", false);
+		buffer = new PrintBuffer(config);
 
 		afficheFond = config.getBoolean(ConfigInfoGraphic.BACKGROUND);
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
 		zoom = config.getDouble(ConfigInfoGraphic.ZOOM);
-		if(center == null)
-			zoom = 0;
 		if(zoom != 0)
 		{
 			this.center = center;
 			double deltaX, deltaY;
-			deltaX = 1500 / zoom;
-			deltaY = 1000 / zoom;
+			deltaX = config.getInt(ConfigInfoGraphic.SIZE_X_TABLE) / (2*zoom);
+			deltaY = config.getInt(ConfigInfoGraphic.SIZE_Y_TABLE) / (2*zoom);
 			deltaBasGauche = new Vec2RO(-deltaX, -deltaY);
 			deltaHautDroite = new Vec2RO(deltaX, deltaY);
 		}
-		sizeX = config.getInt(ConfigInfoGraphic.SIZE_X);
-		sizeY = 2 * sizeX / 3;
+		coinBasGaucheEcran = new Vec2RW(-1500, 0);
+		coinHautDroiteEcran = new Vec2RW(1500, 2000);
+		
+		sizeX = config.getInt(ConfigInfoGraphic.SIZE_X_WINDOW);
+		sizeY = config.getInt(ConfigInfoGraphic.SIZE_Y_WINDOW);
+	}
+	
+	public PrintBuffer getPrintBuffer()
+	{
+		return buffer;
 	}
 
 	private class WindowExit extends WindowAdapter

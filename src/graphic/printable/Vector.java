@@ -4,6 +4,7 @@
 
 package graphic.printable;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -26,16 +27,16 @@ public class Vector implements Printable, Serializable
 	private Vec2RO a, b;
 	private double orientation;
 	private Layer l;
-	private Couleur c;
+	private Color c;
 	private AffineTransform tx = new AffineTransform();
 	private Polygon arrowHead = new Polygon();  
 	
-	public Vector(Vec2RO pos, double orientation, Couleur c)
+	public Vector(Vec2RO pos, double orientation, Layer l, Color c)
 	{
 		a = pos;
 		b = new Vec2RW(50, orientation, true).plus(a);
 		this.orientation = orientation;
-		this.l = c.l;
+		this.l = l;
 		this.c = c;
 		arrowHead.addPoint(0,5);
 		arrowHead.addPoint(-5,-5);
@@ -52,7 +53,7 @@ public class Vector implements Printable, Serializable
 	@Override
 	public void print(Graphics g, Fenetre f)
 	{
-		g.setColor(c.couleur);
+		g.setColor(c);
 		g.drawLine(f.XtoWindow(a.getX()), f.YtoWindow(a.getY()), f.XtoWindow(b.getX()), f.YtoWindow(b.getY()));
 	    tx.setToIdentity();
 	    tx.translate(f.XtoWindow(b.getX()), f.YtoWindow(b.getY()));
@@ -67,7 +68,7 @@ public class Vector implements Printable, Serializable
 	@Override
 	public Vector clone()
 	{
-		return new Vector(a.clone(), orientation, c);
+		return new Vector(a.clone(), orientation, l, c);
 	}
 	
 	@Override
