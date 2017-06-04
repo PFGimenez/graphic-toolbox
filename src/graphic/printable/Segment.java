@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez
+ * Distributed under the MIT License.
  */
 
 package graphic.printable;
@@ -8,6 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
 import graphic.Fenetre;
+import graphic.Position;
 import graphic.Vec2RO;
 
 /**
@@ -30,10 +32,10 @@ public class Segment implements Printable, Serializable
 		return new Segment(a.clone(), b.clone(), l, c);
 	}
 
-	public Segment(Vec2RO a, Vec2RO b, Layer l, Color c)
+	public Segment(Position a, Position b, Layer l, Color c)
 	{
-		this.a = a;
-		this.b = b;
+		this.a = new Vec2RO(a.getX(), a.getY());
+		this.b = new Vec2RO(b.getX(), b.getY());
 		this.l = l;
 		this.c = c;
 	}

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez
+ * Distributed under the MIT License.
  */
 
 package graphic.printable;
@@ -11,6 +12,7 @@ import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 import graphic.Fenetre;
+import graphic.Position;
 import graphic.Vec2RO;
 import graphic.Vec2RW;
 
@@ -31,9 +33,9 @@ public class Vector implements Printable, Serializable
 	private AffineTransform tx = new AffineTransform();
 	private Polygon arrowHead = new Polygon();  
 	
-	public Vector(Vec2RO pos, double orientation, Layer l, Color c)
+	public Vector(Position pos, double orientation, Layer l, Color c)
 	{
-		a = pos;
+		a = new Vec2RO(pos.getX(), pos.getY());
 		b = new Vec2RW(50, orientation, true).plus(a);
 		this.orientation = orientation;
 		this.l = l;
@@ -43,9 +45,9 @@ public class Vector implements Printable, Serializable
 		arrowHead.addPoint(5,-5);
 	}
 	
-	public void update(Vec2RO pos, double orientation)
+	public void update(Position pos, double orientation)
 	{
-		a = pos;
+		a = new Vec2RO(pos.getX(), pos.getY());
 		b = new Vec2RW(50, orientation, true).plus(a);
 		this.orientation = orientation;
 	}

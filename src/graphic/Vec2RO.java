@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez
+ * Distributed under the MIT License.
  */
 
 package graphic;
@@ -15,7 +16,7 @@ import java.text.NumberFormat;
  *
  */
 
-public class Vec2RO implements Serializable, FocusPoint
+public class Vec2RO implements Serializable, FocusPoint, Position
 {
 	private static final long serialVersionUID = 1L;
 	protected volatile double x;

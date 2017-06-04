@@ -6,12 +6,14 @@
 package graphic;
 
 /**
- * The center of the window
+ * Une interface pour utiliser facilement cette lib
  * @author pf
  *
  */
 
-public interface FocusPoint
+public interface Position
 {
-	public Vec2RO getPosition();
+	public double getX();
+	public double getY();
+	
 }
