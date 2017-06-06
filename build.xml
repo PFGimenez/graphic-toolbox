@@ -2,11 +2,14 @@
     <project basedir="." default="build" name="Graphic">
     <property environment="env"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.7"/>
-    <property name="source" value="1.7"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
     <property name="junit.output.dir" value="junit"/>
     <path id="Graphic.classpath">
         <pathelement location="bin"/>
+        <pathelement location="lib/config.jar"/>
+        <pathelement location="lib/jcommon-1.0.13.jar"/>
+        <pathelement location="lib/jfreechart-1.0.13.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -23,7 +26,8 @@
     <target depends="build-subprojects,build-project" name="build">
             <jar destfile="graphic.jar">
                 <fileset dir="bin" />
-                <fileset dir="src" />
+		<fileset dir="src" />
+		 <zipgroupfileset dir="lib" />
             </jar>
     </target>
     <target name="build-subprojects"/>
