@@ -1,3 +1,4 @@
+package graphic.main;
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez
  * Distributed under the MIT License.
@@ -44,10 +45,9 @@ public class VideoReader
 		long nextStopFTF = 0;
 		
 		// on force l'affichage non externe
-		ConfigInfoGraphic.ENABLE.setDefaultValue(true);
 		ConfigInfoGraphic.EXTERNAL.setDefaultValue(false);
 		ConfigInfoGraphic.DIFFERENTIAL.setDefaultValue(false);
-		ConfigInfoGraphic.ROBOT_AND_SENSORS.setDefaultValue(false);
+//		ConfigInfoGraphic.ROBOT_AND_SENSORS.setDefaultValue(false);
 		ConfigInfoGraphic.PRODUCE_GIF.setDefaultValue(false);
 		ConfigInfoGraphic.ZOOM.setDefaultValue(0);
 
@@ -77,9 +77,9 @@ public class VideoReader
 				stopOnCritical = true;
 			else if(args[i].equals("-l")) // log
 				logfile = args[++i];
-			else if(args[i].equals("-withsprite")) // pas de sprite du robot
+/*			else if(args[i].equals("-withsprite")) // pas de sprite du robot
 				ConfigInfoGraphic.ROBOT_AND_SENSORS.setDefaultValue(true);
-/*			else if(args[i].equals("-vcapt")) // verbose capteurs
+			else if(args[i].equals("-vcapt")) // verbose capteurs
 				ConfigInfoGraphic.DEBUG_CAPTEURS.setDefaultValue(true);
 			else if(args[i].equals("-vscripts")) // verbose scripts
 				ConfigInfoGraphic.DEBUG_SCRIPTS.setDefaultValue(true);
@@ -147,8 +147,6 @@ public class VideoReader
 
 		Scanner sc = new Scanner(System.in);
 		Fenetre fenetre = new Fenetre(new Vec2RO(0, 1000));
-		if(filename == null)
-			ConfigInfoGraphic.ENABLE.setDefaultValue(false);
 
 		try
 		{

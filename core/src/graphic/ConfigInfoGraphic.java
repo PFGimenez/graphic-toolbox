@@ -22,31 +22,8 @@ import config.ConfigInfo;
 public enum ConfigInfoGraphic implements ConfigInfo
 {
 
-	HEURISTIQUE(false), // affichage des orientations heuristiques
-								// données par le D* Lite
-	ENABLE(false), // désactive tout affichage si faux (empêche le
-							// thread d'affichage de se lancer)
-	D_STAR_LITE(false), // affiche les calculs du D* Lite
-	D_STAR_LITE_FINAL(false), // affiche l'itinéraire final du D* Lite
-	PROXIMITY_OBSTACLES(true), // affiche les obstacles de proximité
-	TRAJECTORY(false), // affiche les trajectoires temporaires
-	TRAJECTORY_ALL(false), // affiche TOUTES les trajectoires
-									// temporaires
-	TRAJECTORY_FINAL(true), // affiche les trajectoires
-	FIXED_OBSTACLES(true), // affiche les obstacles fixes
-	GAME_ELEMENTS(true), // affiche les éléments de jeux
-	ROBOT_COLLISION(false), // affiche les obstacles du robot lors de la
-									// vérification des collisions
 	BACKGROUND_PATH("img/background-2017-color.png"), // affiche d'image
 																// de la table
-	ROBOT_PATH("img/robot_sans_roues.png"), // image du robot sans les
-													// roues
-	ROBOT_ROUE_GAUCHE_PATH("img/robot_roue_gauche.png"), // image de la
-																	// roue
-																	// gauche
-	ROBOT_ROUE_DROITE_PATH("img/robot_roue_droite.png"), // image de la
-																	// roue
-																	// droite
 	PRODUCE_GIF(false), // produit un gif ?
 	GIF_FILENAME("output.gif"), // le nom du fichier du gif généré
 	BACKGROUND(true), // affiche d'image de la table
@@ -55,10 +32,7 @@ public enum ConfigInfoGraphic implements ConfigInfo
 	SIZE_X_TABLE(3000),
 	SIZE_Y_TABLE(2000),
 	ALL_OBSTACLES(false), // affiche absolument tous les obstacles créés
-	ROBOT_AND_SENSORS(true), // affiche le robot et ses capteurs
-	CERCLE_ARRIVEE(false), // affiche le cercle d'arrivée
 	TIME(false), // affiche le temps écoulé
-	TRACE_ROBOT(true), // affiche la trace du robot
 	EXTERNAL(true), // l'affichage doit-il être déporté par le serveur
 							// d'affichage ?
 	DIFFERENTIAL(true), // sauvegarde d'une "vidéo" pour visionner les
