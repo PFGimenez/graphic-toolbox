@@ -5,13 +5,8 @@
 
 package graphic;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
-import config.Config;
-import graphic.printable.Layer;
+import java.util.Iterator;
 import graphic.printable.Printable;
 
 /**
@@ -21,26 +16,9 @@ import graphic.printable.Printable;
  *
  */
 
-public class PrintBuffer implements PrintBufferInterface
-{
-	private List<ArrayList<Printable>> elementsAffichablesSupprimables = new ArrayList<ArrayList<Printable>>();
-	private List<ArrayList<Printable>> elementsAffichables = new ArrayList<ArrayList<Printable>>();
-
-	private boolean afficheFond;
+public class PrintBuffer extends AbstractPrintBuffer
+{	
 	private boolean needRefresh = false;
-	private boolean time;
-	private long initTime = System.currentTimeMillis();
-
-	public PrintBuffer(Config config)
-	{
-		for(int i = 0; i < Layer.values().length; i++)
-		{
-			elementsAffichablesSupprimables.add(new ArrayList<Printable>());
-			elementsAffichables.add(new ArrayList<Printable>());
-		}
-		afficheFond = config.getBoolean(ConfigInfoGraphic.BACKGROUND);
-		time = config.getBoolean(ConfigInfoGraphic.TIME);
-	}
 
 	/**
 	 * Supprime tous les obstacles supprimables
@@ -50,8 +28,7 @@ public class PrintBuffer implements PrintBufferInterface
 	@Override
 	public synchronized void clearSupprimables()
 	{
-		for(int i = 0; i < Layer.values().length; i++)
-			elementsAffichablesSupprimables.get(i).clear();
+		super.clearSupprimables();
 		notify();
 		needRefresh = true;
 	}
@@ -64,20 +41,7 @@ public class PrintBuffer implements PrintBufferInterface
 	@Override
 	public synchronized void addSupprimable(Printable o)
 	{
-		elementsAffichablesSupprimables.get(o.getLayer().ordinal()).add(o);
-		notify();
-		needRefresh = true;
-	}
-
-	/**
-	 * Ajoute un obstacle dans la liste des supprimables
-	 * 
-	 * @param o
-	 */
-	@Override
-	public synchronized void addSupprimable(Printable o, Layer l)
-	{
-		elementsAffichablesSupprimables.get(l.ordinal()).add(o);
+		super.addSupprimable(o);
 		notify();
 		needRefresh = true;
 	}
@@ -90,7 +54,7 @@ public class PrintBuffer implements PrintBufferInterface
 	@Override
 	public synchronized void add(Printable o)
 	{
-		elementsAffichables.get(o.getLayer().ordinal()).add(o);
+		super.add(o);
 		notify();
 		needRefresh = true;
 	}
@@ -102,32 +66,16 @@ public class PrintBuffer implements PrintBufferInterface
 	 * @param f
 	 * @param robot
 	 */
-	public synchronized void print(Graphics g, Fenetre f)
+	synchronized void print(Graphics g, Fenetre f)
 	{
 		needRefresh = false;
-		for(int i = 0; i < Layer.values().length; i++)
+		Iterator<Printable> iter = new PrintableIterator(this);
+		System.out.println("Affichage !");
+		while(iter.hasNext())
 		{
-			if(afficheFond)
-				g.setColor(Color.GREEN);
-			else
-				g.setColor(Color.BLACK);
-
-			for(Printable p : elementsAffichablesSupprimables.get(i))
-				p.print(g, f);
-
-			if(afficheFond)
-				g.setColor(Color.GREEN);
-			else
-				g.setColor(Color.BLACK);
-
-			for(Printable p : elementsAffichables.get(i))
-				p.print(g, f);
-		}
-		if(time)
-		{
-			g.setFont(new Font("Courier New", 1, 36));
-			g.setColor(Color.BLACK);
-			g.drawString("Date : " + Long.toString(System.currentTimeMillis() - initTime), f.XtoWindow(600), f.YtoWindow(1900));
+			Printable p = iter.next();
+			System.out.println("Affichage de "+p);
+			p.print(g, f);
 		}
 	}
 
@@ -138,13 +86,15 @@ public class PrintBuffer implements PrintBufferInterface
 	 * @param o
 	 */
 	@Override
-	public synchronized void removeSupprimable(Printable o)
+	public synchronized boolean removeSupprimable(Printable o)
 	{
-		if(elementsAffichablesSupprimables.get(o.getLayer().ordinal()).remove(o))
+		if(super.removeSupprimable(o))
 		{
 			notify();
 			needRefresh = true;
+			return true;
 		}
+		return false;
 	}
 
 	public boolean needRefresh()

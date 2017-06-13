@@ -6,6 +6,7 @@
 package graphic.printable;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import graphic.Fenetre;
 
 /**
@@ -15,7 +16,7 @@ import graphic.Fenetre;
  *
  */
 
-public interface Printable
+public interface Printable extends Serializable
 {
 	/**
 	 * Affiche cet objet
@@ -25,9 +26,10 @@ public interface Printable
 	public void print(Graphics g, Fenetre f);
 
 	/**
-	 * Récupère le layer sur lequel afficher l'objet
+	 * Get the layer the object will be printed on.
+	 * Low values for background, high values for foreground
 	 * 
 	 * @return
 	 */
-	public Layer getLayer();
+	public int getLayer();
 }

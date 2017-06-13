@@ -74,9 +74,9 @@ public class Vector implements Printable, Serializable
 	}
 	
 	@Override
-	public Layer getLayer()
+	public int getLayer()
 	{
-		return l;
+		return l.ordinal();
 	}
 
 	@Override

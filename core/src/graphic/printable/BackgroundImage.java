@@ -18,6 +18,7 @@ import graphic.Fenetre;
 
 public class BackgroundImage implements Printable
 {
+	private static final long serialVersionUID = 1422929627673510227L;
 	private Image image;
 
 	public BackgroundImage(Image image)
@@ -32,9 +33,9 @@ public class BackgroundImage implements Printable
 	}
 
 	@Override
-	public Layer getLayer()
+	public int getLayer()
 	{
-		return Layer.IMAGE_BACKGROUND;
+		return Layer.IMAGE_BACKGROUND.ordinal();
 	}
 
 }

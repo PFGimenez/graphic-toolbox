@@ -37,6 +37,7 @@ public class AffichageDebug extends ApplicationFrame
 	private List<TimeSeries> series = new ArrayList<TimeSeries>();
     private TimeSeriesCollection dataset = new TimeSeriesCollection();
 	private boolean init = false;
+	private String title, xAxisLabel, yAxisLabel;
 	
     /**
      * Ajoute des données à afficher
@@ -65,9 +66,12 @@ public class AffichageDebug extends ApplicationFrame
 		}
 	}
 	
-    public AffichageDebug()
+    public AffichageDebug(String title, String xAxisLabel, String yAxisLabel)
     {    	
-        super("Debug INTech");
+        super("");
+        this.title = title;
+        this.xAxisLabel = xAxisLabel;
+        this.yAxisLabel = yAxisLabel;
     }    
     
     /**
@@ -77,9 +81,9 @@ public class AffichageDebug extends ApplicationFrame
     {
     	init = true;
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
-        		"To the moon !",  		// title
-        		"Temps",            // x-axis label
-        		"Grandeur physique quelconque",   		// y-axis label
+        		title,  		// title
+        		xAxisLabel,            // x-axis label
+        		yAxisLabel,   		// y-axis label
         		dataset,            // data
         		true,               // create legend?
         		true,               // generate tooltips?

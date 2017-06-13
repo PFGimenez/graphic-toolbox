@@ -22,20 +22,17 @@ import config.ConfigInfo;
 public enum ConfigInfoGraphic implements ConfigInfo
 {
 
-	BACKGROUND_PATH("img/background-2017-color.png"), // affiche d'image
+	BACKGROUND_PATH(""), // background path ; empty if none
 																// de la table
 	PRODUCE_GIF(false), // produit un gif ?
 	GIF_FILENAME("output.gif"), // le nom du fichier du gif généré
-	BACKGROUND(true), // affiche d'image de la table
 	SIZE_X_WINDOW(900), // taille par défaut (sans image) de la fenêtre
 	SIZE_Y_WINDOW(600), // taille par défaut (sans image) de la fenêtre
-	SIZE_X_TABLE(3000),
-	SIZE_Y_TABLE(2000),
-	ALL_OBSTACLES(false), // affiche absolument tous les obstacles créés
-	TIME(false), // affiche le temps écoulé
-	EXTERNAL(true), // l'affichage doit-il être déporté par le serveur
+	SIZE_X_WITH_UNITARY_ZOOM(50),
+	SIZE_Y_WITH_UNITARY_ZOOM(50),
+	EXTERNAL(false), // l'affichage doit-il être déporté par le serveur
 							// d'affichage ?
-	DIFFERENTIAL(true), // sauvegarde d'une "vidéo" pour visionner les
+	DIFFERENTIAL(false), // sauvegarde d'une "vidéo" pour visionner les
 								// images plus tard
 	ZOOM(0); // zoom de la fenêtre. Si 0, aucun zoom. Sinon, zoom + focus sur le robot
 

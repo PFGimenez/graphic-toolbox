@@ -57,22 +57,25 @@ public class Fenetre extends JPanel
 	public Fenetre(FocusPoint center)
 	{
 		Config config = new Config(ConfigInfoGraphic.values(), "graphic.conf", false);
-		buffer = new PrintBuffer(config);
+		buffer = new PrintBuffer();
 
-		afficheFond = config.getBoolean(ConfigInfoGraphic.BACKGROUND);
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
+		afficheFond = !backgroundPath.isEmpty();
 		zoom = config.getDouble(ConfigInfoGraphic.ZOOM);
+		double x = config.getInt(ConfigInfoGraphic.SIZE_X_WITH_UNITARY_ZOOM);
+		double y = config.getInt(ConfigInfoGraphic.SIZE_Y_WITH_UNITARY_ZOOM);
+
 		if(zoom != 0)
 		{
 			this.center = center;
 			double deltaX, deltaY;
-			deltaX = config.getInt(ConfigInfoGraphic.SIZE_X_TABLE) / (2*zoom);
-			deltaY = config.getInt(ConfigInfoGraphic.SIZE_Y_TABLE) / (2*zoom);
+			deltaX = x / (2*zoom);
+			deltaY = y / (2*zoom);
 			deltaBasGauche = new Vec2RO(-deltaX, -deltaY);
 			deltaHautDroite = new Vec2RO(deltaX, deltaY);
 		}
-		coinBasGaucheEcran = new Vec2RW(-1500, 0);
-		coinHautDroiteEcran = new Vec2RW(1500, 2000);
+		coinBasGaucheEcran = new Vec2RW(-x, -y);
+		coinHautDroiteEcran = new Vec2RW(x, y);
 		
 		sizeX = config.getInt(ConfigInfoGraphic.SIZE_X_WINDOW);
 		sizeY = config.getInt(ConfigInfoGraphic.SIZE_Y_WINDOW);
@@ -160,15 +163,6 @@ public class Fenetre extends JPanel
 			coinHautDroiteEcran.plus(deltaHautDroite);
 		}
 		buffer.print(g, this);
-		g.clearRect(XtoWindow(-4500), YtoWindow(4000), distanceXtoWindow(3*3000), distanceYtoWindow(2000));
-		g.clearRect(XtoWindow(-4500), YtoWindow(2000), distanceXtoWindow(3000), distanceYtoWindow(2000));
-		g.clearRect(XtoWindow(-4500), YtoWindow(0000), distanceXtoWindow(3*3000), distanceYtoWindow(2000));
-		g.clearRect(XtoWindow(1500), YtoWindow(2000), distanceXtoWindow(3000), distanceYtoWindow(2000));
-
-		g.clearRect(-sizeX, -sizeY, 3*sizeX, sizeY);
-		g.clearRect(-sizeX, 0, sizeX, sizeY);
-		g.clearRect(-sizeX, sizeY, 3*sizeX, sizeY);
-		g.clearRect(sizeX, 0, sizeX, sizeY);
 	}
 
 	/**

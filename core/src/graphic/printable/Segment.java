@@ -43,14 +43,15 @@ public class Segment implements Printable, Serializable
 	@Override
 	public void print(Graphics g, Fenetre f)
 	{
+		System.out.println("Positions écran : "+f.XtoWindow(a.getX())+" "+f.YtoWindow(a.getY())+" "+f.XtoWindow(b.getX())+" "+f.YtoWindow(b.getY()));
 		g.setColor(c);
 		g.drawLine(f.XtoWindow(a.getX()), f.YtoWindow(a.getY()), f.XtoWindow(b.getX()), f.YtoWindow(b.getY()));
 	}
 
 	@Override
-	public Layer getLayer()
+	public int getLayer()
 	{
-		return l;
+		return l.ordinal();
 	}
 
 	@Override

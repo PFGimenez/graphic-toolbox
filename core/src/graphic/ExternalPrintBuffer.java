@@ -13,10 +13,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-import graphic.printable.Layer;
 import graphic.printable.Printable;
-import graphic.printable.Segment;
 
 /**
  * PrintBuffer prévu pour l'externalisation de l'affichage
@@ -25,10 +24,8 @@ import graphic.printable.Segment;
  *
  */
 
-public class ExternalPrintBuffer implements PrintBufferInterface
+public class ExternalPrintBuffer extends AbstractPrintBuffer
 {
-	private List<ArrayList<Serializable>> elementsAffichablesSupprimables = new ArrayList<ArrayList<Serializable>>();
-	private List<ArrayList<Serializable>> elementsAffichables = new ArrayList<ArrayList<Serializable>>();
 	private TimestampedList sauvegarde;
 
 	private ObjectOutputStream file;
@@ -37,11 +34,6 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 	public ExternalPrintBuffer()
 	{
 		sauvegarde = new TimestampedList(System.currentTimeMillis());
-		for(int i = 0; i < Layer.values().length; i++)
-		{
-			elementsAffichablesSupprimables.add(new ArrayList<Serializable>());
-			elementsAffichables.add(new ArrayList<Serializable>());
-		}
 		filename = "videos/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".dat";
 	}
 
@@ -53,9 +45,7 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 	@Override
 	public synchronized void clearSupprimables()
 	{
-		for(int i = 0; i < Layer.values().length; i++)
-			elementsAffichablesSupprimables.get(i).clear();
-		notify();
+		super.clearSupprimables();
 	}
 
 	/**
@@ -66,18 +56,7 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 	@Override
 	public synchronized void addSupprimable(Printable o)
 	{
-		addSupprimable(o, o.getLayer());
-	}
-
-	/**
-	 * Ajoute un obstacle dans la liste des supprimables
-	 * 
-	 * @param o
-	 */
-	@Override
-	public synchronized void addSupprimable(Printable o, Layer l)
-	{
-		add(o, l, elementsAffichablesSupprimables);
+		super.addSupprimable(o);
 	}
 
 	/**
@@ -88,16 +67,7 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 	@Override
 	public synchronized void add(Printable o)
 	{
-		add(o, o.getLayer(), elementsAffichables);
-	}
-
-	private void add(Printable o, Layer l, List<ArrayList<Serializable>> list)
-	{
-		if(o instanceof Serializable)
-		{
-			list.get(l.ordinal()).add((Serializable) o);
-			notify();
-		}
+		super.add(o);
 	}
 
 	/**
@@ -107,36 +77,24 @@ public class ExternalPrintBuffer implements PrintBufferInterface
 	 * @param o
 	 */
 	@Override
-	public synchronized void removeSupprimable(Printable o)
+	public synchronized boolean removeSupprimable(Printable o)
 	{
-		if(elementsAffichablesSupprimables.get(o.getLayer().ordinal()).remove(o))
+		if(super.removeSupprimable(o))
+		{
 			notify();
+			return true;
+		}
+		return false;
 	}
 
 	private synchronized List<Serializable> prepareList()
 	{
 		List<Serializable> o = new ArrayList<Serializable>();
+		Iterator<Printable> iter = new PrintableIterator(this);
+		
+		while(iter.hasNext())
+			o.add(iter.next());
 
-		for(int i = 0; i < Layer.values().length; i++)
-		{
-			for(Serializable p : elementsAffichablesSupprimables.get(i))
-			{
-				if(p instanceof Segment)
-					o.add(((Segment)p).clone());
-				else
-					o.add(p);
-				o.add(Layer.values()[i]);
-			}
-
-			for(Serializable p : elementsAffichables.get(i))
-			{
-				if(p instanceof Segment)
-					o.add(((Segment)p).clone());
-				else
-					o.add(p);
-				o.add(Layer.values()[i]);
-			}
-		}
 		return o;
 	}
 

@@ -1,8 +1,9 @@
-package graphic.main;
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez
  * Distributed under the MIT License.
  */
+
+package graphic.main;
 
 
 import java.io.BufferedReader;
@@ -309,8 +310,8 @@ public class VideoReader
 							{
 								if(debug)
 									System.out.println("Ajout : " + o);
-								Layer l = (Layer) tab.get(i++);
-								buffer.addSupprimable((Printable) o, l);
+//								Layer l = (Layer) tab.get(i++);
+								buffer.addSupprimable((Printable) o);
 							}
 							else
 								System.err.println("Erreur ! Objet non affichable : " + o.getClass());
