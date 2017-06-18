@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package graphic;
+package pfg.graphic;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import graphic.printable.Printable;
+
+import pfg.graphic.printable.Printable;
 
 /**
  * PrintBuffer prévu pour l'externalisation de l'affichage

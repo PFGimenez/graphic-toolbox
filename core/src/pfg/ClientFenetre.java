@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package graphic.main;
+package pfg;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,11 +11,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
-import graphic.Fenetre;
-import graphic.PrintBuffer;
-import graphic.Vec2RO;
-import graphic.printable.Layer;
-import graphic.printable.Printable;
+
+import pfg.graphic.Fenetre;
+import pfg.graphic.PrintBuffer;
+import pfg.graphic.Vec2RO;
+import pfg.graphic.printable.Printable;
 
 /**
  * Le client du serveur de fenêtre. Lit les infos depuis un socket et les

@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package graphic.main;
+package pfg;
 
 
 import java.io.BufferedReader;
@@ -14,13 +14,14 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Scanner;
-import graphic.ConfigInfoGraphic;
-import graphic.Fenetre;
-import graphic.PrintBuffer;
-import graphic.TimestampedList;
-import graphic.Vec2RO;
-import graphic.printable.Layer;
-import graphic.printable.Printable;
+
+import pfg.graphic.ConfigInfoGraphic;
+import pfg.graphic.Fenetre;
+import pfg.graphic.PrintBuffer;
+import pfg.graphic.TimestampedList;
+import pfg.graphic.Vec2RO;
+import pfg.graphic.printable.Printable;
+import pfg.log.Log.Verbose;
 
 /**
  * Un lecteur de vidéo enregistrée sur le rover
@@ -190,7 +191,7 @@ public class VideoReader
 			{
 				br = new BufferedReader(new FileReader(logfile));
 				nextLine = br.readLine();
-//				nextLog = getTimestampLog(nextLine);
+				nextLog = getTimestampLog(nextLine);
 			}
 
 			long nextVid;
@@ -324,7 +325,7 @@ public class VideoReader
 					else
 						nextVid = Long.MAX_VALUE;
 				}
-/*				else
+				else
 				{
 					long deltaT = (long) ((nextLog - firstTimestamp) / vitesse);
 					long deltaP = System.currentTimeMillis() - initialDate;
@@ -343,7 +344,7 @@ public class VideoReader
 						nextLog = Long.MAX_VALUE;
 					else
 						nextLog = getTimestampLog(nextLine);
-				}*/
+				}
 			}
 			special("Fin de l'enregistrement");
 			br.close();
@@ -362,7 +363,7 @@ public class VideoReader
 	{
 		System.out.println("	\u001B[34m" + o + "\u001B[0m");
 	}
-/*
+
 	private static String getNextLine(BufferedReader br) throws IOException
 	{
 		String line;
@@ -403,5 +404,5 @@ public class VideoReader
 			return -1;
 		}
 	}
-*/
+
 }

@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package graphic.printable;
+package pfg.graphic.printable;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,10 +11,11 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
-import graphic.Fenetre;
-import graphic.Position;
-import graphic.Vec2RO;
-import graphic.Vec2RW;
+
+import pfg.graphic.Fenetre;
+import pfg.graphic.Position;
+import pfg.graphic.Vec2RO;
+import pfg.graphic.Vec2RW;
 
 /**
  * Un vecteur affichable

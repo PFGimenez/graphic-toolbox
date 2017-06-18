@@ -3,11 +3,12 @@
  * Distributed under the MIT License.
  */
 
-package graphic;
+package pfg.graphic;
 
 import java.awt.Graphics;
 import java.util.Iterator;
-import graphic.printable.Printable;
+
+import pfg.graphic.printable.Printable;
 
 /**
  * Buffer de ce qu'il faut afficher

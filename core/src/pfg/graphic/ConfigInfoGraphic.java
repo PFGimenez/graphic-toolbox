@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package graphic;
+package pfg.graphic;
 
 import config.ConfigInfo;
 
@@ -21,7 +21,10 @@ import config.ConfigInfo;
 
 public enum ConfigInfoGraphic implements ConfigInfo
 {
-
+	VERBOSE_INFO(false),
+	
+	FAST_LOG(false), // log rapide, sans reflection
+	COLORED_LOG(false), // de la couleur directement dans le fichier
 	BACKGROUND_PATH(""), // background path ; empty if none
 																// de la table
 	PRODUCE_GIF(false), // produit un gif ?

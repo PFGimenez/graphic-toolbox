@@ -3,14 +3,15 @@
  * Distributed under the MIT License.
  */
 
-package graphic;
+package pfg.graphic;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import graphic.printable.Printable;
+
+import pfg.graphic.printable.Printable;
 
 /**
  * Une interface qui permet de regrouper le print buffer déporté et celui qui ne

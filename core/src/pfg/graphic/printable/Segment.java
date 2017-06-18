@@ -3,14 +3,15 @@
  * Distributed under the MIT License.
  */
 
-package graphic.printable;
+package pfg.graphic.printable;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
-import graphic.Fenetre;
-import graphic.Position;
-import graphic.Vec2RO;
+
+import pfg.graphic.Fenetre;
+import pfg.graphic.Position;
+import pfg.graphic.Vec2RO;
 
 /**
  * Un segment affichable

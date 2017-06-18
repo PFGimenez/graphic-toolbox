@@ -3,10 +3,11 @@
  * Distributed under the MIT License.
  */
 
-package graphic;
+package pfg.graphic;
 
 import java.util.Iterator;
-import graphic.printable.Printable;
+
+import pfg.graphic.printable.Printable;
 
 /**
  * An iterotar on the printable

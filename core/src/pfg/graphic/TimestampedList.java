@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package graphic;
+package pfg.graphic;
 
 import java.io.Serializable;
 import java.util.ArrayList;

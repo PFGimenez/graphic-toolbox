@@ -3,11 +3,12 @@
  * Distributed under the MIT License.
  */
 
-package graphic.printable;
+package pfg.graphic.printable;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import graphic.Fenetre;
+
+import pfg.graphic.Fenetre;
 
 /**
  * Image de fond

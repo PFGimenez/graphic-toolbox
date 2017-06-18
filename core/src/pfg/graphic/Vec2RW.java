@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package graphic;
+package pfg.graphic;
 
 /**
  * Vecteur en lecture/écriture

@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package graphic;
+package pfg.graphic;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -23,7 +23,6 @@ public class Vec2RO implements Serializable, FocusPoint, Position
 	protected volatile double y;
 	private static NumberFormat formatter = new DecimalFormat("#0.00");
 
-	@SuppressWarnings("unused")
 	public Vec2RO(double longueur, double angle, boolean useless)
 	{
 		x = Math.cos(angle) * longueur;

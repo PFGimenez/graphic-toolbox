@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package graphic;
+package pfg.graphic;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;

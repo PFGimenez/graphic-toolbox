@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package graphic.printable;
+package pfg.graphic.printable;
 
 /**
  * Les couches d'affichage
