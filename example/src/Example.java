@@ -1,9 +1,9 @@
 import java.awt.Color;
-import graphic.Fenetre;
-import graphic.PrintBuffer;
-import graphic.Vec2RO;
-import graphic.printable.Layer;
-import graphic.printable.Segment;
+import pfg.graphic.Fenetre;
+import pfg.graphic.PrintBuffer;
+import pfg.graphic.Vec2RO;
+import pfg.graphic.printable.Layer;
+import pfg.graphic.printable.Segment;
 
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez

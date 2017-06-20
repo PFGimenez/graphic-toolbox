@@ -21,7 +21,6 @@ import pfg.graphic.PrintBuffer;
 import pfg.graphic.TimestampedList;
 import pfg.graphic.Vec2RO;
 import pfg.graphic.printable.Printable;
-import pfg.log.Log.Verbose;
 
 /**
  * Un lecteur de vidéo enregistrée sur le rover
@@ -368,7 +367,7 @@ public class VideoReader
 	{
 		String line;
 		while((line = br.readLine()) != null)
-			if(Verbose.shouldPrint(extractMasque(line)))
+//			if(Verbose.shouldPrint(extractMasque(line)))
 				return line.substring(line.indexOf(" ") + 1);
 
 		return null;
@@ -382,7 +381,7 @@ public class VideoReader
 		}
 		catch(NumberFormatException e)
 		{
-			return Verbose.all;
+			return 0;//Verbose.all;
 		}
 	}
 

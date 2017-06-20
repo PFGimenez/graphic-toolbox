@@ -1,15 +1,6 @@
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>
+ * Distributed under the MIT License.
  */
 
 package pfg.log;
@@ -18,11 +9,10 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import config.Config;
+import pfg.config.Config;
 import pfg.graphic.ConfigInfoGraphic;
 
 /**
@@ -35,16 +25,16 @@ import pfg.graphic.ConfigInfoGraphic;
 
 public class Log
 {
-	public enum Verbose
+/*	public enum Verbose
 	{
-/*		SERIE(ConfigInfo.DEBUG_SERIE, true),
+		SERIE(ConfigInfo.DEBUG_SERIE, true),
 		CORRECTION(ConfigInfo.DEBUG_CORRECTION, false),
 		TRAME(ConfigInfo.DEBUG_SERIE_TRAME, false),
 		CAPTEURS(ConfigInfo.DEBUG_CAPTEURS, true),
 		ASSER(ConfigInfo.DEBUG_ASSER, true),
 		REPLANIF(ConfigInfo.DEBUG_REPLANIF, true),
 		SCRIPTS(ConfigInfo.DEBUG_SCRIPTS, true),
-		PF(ConfigInfo.DEBUG_PF, true),*/
+		PF(ConfigInfo.DEBUG_PF, true),
 		INFO(ConfigInfoGraphic.VERBOSE_INFO, true);
 
 		public final int masque;
@@ -82,8 +72,8 @@ public class Log
 			return false;
 		}
 	}
-
-	private enum Niveau
+*/
+/*	private enum Niveau
 	{
 		DEBUG(" ", "\u001B[0m", System.out),
 		WARNING(" WARNING ", "\u001B[33m", System.out),
@@ -98,21 +88,15 @@ public class Log
 			this.couleur = couleur;
 			this.stream = stream;
 		}
-	}
+	}*/
 
 	private boolean logClosed = false;
 	private BufferedWriter writer = null;
 	private String file;
-	
-	// Sauvegarder les logs dans un fichier
-	private boolean sauvegarde_fichier = false;
 
 	// Ecriture plus rapide sans appel à la pile d'exécution
 	private boolean fastLog = false;
-
-	private boolean useColor = false;
-
-	private String couleurDefault = "\u001B[0m";
+	private SeverityCategory defaultSeverity;
 
 	/**
 	 * date du démarrage
@@ -120,8 +104,9 @@ public class Log
 	private long dateInitiale = System.currentTimeMillis();
 	private long dateDebutMatch = -1;
 
-	public Log()
+	public Log(SeverityCategory defaultSeverity)
 	{
+		this.defaultSeverity = defaultSeverity;
 		try {
 			Runtime.getRuntime().exec("rm logs/last.txt");
 		} catch (IOException e) {
@@ -133,64 +118,12 @@ public class Log
 	{
 		return dateInitiale;
 	}
-
-	/**
-	 * Affichage de debug, en vert
-	 * 
-	 * @param message
-	 * @param objet
-	 */
-	public void debug(Object message)
+	
+	public synchronized void write(String message, LogCategory categorie)
 	{
-		ecrire(message.toString(), Niveau.DEBUG, Verbose.INFO.masque);
+		write(message, defaultSeverity, categorie);
 	}
-
-	/**
-	 * Affichage de debug, en vert
-	 * 
-	 * @param message
-	 * @param objet
-	 */
-	public void debug(Object message, int masque)
-	{
-		if(masque == 0)
-			masque = Verbose.INFO.masque;
-		ecrire(message.toString(), Niveau.DEBUG, masque);
-	}
-
-	/**
-	 * Affichage de warnings, en orange
-	 * 
-	 * @param message
-	 * @param objet
-	 */
-	public void warning(Object message, int masque)
-	{
-		ecrire(message.toString(), Niveau.WARNING, masque);
-	}
-
-	/**
-	 * Affichage de warnings, en orange
-	 * 
-	 * @param message
-	 * @param objet
-	 */
-	public void warning(Object message)
-	{
-		ecrire(message.toString(), Niveau.WARNING, Verbose.all);
-	}
-
-	/**
-	 * Affichage d'erreurs critiques, en rouge
-	 * 
-	 * @param message
-	 * @param objet
-	 */
-	public void critical(Object message)
-	{
-		ecrire(message.toString(), Niveau.CRITICAL, Verbose.all);
-	}
-
+	
 	/**
 	 * Ce synchronized peut ralentir le programme, mais s'assure que les logs ne
 	 * se chevauchent pas.
@@ -200,7 +133,7 @@ public class Log
 	 * @param couleur
 	 * @param ou
 	 */
-	private synchronized void ecrire(String message, Niveau niveau, int masque)
+	public synchronized void write(String message, SeverityCategory niveau, LogCategory categorie)
 	{
 		if(logClosed)
 			System.out.println("WARNING * Log fermé! Message: " + message);
@@ -217,26 +150,20 @@ public class Log
 			else
 			{
 				StackTraceElement elem = Thread.currentThread().getStackTrace()[3];
-				affichage = date + tempsMatch + niveau.entete + elem.getClassName().substring(elem.getClassName().lastIndexOf(".") + 1) + ":" + elem.getLineNumber() + " (" + Thread.currentThread().getName() + ") > " + message;
+				affichage = date + tempsMatch + niveau + elem.getClassName().substring(elem.getClassName().lastIndexOf(".") + 1) + ":" + elem.getLineNumber() + " (" + Thread.currentThread().getName() + ") > " + message;
 			}
 
-			if(sauvegarde_fichier && writer != null && Verbose.shouldPrintInFile(masque))
+			if(writer != null)
 			{
 				try
 				{
-					// On met la couleur dans le fichier
-					if(useColor)
-						writer.write(masque + " " + niveau.couleur + affichage + couleurDefault + "\n");
-					else
-						writer.write(masque + " " + affichage + "\n");
+					writer.write(categorie.getMask() + " " + affichage + "\n");
 				}
 				catch(IOException e)
 				{
 					e.printStackTrace();
 				}
 			}
-			if(Verbose.shouldPrint(masque))
-				niveau.stream.println(affichage);
 		}
 	}
 
@@ -245,41 +172,31 @@ public class Log
 	 */
 	public void close()
 	{
-		if(sauvegarde_fichier)
-			try
+		try
+		{
+			if(writer != null)
 			{
-				debug("Sauvegarde du fichier de logs");
-				if(writer != null)
-				{
-					writer.flush();
-					writer.close();
-				}
-				Runtime.getRuntime().exec("cp "+file+" logs/last.txt");
+				writer.flush();
+				writer.close();
 			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-			}
+			Runtime.getRuntime().exec("cp "+file+" logs/last.txt");
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 
 		logClosed = true;
 	}
 
 	public void useConfig(Config config)
 	{
-		useColor = config.getBoolean(ConfigInfoGraphic.COLORED_LOG);
 		fastLog = config.getBoolean(ConfigInfoGraphic.FAST_LOG);
-
-		for(Verbose v : Verbose.values())
-		{
-			v.status = config.getBoolean(v.c);
-			v.printInFile |= v.status;
-		}
 		
 		file = "logs/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".txt";
 		try
 		{
 			writer = new BufferedWriter(new FileWriter(file));
-			debug("Un fichier de sauvegarde est utilisé: " + file);
 		}
 		catch(FileNotFoundException e)
 		{
@@ -295,20 +212,16 @@ public class Log
 					e1.printStackTrace();
 				}
 				writer = new BufferedWriter(new FileWriter(file));
-				debug("Un fichier de sauvegarde est utilisé: " + file);
 			}
 			catch(IOException e1)
 			{
-				critical("Erreur (1) lors de la création du fichier : " + e1);
-				sauvegarde_fichier = false;
+				System.err.println("Erreur (1) lors de la création du fichier : " + e1);
 			}
 		}
 		catch(IOException e)
 		{
-			critical("Erreur (2) lors de la création du fichier : " + e);
-			sauvegarde_fichier = false;
+			System.err.println("Erreur (2) lors de la création du fichier : " + e);
 		}
-		debug("Service de log démarré");
 	}
 	
 	public void setInitTime(long date)
@@ -318,9 +231,7 @@ public class Log
 
 	public PrintWriter getPrintWriter()
 	{
-		if(sauvegarde_fichier)
-			return new PrintWriter(writer);
-		return new PrintWriter(System.err);
+		return new PrintWriter(writer);
 	}
 
 }
