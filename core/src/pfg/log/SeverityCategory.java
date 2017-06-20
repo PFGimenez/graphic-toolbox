@@ -12,7 +12,4 @@ package pfg.log;
  */
 
 public interface SeverityCategory
-{
-	public String toString();
-	public SeverityCategory getDefault();
-}
+{}

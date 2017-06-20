@@ -14,6 +14,4 @@ package pfg.log;
 public interface LogCategory
 {
 	public int getMask();
-	public String toString();
-	public LogCategory getDefault();
 }
