@@ -121,7 +121,22 @@ public class Log
 	
 	public synchronized void write(String message, LogCategory categorie)
 	{
-		write(message, defaultSeverity, categorie);
+		write (message, defaultSeverity, categorie);
+	}
+
+	public synchronized void write(Object message, LogCategory categorie)
+	{
+		write_(message.toString(), defaultSeverity, categorie);
+	}
+
+	public synchronized void write(Object message, SeverityCategory niveau, LogCategory categorie)
+	{
+		write_(message.toString(), niveau, categorie);
+	}
+	
+	public synchronized void write(String message, SeverityCategory niveau, LogCategory categorie)
+	{
+		write_(message, niveau, categorie);
 	}
 	
 	/**
@@ -133,7 +148,7 @@ public class Log
 	 * @param couleur
 	 * @param ou
 	 */
-	public synchronized void write(String message, SeverityCategory niveau, LogCategory categorie)
+	private synchronized void write_(String message, SeverityCategory niveau, LogCategory categorie)
 	{
 		if(logClosed)
 			System.out.println("WARNING * Log fermé! Message: " + message);

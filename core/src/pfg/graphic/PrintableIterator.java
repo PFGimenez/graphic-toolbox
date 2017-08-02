@@ -43,4 +43,10 @@ public class PrintableIterator implements Iterator<Printable>
 		return current.next();
 	}
 
+	@Override
+	public void remove()
+	{
+		throw new UnsupportedOperationException();
+	}
+
 }
