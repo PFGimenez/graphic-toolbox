@@ -122,7 +122,7 @@ public class Log
 	
 	public synchronized void write(String message, LogCategory categorie)
 	{
-		write (message, defaultSeverity, categorie);
+		write_(message, defaultSeverity, categorie);
 	}
 
 	public synchronized void write(Object message, LogCategory categorie)
