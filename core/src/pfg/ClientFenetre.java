@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import pfg.graphic.DebugTool;
 import pfg.graphic.Fenetre;
 import pfg.graphic.PrintBuffer;
 import pfg.graphic.Vec2RO;
@@ -30,7 +31,7 @@ public class ClientFenetre
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		Fenetre f = new Fenetre(new Vec2RO(0, 1000));
+		Fenetre f = new DebugTool().getFenetre(new Vec2RO(0, 1000));
 		PrintBuffer buffer = f.getPrintBuffer();
 		InetAddress rpiAdresse = null;
 		boolean loop = false;

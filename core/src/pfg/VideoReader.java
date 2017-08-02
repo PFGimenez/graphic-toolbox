@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import pfg.graphic.ConfigInfoGraphic;
+import pfg.graphic.DebugTool;
 import pfg.graphic.Fenetre;
 import pfg.graphic.PrintBuffer;
 import pfg.graphic.TimestampedList;
@@ -147,7 +148,7 @@ public class VideoReader
 		}
 
 		Scanner sc = new Scanner(System.in);
-		Fenetre fenetre = new Fenetre(new Vec2RO(0, 1000));
+		Fenetre fenetre = new DebugTool().getFenetre(new Vec2RO(0, 1000));
 
 		try
 		{

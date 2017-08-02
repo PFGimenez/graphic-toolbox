@@ -96,6 +96,7 @@ public class Log
 
 	// Ecriture plus rapide sans appel à la pile d'exécution
 	private boolean fastLog = false;
+	private boolean stdoutLog;
 	private SeverityCategory defaultSeverity;
 
 	/**
@@ -165,13 +166,15 @@ public class Log
 			else
 			{
 				StackTraceElement elem = Thread.currentThread().getStackTrace()[3];
-				affichage = date + tempsMatch + niveau + elem.getClassName().substring(elem.getClassName().lastIndexOf(".") + 1) + ":" + elem.getLineNumber() + " (" + Thread.currentThread().getName() + ") > " + message;
+				affichage = date + tempsMatch + " "+ niveau + " " + elem.getClassName().substring(elem.getClassName().lastIndexOf(".") + 1) + ":" + elem.getLineNumber() + " (" + Thread.currentThread().getName() + ") > " + message;
 			}
 
 			if(writer != null)
 			{
 				try
 				{
+					if(stdoutLog)
+						System.out.println(affichage);
 					writer.write(categorie.getMask() + " " + affichage + "\n");
 				}
 				catch(IOException e)
@@ -207,6 +210,7 @@ public class Log
 	public void useConfig(Config config)
 	{
 		fastLog = config.getBoolean(ConfigInfoGraphic.FAST_LOG);
+		stdoutLog = config.getBoolean(ConfigInfoGraphic.STDOUT_LOG);
 		
 		file = "logs/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".txt";
 		try

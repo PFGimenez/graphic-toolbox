@@ -1,4 +1,6 @@
 import java.awt.Color;
+
+import pfg.graphic.DebugTool;
 import pfg.graphic.Fenetre;
 import pfg.graphic.PrintBuffer;
 import pfg.graphic.Vec2RO;
@@ -15,7 +17,7 @@ public class Example
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		Fenetre f = new Fenetre(new Vec2RO(0,0));
+		Fenetre f = new DebugTool().getFenetre(new Vec2RO(0, 0));
 		PrintBuffer buffer = f.getPrintBuffer();
 		buffer.add(new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10), Layer.FOREGROUND, Color.RED));
 		buffer.addSupprimable(new Segment(new Vec2RO(-20, 20), new Vec2RO(-20, -20), Layer.FOREGROUND, Color.BLUE));

@@ -55,9 +55,9 @@ public class Fenetre extends JPanel
 	private Vec2RW coinHautDroiteEcran;
 
 
-	public Fenetre(FocusPoint center)
+	public Fenetre(FocusPoint center, Config config)
 	{
-		Config config = new Config(ConfigInfoGraphic.values(), "graphic.conf", false);
+		
 		buffer = new PrintBuffer();
 
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);

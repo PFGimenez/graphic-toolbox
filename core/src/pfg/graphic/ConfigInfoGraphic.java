@@ -22,6 +22,7 @@ import pfg.config.ConfigInfo;
 public enum ConfigInfoGraphic implements ConfigInfo
 {
 	FAST_LOG(false), // log rapide, sans reflection
+	STDOUT_LOG(false), // log into the stdout
 	BACKGROUND_PATH(""), // background path ; empty if none
 																// de la table
 	PRODUCE_GIF(false), // produit un gif ?
