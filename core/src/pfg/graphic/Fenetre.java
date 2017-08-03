@@ -6,8 +6,6 @@
 package pfg.graphic;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageOutputStream;
-import javax.imageio.stream.ImageOutputStream;
 import javax.swing.*;
 import pfg.config.Config;
 import pfg.graphic.printable.BackgroundImage;
@@ -17,7 +15,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -220,75 +217,6 @@ public class Fenetre extends JPanel
 		BufferedImage bi = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_INT_RGB);
 		paint(bi.getGraphics());
 		images.add(bi);
-	}
-
-	/**
-	 * @param file
-	 * @param delay
-	 */
-	public void saveGif(String file, int delay)
-	{
-		if(!images.isEmpty())
-		{
-			System.out.println("Sauvegarde du gif de " + images.size() + " images…");
-			ImageOutputStream output;
-			try
-			{
-				try
-				{
-					output = new FileImageOutputStream(new File(file));
-				}
-				catch(FileNotFoundException e)
-				{
-					e.printStackTrace();
-					return;
-				}
-				catch(IOException e)
-				{
-					e.printStackTrace();
-					return;
-				}
-
-				GifSequenceWriter writer;
-				try
-				{
-					writer = new GifSequenceWriter(output, images.get(0).getType(), delay, true);
-				}
-				catch(FileNotFoundException e)
-				{
-					e.printStackTrace();
-					output.close();
-					return;
-				}
-				catch(IOException e)
-				{
-					e.printStackTrace();
-					output.close();
-					return;
-				}
-
-				try
-				{
-					for(BufferedImage i : images)
-						writer.writeToSequence(i);
-				}
-				finally
-				{
-					writer.close();
-					output.close();
-				}
-				System.out.println("Sauvegarde finie !");
-
-			}
-			catch(FileNotFoundException e)
-			{
-				e.printStackTrace();
-			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 }
