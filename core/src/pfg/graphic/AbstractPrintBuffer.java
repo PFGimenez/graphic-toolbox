@@ -51,7 +51,7 @@ public abstract class AbstractPrintBuffer
 		List<Printable> l = elementsAffichables.get(o.getLayer());
 		if(l == null)
 		{
-			System.out.println("Ajout de "+o+", layer "+o.getLayer());
+//			System.out.println("Ajout de "+o+", layer "+o.getLayer());
 			layers.add(o.getLayer());
 			Collections.sort(layers);
 			l = new ArrayList<Printable>();

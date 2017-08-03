@@ -51,10 +51,8 @@ public class Fenetre extends JPanel
 	private Vec2RW coinBasGaucheEcran;
 	private Vec2RW coinHautDroiteEcran;
 
-
 	public Fenetre(FocusPoint center, Config config)
 	{
-		
 		buffer = new PrintBuffer();
 
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
@@ -72,8 +70,8 @@ public class Fenetre extends JPanel
 			deltaBasGauche = new Vec2RO(-deltaX, -deltaY);
 			deltaHautDroite = new Vec2RO(deltaX, deltaY);
 		}
-		coinBasGaucheEcran = new Vec2RW(-x, -y);
-		coinHautDroiteEcran = new Vec2RW(x, y);
+		coinBasGaucheEcran = new Vec2RW(-x / 2 + center.getPosition().x, -y / 2 + center.getPosition().y);
+		coinHautDroiteEcran = new Vec2RW(x / 2 + center.getPosition().x, y / 2 + center.getPosition().y);
 		
 		sizeX = config.getInt(ConfigInfoGraphic.SIZE_X_WINDOW);
 		sizeY = config.getInt(ConfigInfoGraphic.SIZE_Y_WINDOW);

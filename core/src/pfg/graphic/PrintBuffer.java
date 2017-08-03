@@ -71,11 +71,9 @@ public class PrintBuffer extends AbstractPrintBuffer
 	{
 		needRefresh = false;
 		Iterator<Printable> iter = new PrintableIterator(this);
-		System.out.println("Affichage !");
 		while(iter.hasNext())
 		{
 			Printable p = iter.next();
-			System.out.println("Affichage de "+p);
 			p.print(g, f);
 		}
 	}

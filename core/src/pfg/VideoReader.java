@@ -50,7 +50,6 @@ public class VideoReader
 		ConfigInfoGraphic.EXTERNAL.setDefaultValue(false);
 		ConfigInfoGraphic.DIFFERENTIAL.setDefaultValue(false);
 //		ConfigInfoGraphic.ROBOT_AND_SENSORS.setDefaultValue(false);
-		ConfigInfoGraphic.PRODUCE_GIF.setDefaultValue(false);
 		ConfigInfoGraphic.ZOOM.setDefaultValue(0);
 
 /*		ConfigInfoGraphic.DEBUG_CAPTEURS.setDefaultValue(false);
@@ -97,11 +96,6 @@ public class VideoReader
 				ConfigInfoGraphic.DEBUG_SERIE.setDefaultValue(true);
 			else if(args[i].equals("-vcorr")) // verbose correction
 				ConfigInfoGraphic.DEBUG_CORRECTION.setDefaultValue(true);*/
-			else if(args[i].equals("-gif")) // génération d'un gif
-			{
-				ConfigInfoGraphic.PRODUCE_GIF.setDefaultValue(true);
-				ConfigInfoGraphic.GIF_FILENAME.setDefaultValue(args[++i]);
-			}
 			else if(args[i].equals("-zoom")) // récupère le zoom
 				ConfigInfoGraphic.ZOOM.setDefaultValue(Double.parseDouble(args[++i]));
 /*			else if(args[i].equals("-b")) // bof
@@ -143,7 +137,6 @@ public class VideoReader
 			System.out.println("-vreplanif : verbose de la replanification à la volée");
 			System.out.println("-vserie : verbose de la série");
 			System.out.println("-vcorr : verbose de la correction d'odométrie");
-			System.out.println("-gif filename : produce a gif");
 			return;
 		}
 
