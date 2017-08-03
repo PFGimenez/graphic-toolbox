@@ -8,7 +8,6 @@ package pfg.graphic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import pfg.graphic.printable.Printable;
@@ -23,14 +22,15 @@ import pfg.graphic.printable.Printable;
 
 public abstract class AbstractPrintBuffer
 {
-	private List<Integer> layersSupprimables = new ArrayList<Integer>();
-	private List<Integer> layers = new ArrayList<Integer>();
-	private HashMap<Integer, List<Printable>> elementsAffichablesSupprimables = new HashMap<Integer, List<Printable>>();
-	private HashMap<Integer, List<Printable>> elementsAffichables = new HashMap<Integer, List<Printable>>();
+	List<Integer> layersSupprimables = new ArrayList<Integer>();
+	List<Integer> layers = new ArrayList<Integer>();
+	HashMap<Integer, List<Printable>> elementsAffichablesSupprimables = new HashMap<Integer, List<Printable>>();
+	HashMap<Integer, List<Printable>> elementsAffichables = new HashMap<Integer, List<Printable>>();
 
 	public synchronized void clearSupprimables()
 	{
 		elementsAffichablesSupprimables.clear();
+		layersSupprimables.clear();
 	}
 
 	public void addSupprimable(Printable o)
@@ -67,40 +67,4 @@ public abstract class AbstractPrintBuffer
 	}
 
 	public abstract void destructor();
-
-	public int getNextLayer(int i)
-	{
-		if((i & 1) == 0)
-		{
-			i++;
-			
-			if(i / 2 < layersSupprimables.size())
-				return i;
-			i++;
-			if(i / 2 < layers.size())
-				return i;
-			return -1;
-		}
-		else
-		{
-			i++;
-			if(i / 2 < layers.size())
-				return i;
-			i++;
-			if(i / 2 < layersSupprimables.size())
-				return i;
-			return -1;
-		}
-	}
-
-	public Iterator<Printable> getNextIterator(int i)
-	{
-		if(i == -1)
-			return null;
-		else if((i & 1) == 0)
-			return elementsAffichables.get(layers.get(i/2)).iterator();
-		else
-			return elementsAffichablesSupprimables.get(layersSupprimables.get(i/2)).iterator();
-	}
-	
 }

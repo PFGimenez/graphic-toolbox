@@ -18,7 +18,7 @@ import pfg.graphic.printable.Printable;
 public class PrintableIterator implements Iterator<Printable>
 {
 	private AbstractPrintBuffer buffer;
-	private int i = -1;
+	private int indexObs = 0, indexObsSupp = 0;
 	private Iterator<Printable> current = null;
 	
 	PrintableIterator(AbstractPrintBuffer buffer)
@@ -32,9 +32,31 @@ public class PrintableIterator implements Iterator<Printable>
 		if(current != null && current.hasNext())
 			return true;
 
-		i = buffer.getNextLayer(i);
-		current = buffer.getNextIterator(i);
-		return current != null;
+		if(indexObsSupp == buffer.layersSupprimables.size() && indexObs == buffer.layers.size())
+			return false;
+		
+		if(indexObsSupp == buffer.layersSupprimables.size())
+		{
+			current = buffer.elementsAffichables.get(buffer.layers.get(indexObs)).iterator();
+			indexObs++;
+		}
+		else if(indexObs == buffer.layers.size())
+		{
+			current = buffer.elementsAffichablesSupprimables.get(buffer.layersSupprimables.get(indexObsSupp)).iterator();
+			indexObsSupp++;
+		}
+		else if(buffer.layers.get(indexObs) <= buffer.layersSupprimables.get(indexObsSupp))
+		{
+			current = buffer.elementsAffichables.get(buffer.layers.get(indexObs)).iterator();
+			indexObs++;
+		}
+		else
+		{
+			current = buffer.elementsAffichablesSupprimables.get(buffer.layersSupprimables.get(indexObsSupp)).iterator();
+			indexObsSupp++;
+		}
+		
+		return true;
 	}
 
 	@Override
