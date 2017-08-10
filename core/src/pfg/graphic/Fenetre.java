@@ -217,4 +217,9 @@ public class Fenetre extends JPanel
 		images.add(bi);
 	}
 
+	public void close()
+	{
+		// TODO Auto-generated method stub		
+	}
+
 }
