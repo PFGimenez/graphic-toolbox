@@ -25,7 +25,7 @@ public enum ConfigInfoGraphic implements ConfigInfo
 	STDOUT_LOG(false), // log into the stdout
 	BACKGROUND_PATH(""), // background path ; empty if none
 																// de la table
-
+	GRAPHIC_SERVER_PORT_NUMBER(13370),
 	SIZE_X_WINDOW(900), // taille par défaut (sans image) de la fenêtre
 	SIZE_Y_WINDOW(600), // taille par défaut (sans image) de la fenêtre
 	SIZE_X_WITH_UNITARY_ZOOM(50),

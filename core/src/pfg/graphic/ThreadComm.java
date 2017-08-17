@@ -1,15 +1,6 @@
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>
+ * Distributed under the MIT License.
  */
 
 package pfg.graphic;
@@ -79,47 +70,9 @@ public class ThreadComm extends Thread
 
 	}
 
-	private class ThreadDifferential implements Runnable
-	{
-		protected Log log;
-		private PrintBuffer buffer;
-
-		public ThreadDifferential(Log log, PrintBuffer buffer)
-		{
-			this.log = log;
-			this.buffer = buffer;
-		}
-
-		@Override
-		public void run()
-		{
-			Thread.currentThread().setName(getClass().getSimpleName());
-//			log.write("Démarrage de " + Thread.currentThread().getName(), Subject.DUMMY);
-			try
-			{
-				while(true)
-				{
-					Thread.sleep(100);
-					synchronized(buffer)
-					{
-						buffer.wait(400);
-						buffer.write();
-					}
-				}
-			}
-			catch(InterruptedException | IOException e)
-			{
-//				log.write("Arrêt de " + Thread.currentThread().getName(), Subject.DUMMY);
-				Thread.currentThread().interrupt();
-			}
-		}
-
-	}
-
-	private boolean print, deporte, file;
 	protected Log log;
 	private PrintBuffer buffer;
-	private int nbConnexions = 0;
+	private int port;
 	private ServerSocket ssocket = null;
 	private List<Thread> threads = new ArrayList<Thread>();
 
@@ -127,21 +80,7 @@ public class ThreadComm extends Thread
 	{
 		this.log = log;
 		this.buffer = buffer;
-/*		print = config.getBoolean(ConfigInfo.GRAPHIC_ENABLE);
-		deporte = config.getBoolean(ConfigInfo.GRAPHIC_EXTERNAL);
-		file = config.getBoolean(ConfigInfo.GRAPHIC_DIFFERENTIAL);
-		try {
-			Runtime.getRuntime().exec("rm videos/last.dat");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		if(file && print)
-		{
-			Thread t = new Thread(new ThreadDifferential(log, buffer));
-			t.start();
-			threads.add(t);
-		}*/
+		port = config.getInt(ConfigInfoGraphic.GRAPHIC_SERVER_PORT_NUMBER);
 	}
 
 	@Override
@@ -151,14 +90,9 @@ public class ThreadComm extends Thread
 //		log.write("Démarrage de " + Thread.currentThread().getName(), Subject.DUMMY);
 		try
 		{
-/*			if(!print || !deporte)
-			{
-				log.debug(getClass().getSimpleName() + " annulé (" + ConfigInfo.GRAPHIC_ENABLE + " = " + print + ", " + ConfigInfo.GRAPHIC_EXTERNAL + " = " + deporte + ")");
-				while(true)
-					Thread.sleep(10000);
-			}*/
+			ssocket = new ServerSocket(port);
+			int nbConnexions = 0;
 
-			ssocket = new ServerSocket(13370);
 			while(true)
 			{
 				try
@@ -173,6 +107,12 @@ public class ThreadComm extends Thread
 		}
 		catch(IOException e)
 		{
+			/*
+			 * On arrête tous les threads de socket en cours
+			 */
+			for(Thread t : threads)
+				t.interrupt();
+
 			if(ssocket != null && !ssocket.isClosed())
 				try
 				{
@@ -184,11 +124,6 @@ public class ThreadComm extends Thread
 					e1.printStackTrace(log.getPrintWriter());
 				}
 
-			/*
-			 * On arrête tous les threads de socket en cours
-			 */
-			for(Thread t : threads)
-				t.interrupt();
 //			log.write("Arrêt de " + Thread.currentThread().getName(), Subject.DUMMY);
 			Thread.currentThread().interrupt();
 		}
