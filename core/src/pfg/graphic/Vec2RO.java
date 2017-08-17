@@ -16,7 +16,7 @@ import java.text.NumberFormat;
  *
  */
 
-public class Vec2RO implements Serializable, FocusPoint, Position
+public class Vec2RO implements Serializable, Position
 {
 	private static final long serialVersionUID = 1L;
 	protected volatile double x;
@@ -146,9 +146,4 @@ public class Vec2RO implements Serializable, FocusPoint, Position
 		return Math.sqrt(x * x + y * y);
 	}
 
-	@Override
-	public Vec2RO getPosition()
-	{
-		return this;
-	}
 }

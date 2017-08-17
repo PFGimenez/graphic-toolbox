@@ -13,10 +13,8 @@ import pfg.graphic.printable.BackgroundImage;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Interface graphique
@@ -43,17 +41,16 @@ public class Fenetre extends JPanel
 	private int sizeX, sizeY;
 	private JFrame frame;
 	private WindowExit exit;
-	private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 	private boolean needInit = true;
 	private double zoom;
-	private FocusPoint center;
+	private Vec2RO center;
 	private Vec2RO deltaBasGauche, deltaHautDroite;
 	private String backgroundPath;
 	private Vec2RW coinBasGaucheEcran;
 	private Vec2RW coinHautDroiteEcran;
 	private double sizeXUnitaryZoom, sizeYUnitaryZoom;
 
-	public Fenetre(FocusPoint center, Config config)
+	public Fenetre(Position center, Config config)
 	{
 		buffer = new PrintBuffer();
 		aff = new AffichageDebug("Debug", "X", "Y");
@@ -62,10 +59,9 @@ public class Fenetre extends JPanel
 		zoom = 0;
 		sizeXUnitaryZoom = config.getInt(ConfigInfoGraphic.SIZE_X_WITH_UNITARY_ZOOM);
 		sizeYUnitaryZoom = config.getInt(ConfigInfoGraphic.SIZE_Y_WITH_UNITARY_ZOOM);
-		this.center = center;
 
-		coinBasGaucheEcran = new Vec2RW(-sizeXUnitaryZoom / 2 + center.getPosition().x, -sizeYUnitaryZoom / 2 + center.getPosition().y);
-		coinHautDroiteEcran = new Vec2RW(sizeXUnitaryZoom / 2 + center.getPosition().x, sizeYUnitaryZoom / 2 + center.getPosition().y);
+		coinBasGaucheEcran = new Vec2RW(-sizeXUnitaryZoom / 2 + center.getX(), -sizeYUnitaryZoom / 2 + center.getY());
+		coinHautDroiteEcran = new Vec2RW(sizeXUnitaryZoom / 2 + center.getX(), sizeYUnitaryZoom / 2 + center.getY());
 		
 		sizeX = config.getInt(ConfigInfoGraphic.SIZE_X_WINDOW);
 		sizeY = config.getInt(ConfigInfoGraphic.SIZE_Y_WINDOW);
@@ -98,6 +94,11 @@ public class Fenetre extends JPanel
 
 		@Override
 		public synchronized void windowClosing(WindowEvent e)
+		{
+			close();
+		}
+		
+		public synchronized void close()
 		{
 			notify();
 			alreadyExited = true;
@@ -159,7 +160,7 @@ public class Fenetre extends JPanel
 		g.clearRect(0, 0, sizeX, sizeY);
 		if(zoom != 0)
 		{
-			Vec2RO positionRobot = center.getPosition();
+			Vec2RO positionRobot = new Vec2RO(center.getX(), center.getY());
 			Vec2RO currentCenter = positionRobot;
 //			Vec2RO currentCenter = new Vec2RO((int)(positionRobot.getX() / petitDeltaX) * petitDeltaX, (int)(positionRobot.getY() / petitDeltaY) * petitDeltaY);
 
@@ -204,7 +205,7 @@ public class Fenetre extends JPanel
 	 * 
 	 * @throws InterruptedException
 	 */
-	public void waitUntilExit() throws InterruptedException
+	public void waitUntilExit(long timeout) throws InterruptedException
 	{
 		refresh();
 		synchronized(exit)
@@ -212,24 +213,14 @@ public class Fenetre extends JPanel
 			if(!needInit && !exit.alreadyExited)
 			{
 				System.out.println("Attente de l'arrêt de la fenêtre…");
-				exit.wait(5000);
+				exit.wait(timeout);
 			}
 		}
 	}
 
-	/**
-	 * Ajoute une image au gif final
-	 */
-	public void saveImage()
-	{
-		BufferedImage bi = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_INT_RGB);
-		paint(bi.getGraphics());
-		images.add(bi);
-	}
-
 	public void close()
 	{
-		// TODO Auto-generated method stub
+		exit.close();
 	}
 
 }

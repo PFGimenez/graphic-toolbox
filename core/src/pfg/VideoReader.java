@@ -335,7 +335,7 @@ public class VideoReader
 			special("Fin de l'enregistrement");
 			br.close();
 			
-			fenetre.waitUntilExit();
+			fenetre.waitUntilExit(0);
 		}
 		catch(Exception e)
 		{}

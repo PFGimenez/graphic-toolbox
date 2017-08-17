@@ -126,9 +126,10 @@ public class PrintBuffer
 	 */
 	public synchronized boolean removeSupprimable(Printable o)
 	{
-		layersSupprimables.clear();
 		if(elementsAffichablesSupprimables.get(o.getLayer()).remove(o))
 		{
+			if(elementsAffichablesSupprimables.get(o.getLayer()).isEmpty())
+				layersSupprimables.remove(o.getLayer());
 			notify();
 			needRefresh = true;
 			return true;
@@ -147,13 +148,17 @@ public class PrintBuffer
 		Iterator<Printable> iter = new PrintableIterator(this);
 		
 		while(iter.hasNext())
-			o.add(iter.next());
+		{
+			// TODO
+//			Serializable elem = iter.next().clone();
+//			o.add(elem);
+		}
 
 		return o;
 	}
 
 	/**
-	 * Envoie en sérialisant les objets à afficher
+	 * Ajoute à la sauvegarde
 	 * 
 	 * @param out
 	 * @throws IOException

@@ -180,7 +180,7 @@ public class ClientFenetre
 			e.printStackTrace();
 		}
 		if(f != null)
-			f.waitUntilExit();
+			f.waitUntilExit(0);
 		System.out.println("Arrêt du client d'affichage");
 
 	}

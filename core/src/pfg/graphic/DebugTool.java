@@ -31,7 +31,7 @@ public class DebugTool {
 		 config = new Config(ConfigInfoGraphic.values(), configFilename, false);
 	}
 	
-	public Fenetre getFenetre(FocusPoint center)
+	public Fenetre getFenetre(Position center)
 	{
 		if(fenetre == null)
 			fenetre = new Fenetre(center, config);
