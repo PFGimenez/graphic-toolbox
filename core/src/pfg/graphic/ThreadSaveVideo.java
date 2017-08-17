@@ -16,7 +16,7 @@ import pfg.log.Log;
  *
  */
 
-public class ThreadSaveVideo implements Runnable
+public class ThreadSaveVideo extends Thread
 {
 	protected Log log;
 	private PrintBuffer buffer;
