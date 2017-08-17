@@ -115,11 +115,6 @@ public class Log
 		}
 	}
 	
-	public long getDateInitiale()
-	{
-		return dateInitiale;
-	}
-	
 	public synchronized void write(String message, LogCategory categorie)
 	{
 		write_(message, defaultSeverity, categorie);
@@ -127,12 +122,12 @@ public class Log
 
 	public synchronized void write(Object message, LogCategory categorie)
 	{
-		write_(message.toString(), defaultSeverity, categorie);
+		write_(message == null ? "null" : message.toString(), defaultSeverity, categorie);
 	}
 
 	public synchronized void write(Object message, SeverityCategory niveau, LogCategory categorie)
 	{
-		write_(message.toString(), niveau, categorie);
+		write_(message == null ? "null" : message.toString(), niveau, categorie);
 	}
 	
 	public synchronized void write(String message, SeverityCategory niveau, LogCategory categorie)
