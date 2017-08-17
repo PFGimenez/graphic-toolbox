@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
 
+import pfg.graphic.AffichageDebug;
 import pfg.graphic.Fenetre;
 import pfg.graphic.Position;
 import pfg.graphic.Vec2RO;
@@ -42,7 +43,7 @@ public class Segment implements Printable, Serializable
 	}
 
 	@Override
-	public void print(Graphics g, Fenetre f)
+	public void print(Graphics g, Fenetre f, AffichageDebug a)
 	{
 //		System.out.println("Positions écran : "+f.XtoWindow(a.getX())+" "+f.YtoWindow(a.getY())+" "+f.XtoWindow(b.getX())+" "+f.YtoWindow(b.getY()));
 		g.setColor(c);

@@ -17,11 +17,11 @@ import pfg.graphic.printable.Printable;
 
 public class PrintableIterator implements Iterator<Printable>
 {
-	private AbstractPrintBuffer buffer;
+	private PrintBuffer buffer;
 	private int indexObs = 0, indexObsSupp = 0;
 	private Iterator<Printable> current = null;
 	
-	PrintableIterator(AbstractPrintBuffer buffer)
+	PrintableIterator(PrintBuffer buffer)
 	{
 		this.buffer = buffer;
 	}

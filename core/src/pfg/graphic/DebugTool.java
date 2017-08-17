@@ -23,7 +23,12 @@ public class DebugTool {
 	
 	public DebugTool()
 	{
-		 config = new Config(ConfigInfoGraphic.values(), "graphic.conf", false);
+		this("graphic.conf");
+	}
+	
+	public DebugTool(String configFilename)
+	{
+		 config = new Config(ConfigInfoGraphic.values(), configFilename, false);
 	}
 	
 	public Fenetre getFenetre(FocusPoint center)

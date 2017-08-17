@@ -8,6 +8,7 @@ package pfg.graphic.printable;
 import java.awt.Graphics;
 import java.io.Serializable;
 
+import pfg.graphic.AffichageDebug;
 import pfg.graphic.Fenetre;
 
 /**
@@ -24,7 +25,7 @@ public interface Printable extends Serializable
 	 * 
 	 * @param g
 	 */
-	public void print(Graphics g, Fenetre f);
+	public void print(Graphics g, Fenetre f, AffichageDebug a);
 
 	/**
 	 * Get the layer the object will be printed on.

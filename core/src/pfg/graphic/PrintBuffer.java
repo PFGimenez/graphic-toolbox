@@ -6,7 +6,18 @@
 package pfg.graphic;
 
 import java.awt.Graphics;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import pfg.graphic.printable.Printable;
 
@@ -17,19 +28,34 @@ import pfg.graphic.printable.Printable;
  *
  */
 
-public class PrintBuffer extends AbstractPrintBuffer
+public class PrintBuffer
 {	
-	private boolean needRefresh = false;
+	List<Integer> layersSupprimables = new ArrayList<Integer>();
+	List<Integer> layers = new ArrayList<Integer>();
+	HashMap<Integer, List<Printable>> elementsAffichablesSupprimables = new HashMap<Integer, List<Printable>>();
+	HashMap<Integer, List<Printable>> elementsAffichables = new HashMap<Integer, List<Printable>>();
 
+	private boolean needRefresh = false;
+	private TimestampedList sauvegarde;
+
+	private ObjectOutputStream file;
+	private String filename;
+	
+	public PrintBuffer(boolean save)
+	{
+		sauvegarde = new TimestampedList(System.currentTimeMillis());
+		filename = "videos/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".dat";
+	}
+	
 	/**
 	 * Supprime tous les obstacles supprimables
 	 * 
 	 * @param c
 	 */
-	@Override
 	public synchronized void clearSupprimables()
 	{
-		super.clearSupprimables();
+		elementsAffichablesSupprimables.clear();
+		layersSupprimables.clear();
 		notify();
 		needRefresh = true;
 	}
@@ -39,10 +65,17 @@ public class PrintBuffer extends AbstractPrintBuffer
 	 * 
 	 * @param o
 	 */
-	@Override
 	public synchronized void addSupprimable(Printable o)
 	{
-		super.addSupprimable(o);
+		List<Printable> l = elementsAffichablesSupprimables.get(o.getLayer());
+		if(l == null)
+		{
+			layersSupprimables.add(o.getLayer());
+			Collections.sort(layersSupprimables);
+			l = new ArrayList<Printable>();
+			elementsAffichablesSupprimables.put(o.getLayer(), l);
+		}
+		l.add(o);
 		notify();
 		needRefresh = true;
 	}
@@ -52,10 +85,17 @@ public class PrintBuffer extends AbstractPrintBuffer
 	 * 
 	 * @param o
 	 */
-	@Override
 	public synchronized void add(Printable o)
 	{
-		super.add(o);
+		List<Printable> l = elementsAffichables.get(o.getLayer());
+		if(l == null)
+		{
+			layers.add(o.getLayer());
+			Collections.sort(layers);
+			l = new ArrayList<Printable>();
+			elementsAffichables.put(o.getLayer(), l);
+		}
+		l.add(o);
 		notify();
 		needRefresh = true;
 	}
@@ -67,14 +107,14 @@ public class PrintBuffer extends AbstractPrintBuffer
 	 * @param f
 	 * @param robot
 	 */
-	synchronized void print(Graphics g, Fenetre f)
+	synchronized void print(Graphics g, Fenetre f, AffichageDebug a)
 	{
 		needRefresh = false;
 		Iterator<Printable> iter = new PrintableIterator(this);
 		while(iter.hasNext())
 		{
 			Printable p = iter.next();
-			p.print(g, f);
+			p.print(g, f, a);
 		}
 	}
 
@@ -84,10 +124,10 @@ public class PrintBuffer extends AbstractPrintBuffer
 	 * 
 	 * @param o
 	 */
-	@Override
 	public synchronized boolean removeSupprimable(Printable o)
 	{
-		if(super.removeSupprimable(o))
+		layersSupprimables.clear();
+		if(elementsAffichablesSupprimables.get(o.getLayer()).remove(o))
 		{
 			notify();
 			needRefresh = true;
@@ -101,8 +141,88 @@ public class PrintBuffer extends AbstractPrintBuffer
 		return needRefresh;
 	}
 
-	@Override
-	public void destructor()
-	{}
+	private synchronized List<Serializable> prepareList()
+	{
+		List<Serializable> o = new ArrayList<Serializable>();
+		Iterator<Printable> iter = new PrintableIterator(this);
+		
+		while(iter.hasNext())
+			o.add(iter.next());
 
+		return o;
+	}
+
+	/**
+	 * Envoie en sérialisant les objets à afficher
+	 * 
+	 * @param out
+	 * @throws IOException
+	 */
+	public synchronized void write() throws IOException
+	{
+		List<Serializable> o = prepareList();
+		// System.out.println("Ajout de "+o.size()+" objets, date =
+		// "+System.currentTimeMillis());
+		sauvegarde.add(o);
+	}
+
+	/**
+	 * Envoie en sérialisant les objets à afficher
+	 * 
+	 * @param out
+	 * @throws IOException
+	 */
+	public synchronized void send(ObjectOutputStream out) throws IOException
+	{
+		out.writeObject(prepareList());
+		out.flush(); // on force l'envoi !
+	}
+
+	public synchronized void destructor()
+	{
+		System.out.println("Sauvegarde de la vidéo en cours… ÇA PEUT PRENDRE DU TEMPS !");
+
+		try
+		{
+			FileOutputStream fichier = null;
+			try
+			{
+				fichier = new FileOutputStream(filename);
+			}
+			catch(FileNotFoundException e)
+			{
+				try
+				{
+					Runtime.getRuntime().exec("mkdir videos");
+					try
+					{
+						Thread.sleep(50);
+					}
+					catch(InterruptedException e1)
+					{
+						e1.printStackTrace();
+					}
+					fichier = new FileOutputStream(filename);
+				}
+				catch(FileNotFoundException e1)
+				{
+					System.err.println("Erreur (1) lors de la création du fichier : " + e1);
+					return;
+				}
+			}
+			file = new ObjectOutputStream(fichier);
+			file.writeObject(sauvegarde);
+			file.flush();
+			file.close();
+			Runtime.getRuntime().exec("cp "+filename+" videos/last.dat");
+
+			System.out.println("Sauvegarde de la vidéo terminée");
+		}
+		catch(IOException e)
+		{
+			System.err.println("Erreur lors de la sauvegarde du buffer graphique ! " + e);
+		}
+	}
+
+	
 }

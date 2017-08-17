@@ -37,6 +37,7 @@ public class Fenetre extends JPanel
 
 	private static final long serialVersionUID = 1L;
 	private PrintBuffer buffer;
+	private AffichageDebug aff;
 
 	private boolean afficheFond;
 	private int sizeX, sizeY;
@@ -53,8 +54,8 @@ public class Fenetre extends JPanel
 
 	public Fenetre(FocusPoint center, Config config)
 	{
-		buffer = new PrintBuffer();
-
+		buffer = new PrintBuffer(config.getBoolean(ConfigInfoGraphic.DIFFERENTIAL));
+		aff = new AffichageDebug("Debug", "X", "Y");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
 		afficheFond = !backgroundPath.isEmpty();
 		zoom = config.getDouble(ConfigInfoGraphic.ZOOM);
@@ -158,7 +159,7 @@ public class Fenetre extends JPanel
 			currentCenter.copy(coinHautDroiteEcran);
 			coinHautDroiteEcran.plus(deltaHautDroite);
 		}
-		buffer.print(g, this);
+		buffer.print(g, this, aff);
 	}
 
 	/**
@@ -219,7 +220,7 @@ public class Fenetre extends JPanel
 
 	public void close()
 	{
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 }
