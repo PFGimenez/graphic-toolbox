@@ -102,7 +102,7 @@ public class Log
 	/**
 	 * date du démarrage
 	 */
-	private long dateInitiale = System.currentTimeMillis();
+	private static final long dateInitiale = System.currentTimeMillis();
 	private long dateDebutMatch = -1;
 
 	public Log(SeverityCategory defaultSeverity)
