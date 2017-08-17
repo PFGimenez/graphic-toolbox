@@ -23,18 +23,13 @@ public enum ConfigInfoGraphic implements ConfigInfo
 {
 	FAST_LOG(false), // log rapide, sans reflection
 	STDOUT_LOG(false), // log into the stdout
-	BACKGROUND_PATH(""), // background path ; empty if none
-																// de la table
-	GRAPHIC_SERVER_PORT_NUMBER(13370),
+	
+	BACKGROUND_PATH(""), // background path ; empty if none	
+	GRAPHIC_SERVER_PORT_NUMBER(13370), // port number of the graphic server
 	SIZE_X_WINDOW(900), // taille par défaut (sans image) de la fenêtre
 	SIZE_Y_WINDOW(600), // taille par défaut (sans image) de la fenêtre
-	SIZE_X_WITH_UNITARY_ZOOM(50),
-	SIZE_Y_WITH_UNITARY_ZOOM(50),
-	EXTERNAL(false), // l'affichage doit-il être déporté par le serveur
-							// d'affichage ?
-	DIFFERENTIAL(false), // sauvegarde d'une "vidéo" pour visionner les
-								// images plus tard
-	ZOOM(0); // zoom de la fenêtre. Si 0, aucun zoom. Sinon, zoom + focus sur le robot
+	SIZE_X_WITH_UNITARY_ZOOM(50), // taille en mm de la zone à afficher (sur l'axe X)
+	SIZE_Y_WITH_UNITARY_ZOOM(50); // taille en mm de la zone à afficher (sur l'axe Y)
 
 	private Object defaultValue;
 	public boolean overridden = false;

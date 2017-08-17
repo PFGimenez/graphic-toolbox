@@ -12,6 +12,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import pfg.config.Config;
+import pfg.graphic.ConfigInfoGraphic;
 import pfg.graphic.DebugTool;
 import pfg.graphic.Fenetre;
 import pfg.graphic.PrintBuffer;
@@ -34,6 +36,7 @@ public class ClientFenetre
 		Fenetre f = new DebugTool().getFenetre(new Vec2RO(0, 1000));
 		PrintBuffer buffer = f.getPrintBuffer();
 		InetAddress rpiAdresse = null;
+		Config config = new Config(ConfigInfoGraphic.values(), "graphic.conf", false);
 		boolean loop = false;
 		System.out.println("Démarrage du client d'affichage");
 		try
@@ -92,7 +95,7 @@ public class ClientFenetre
 			{
 				try
 				{
-					socket = new Socket(rpiAdresse, 13370);
+					socket = new Socket(rpiAdresse, config.getInt(ConfigInfoGraphic.GRAPHIC_SERVER_PORT_NUMBER));
 					ko = false;
 				}
 				catch(IOException e)

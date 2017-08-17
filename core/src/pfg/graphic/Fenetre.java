@@ -51,31 +51,40 @@ public class Fenetre extends JPanel
 	private String backgroundPath;
 	private Vec2RW coinBasGaucheEcran;
 	private Vec2RW coinHautDroiteEcran;
+	private double sizeXUnitaryZoom, sizeYUnitaryZoom;
 
 	public Fenetre(FocusPoint center, Config config)
 	{
-		buffer = new PrintBuffer(config.getBoolean(ConfigInfoGraphic.DIFFERENTIAL));
+		buffer = new PrintBuffer();
 		aff = new AffichageDebug("Debug", "X", "Y");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
 		afficheFond = !backgroundPath.isEmpty();
-		zoom = config.getDouble(ConfigInfoGraphic.ZOOM);
-		double x = config.getInt(ConfigInfoGraphic.SIZE_X_WITH_UNITARY_ZOOM);
-		double y = config.getInt(ConfigInfoGraphic.SIZE_Y_WITH_UNITARY_ZOOM);
+		zoom = 0;
+		sizeXUnitaryZoom = config.getInt(ConfigInfoGraphic.SIZE_X_WITH_UNITARY_ZOOM);
+		sizeYUnitaryZoom = config.getInt(ConfigInfoGraphic.SIZE_Y_WITH_UNITARY_ZOOM);
+		this.center = center;
 
-		if(zoom != 0)
-		{
-			this.center = center;
-			double deltaX, deltaY;
-			deltaX = x / (2*zoom);
-			deltaY = y / (2*zoom);
-			deltaBasGauche = new Vec2RO(-deltaX, -deltaY);
-			deltaHautDroite = new Vec2RO(deltaX, deltaY);
-		}
-		coinBasGaucheEcran = new Vec2RW(-x / 2 + center.getPosition().x, -y / 2 + center.getPosition().y);
-		coinHautDroiteEcran = new Vec2RW(x / 2 + center.getPosition().x, y / 2 + center.getPosition().y);
+		coinBasGaucheEcran = new Vec2RW(-sizeXUnitaryZoom / 2 + center.getPosition().x, -sizeYUnitaryZoom / 2 + center.getPosition().y);
+		coinHautDroiteEcran = new Vec2RW(sizeXUnitaryZoom / 2 + center.getPosition().x, sizeYUnitaryZoom / 2 + center.getPosition().y);
 		
 		sizeX = config.getInt(ConfigInfoGraphic.SIZE_X_WINDOW);
 		sizeY = config.getInt(ConfigInfoGraphic.SIZE_Y_WINDOW);
+	}
+	
+	/**
+	 * zoom de la fenêtre. Si 0, aucun zoom. Sinon, zoom + focus sur le robot
+	 * @param zoom
+	 */
+	public void setZoom(double zoom)
+	{
+		if(zoom != 0)
+		{
+			double deltaX, deltaY;
+			deltaX = sizeXUnitaryZoom / (2*zoom);
+			deltaY = sizeYUnitaryZoom / (2*zoom);
+			deltaBasGauche = new Vec2RO(-deltaX, -deltaY);
+			deltaHautDroite = new Vec2RO(deltaX, deltaY);
+		}
 	}
 	
 	public PrintBuffer getPrintBuffer()

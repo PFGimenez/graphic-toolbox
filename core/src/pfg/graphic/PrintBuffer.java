@@ -41,7 +41,7 @@ public class PrintBuffer
 	private ObjectOutputStream file;
 	private String filename;
 	
-	public PrintBuffer(boolean save)
+	public PrintBuffer()
 	{
 		sauvegarde = new TimestampedList(System.currentTimeMillis());
 		filename = "videos/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".dat";

@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Scanner;
 
-import pfg.graphic.ConfigInfoGraphic;
 import pfg.graphic.DebugTool;
 import pfg.graphic.Fenetre;
 import pfg.graphic.PrintBuffer;
@@ -46,11 +45,7 @@ public class VideoReader
 		boolean skipdone = false;
 		long nextStopFTF = 0;
 		
-		// on force l'affichage non externe
-		ConfigInfoGraphic.EXTERNAL.setDefaultValue(false);
-		ConfigInfoGraphic.DIFFERENTIAL.setDefaultValue(false);
 //		ConfigInfoGraphic.ROBOT_AND_SENSORS.setDefaultValue(false);
-		ConfigInfoGraphic.ZOOM.setDefaultValue(0);
 
 /*		ConfigInfoGraphic.DEBUG_CAPTEURS.setDefaultValue(false);
 		ConfigInfoGraphic.DEBUG_SCRIPTS.setDefaultValue(false);
@@ -96,8 +91,6 @@ public class VideoReader
 				ConfigInfoGraphic.DEBUG_SERIE.setDefaultValue(true);
 			else if(args[i].equals("-vcorr")) // verbose correction
 				ConfigInfoGraphic.DEBUG_CORRECTION.setDefaultValue(true);*/
-			else if(args[i].equals("-zoom")) // récupère le zoom
-				ConfigInfoGraphic.ZOOM.setDefaultValue(Double.parseDouble(args[++i]));
 /*			else if(args[i].equals("-b")) // bof
 			{
 				// Robot bof : (630, 1320), angle = 0
