@@ -3,7 +3,7 @@ import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.Random;
 
-import pfg.graphic.AffichageDebug;
+import pfg.graphic.Chart;
 import pfg.graphic.DebugTool;
 import pfg.graphic.Fenetre;
 import pfg.graphic.PrintBuffer;
@@ -53,7 +53,7 @@ public class Example
 		}
 
 		@Override
-		public void print(Graphics g, Fenetre f, AffichageDebug a)
+		public void print(Graphics g, Fenetre f, Chart a)
 		{
 			HashMap<String, Double> values = new HashMap<String, Double>();
 			values.put(nom, (double) value);

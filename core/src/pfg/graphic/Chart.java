@@ -19,7 +19,6 @@ import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.RefineryUtilities;
 
 import java.awt.*;
-import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -30,7 +29,7 @@ import java.util.HashMap;
  *
  */
 
-public class AffichageDebug extends ApplicationFrame
+public class Chart extends ApplicationFrame
 {
 	private static final long serialVersionUID = 1L;
 	private HashMap<String, TimeSeries> series = new HashMap<String, TimeSeries>();
@@ -70,7 +69,7 @@ public class AffichageDebug extends ApplicationFrame
 			addData(name, values.get(name));
 	}
 	
-    public AffichageDebug(String title, String xAxisLabel, String yAxisLabel)
+    public Chart(String title, String xAxisLabel, String yAxisLabel)
     {    	
         super("");
         this.title = title;

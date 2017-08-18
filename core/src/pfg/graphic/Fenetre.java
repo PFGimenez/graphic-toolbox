@@ -35,7 +35,7 @@ public class Fenetre extends JPanel
 
 	private static final long serialVersionUID = 1L;
 	private PrintBuffer buffer;
-	private AffichageDebug aff;
+	private Chart aff;
 
 	private boolean afficheFond;
 	private int sizeX, sizeY;
@@ -53,7 +53,7 @@ public class Fenetre extends JPanel
 	public Fenetre(Position center, Config config)
 	{
 		buffer = new PrintBuffer();
-		aff = new AffichageDebug("Debug", "Time", "Value");
+		aff = new Chart("Debug", "Time", "Value");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
 		afficheFond = !backgroundPath.isEmpty();
 		zoom = 0;
