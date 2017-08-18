@@ -40,27 +40,34 @@ public class AffichageDebug extends ApplicationFrame
 	
     /**
      * Ajoute des données à afficher
-     * @param data
-     * @param names
-     * @throws InvalidParameterException
+     * @param name
+     * @param value
      */
-	public void addData(HashMap<String, Double> values)
+	public void addData(String name, Double value)
 	{
 		if(!init)
 			init();
 		
 		Date temps = new Date();
-		for(String name : values.keySet())
+
+		TimeSeries ts = series.get(name);
+		if(ts == null)
 		{
-			TimeSeries ts = series.get(name);
-			if(ts == null)
-			{
-				ts = new TimeSeries(name);
-				series.put(name, ts);
-	            dataset.addSeries(ts);
-			}
-			ts.addOrUpdate(new Millisecond(temps), values.get(name));
+			ts = new TimeSeries(name);
+			series.put(name, ts);
+            dataset.addSeries(ts);
 		}
+		ts.addOrUpdate(new Millisecond(temps), value);
+	}
+	
+    /**
+     * Ajoute des données à afficher
+     * @param values
+     */
+	public void addData(HashMap<String, Double> values)
+	{
+		for(String name : values.keySet())
+			addData(name, values.get(name));
 	}
 	
     public AffichageDebug(String title, String xAxisLabel, String yAxisLabel)
