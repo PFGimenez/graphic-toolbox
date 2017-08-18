@@ -20,9 +20,8 @@ import org.jfree.ui.RefineryUtilities;
 
 import java.awt.*;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.HashMap;
 
 
 /**
@@ -34,7 +33,7 @@ import java.util.Date;
 public class AffichageDebug extends ApplicationFrame
 {
 	private static final long serialVersionUID = 1L;
-	private List<TimeSeries> series = new ArrayList<TimeSeries>();
+	private HashMap<String, TimeSeries> series = new HashMap<String, TimeSeries>();
     private TimeSeriesCollection dataset = new TimeSeriesCollection();
 	private boolean init = false;
 	private String title, xAxisLabel, yAxisLabel;
@@ -45,24 +44,22 @@ public class AffichageDebug extends ApplicationFrame
      * @param names
      * @throws InvalidParameterException
      */
-	public void addData(double[] data, String[] names) throws InvalidParameterException
+	public void addData(HashMap<String, Double> values)
 	{
-		if(names.length != data.length)
-			throw new InvalidParameterException();
-
 		if(!init)
 			init();
 		
 		Date temps = new Date();
-		for(int i = 0; i < data.length; i++)
+		for(String name : values.keySet())
 		{
-			if(i == series.size())
+			TimeSeries ts = series.get(name);
+			if(ts == null)
 			{
-				TimeSeries tmp = new TimeSeries(names[i]);
-	        	series.add(tmp);
-	            dataset.addSeries(tmp);
+				ts = new TimeSeries(name);
+				series.put(name, ts);
+	            dataset.addSeries(ts);
 			}
-			series.get(i).add(new Millisecond(temps), data[i]);
+			ts.addOrUpdate(new Millisecond(temps), values.get(name));
 		}
 	}
 	

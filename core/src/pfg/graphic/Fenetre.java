@@ -53,7 +53,7 @@ public class Fenetre extends JPanel
 	public Fenetre(Position center, Config config)
 	{
 		buffer = new PrintBuffer();
-		aff = new AffichageDebug("Debug", "X", "Y");
+		aff = new AffichageDebug("Debug", "Time", "Value");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
 		afficheFond = !backgroundPath.isEmpty();
 		zoom = 0;
