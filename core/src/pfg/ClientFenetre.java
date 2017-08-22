@@ -5,6 +5,7 @@
 
 package pfg;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.InetAddress;
@@ -96,6 +97,7 @@ public class ClientFenetre
 				try
 				{
 					socket = new Socket(rpiAdresse, config.getInt(ConfigInfoGraphic.GRAPHIC_SERVER_PORT_NUMBER));
+					socket.setTcpNoDelay(true);
 					ko = false;
 				}
 				catch(IOException e)
@@ -110,7 +112,7 @@ public class ClientFenetre
 			ObjectInputStream in;
 			try
 			{
-				in = new ObjectInputStream(socket.getInputStream());
+				in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 			}
 			catch(IOException e)
 			{

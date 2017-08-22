@@ -5,6 +5,7 @@
 
 package pfg.graphic;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -54,7 +55,7 @@ public class ThreadComm extends Thread
 //			log.write("Connexion d'un client au serveur d'affichage", Subject.DUMMY);
 			try
 			{
-				ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+				ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 				while(true)
 				{
 					buffer.send(out);
@@ -97,7 +98,9 @@ public class ThreadComm extends Thread
 			{
 				try
 				{
-					Thread t = new Thread(new ThreadSocket(log, buffer, ssocket.accept(), nbConnexions++));
+					Socket socket = ssocket.accept();
+					socket.setTcpNoDelay(true);
+					Thread t = new Thread(new ThreadSocket(log, buffer, socket, nbConnexions++));
 					t.start();
 					threads.add(t);
 				}
