@@ -5,7 +5,6 @@
 
 package pfg.graphic;
 
-import pfg.config.Config;
 import pfg.graphic.Fenetre;
 import pfg.graphic.PrintBuffer;
 import pfg.log.Log;
@@ -24,7 +23,7 @@ public class ThreadPrinting extends Thread
 	private Fenetre fenetre;
 	private PrintBuffer buffer;
 
-	public ThreadPrinting(Log log, PrintBuffer buffer, Config config)
+	public ThreadPrinting(Log log, PrintBuffer buffer)
 	{
 		this.log = log;
 		this.buffer = buffer;

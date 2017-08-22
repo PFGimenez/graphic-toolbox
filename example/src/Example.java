@@ -24,8 +24,10 @@ public class Example
 	{
 		Fenetre f = new DebugTool().getFenetre(new Vec2RO(0, 0));
 		PrintBuffer buffer = f.getPrintBuffer();
-		buffer.add(new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10), Layer.FOREGROUND, Color.RED));
-		buffer.addSupprimable(new Segment(new Vec2RO(-20, 20), new Vec2RO(-20, -20), Layer.FOREGROUND, Color.BLUE));
+		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10), Layer.FOREGROUND, Color.RED);
+		buffer.add(s1);
+		Segment s2 = new Segment(new Vec2RO(-20, 20), new Vec2RO(-20, -20), Layer.FOREGROUND, Color.BLUE);
+		buffer.addSupprimable(s2);
 		f.refresh();
 		Thread.sleep(1000);
 		buffer.clearSupprimables();

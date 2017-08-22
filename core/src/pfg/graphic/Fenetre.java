@@ -52,6 +52,7 @@ public class Fenetre extends JPanel
 
 	public Fenetre(Position center, Config config)
 	{
+		super();
 		buffer = new PrintBuffer();
 		aff = new Chart("Debug", "Time", "Value");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);

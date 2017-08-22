@@ -43,7 +43,7 @@ public class Segment implements Printable, Serializable
 	}
 
 	@Override
-	public void print(Graphics g, Fenetre f, Chart a)
+	public void print(Graphics g, Fenetre f, Chart aff)
 	{
 //		System.out.println("Positions écran : "+f.XtoWindow(a.getX())+" "+f.YtoWindow(a.getY())+" "+f.XtoWindow(b.getX())+" "+f.YtoWindow(b.getY()));
 		g.setColor(c);
