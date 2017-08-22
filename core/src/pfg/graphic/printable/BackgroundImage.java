@@ -9,7 +9,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 import pfg.graphic.Chart;
-import pfg.graphic.Fenetre;
+import pfg.graphic.GraphicPanel;
 
 /**
  * Image de fond
@@ -29,7 +29,7 @@ public class BackgroundImage implements Printable
 	}
 
 	@Override
-	public void print(Graphics g, Fenetre f, Chart a)
+	public void print(Graphics g, GraphicPanel f, Chart a)
 	{
 		g.drawImage(image, f.XtoWindow(-1500), f.YtoWindow(2000), f.distanceXtoWindow(3000), f.distanceYtoWindow(2000), f);
 	}

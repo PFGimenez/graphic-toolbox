@@ -5,9 +5,10 @@ import java.util.Random;
 
 import pfg.graphic.Chart;
 import pfg.graphic.DebugTool;
-import pfg.graphic.Fenetre;
+import pfg.graphic.GraphicPanel;
 import pfg.graphic.PrintBuffer;
 import pfg.graphic.Vec2RO;
+import pfg.graphic.WindowFrame;
 import pfg.graphic.printable.Layer;
 import pfg.graphic.printable.Printable;
 import pfg.graphic.printable.Segment;
@@ -22,7 +23,7 @@ public class Example
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		Fenetre f = new DebugTool().getFenetre(new Vec2RO(0, 0));
+		WindowFrame f = new DebugTool().getFenetre(new Vec2RO(0, 0));
 		PrintBuffer buffer = f.getPrintBuffer();
 		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10), Layer.FOREGROUND, Color.RED);
 		buffer.add(s1);
@@ -55,7 +56,7 @@ public class Example
 		}
 
 		@Override
-		public void print(Graphics g, Fenetre f, Chart a)
+		public void print(Graphics g, GraphicPanel f, Chart a)
 		{
 			HashMap<String, Double> values = new HashMap<String, Double>();
 			values.put(nom, (double) value);

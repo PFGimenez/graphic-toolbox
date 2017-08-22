@@ -19,7 +19,9 @@ public class DebugTool {
 
 	private Config config;
 	private Log log;
-	private Fenetre fenetre;
+	private WindowFrame fenetre;
+	private ThreadPrinting tp;
+	private PrintBuffer buffer;
 	
 	public DebugTool()
 	{
@@ -31,10 +33,17 @@ public class DebugTool {
 		 config = new Config(ConfigInfoGraphic.values(), configFilename, false);
 	}
 	
-	public Fenetre getFenetre(Position center)
+	public ThreadPrinting getThreadPrinting()
+	{
+		if(tp == null)
+			tp = new ThreadPrinting(log, buffer, fenetre);
+		return tp;
+	}
+	
+	public WindowFrame getFenetre(Position center)
 	{
 		if(fenetre == null)
-			fenetre = new Fenetre(center, config);
+			fenetre = new WindowFrame(new GraphicPanel(center, config), new ConsoleDisplay(2, 10));
 		return fenetre;
 	}
 	

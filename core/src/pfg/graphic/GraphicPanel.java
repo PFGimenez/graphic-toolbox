@@ -11,8 +11,6 @@ import pfg.config.Config;
 import pfg.graphic.printable.BackgroundImage;
 
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -23,7 +21,7 @@ import java.io.IOException;
  *
  */
 
-public class Fenetre extends JPanel
+public class GraphicPanel extends JPanel
 {
 
 	/**
@@ -39,8 +37,6 @@ public class Fenetre extends JPanel
 
 	private boolean afficheFond;
 	private int sizeX, sizeY;
-	private JFrame frame;
-	private WindowExit exit;
 	private boolean needInit = true;
 	private double zoom;
 	private Vec2RO center;
@@ -50,9 +46,8 @@ public class Fenetre extends JPanel
 	private Vec2RW coinHautDroiteEcran;
 	private double sizeXUnitaryZoom, sizeYUnitaryZoom;
 
-	public Fenetre(Position center, Config config)
+	public GraphicPanel(Position center, Config config)
 	{
-		super();
 		buffer = new PrintBuffer();
 		aff = new Chart("Debug", "Time", "Value");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
@@ -89,31 +84,12 @@ public class Fenetre extends JPanel
 		return buffer;
 	}
 
-	private class WindowExit extends WindowAdapter
-	{
-		public volatile boolean alreadyExited = false;
-
-		@Override
-		public synchronized void windowClosing(WindowEvent e)
-		{
-			close();
-		}
-		
-		public synchronized void close()
-		{
-			notify();
-			alreadyExited = true;
-			frame.dispose();
-		}
-	}
-
 	/**
 	 * Initialisation
 	 */
 	private void init()
 	{
 		needInit = false;
-		exit = new WindowExit();
 		if(afficheFond)
 		{
 			try
@@ -180,48 +156,7 @@ public class Fenetre extends JPanel
 	{
 		setBackground(Color.WHITE);
 		setPreferredSize(new Dimension(sizeX, sizeY));
-		frame = new JFrame();
 
-		/*
-		 * Fermeture de la fenêtre quand on clique sur la croix
-		 */
-		frame.addWindowListener(exit);
-		frame.getContentPane().add(this);
-		frame.pack();
-		frame.setVisible(true);
-	}
-
-	/**
-	 * Réaffiche
-	 */
-	public void refresh()
-	{
-		if(needInit)
-			init();
-		repaint();
-	}
-
-	/**
-	 * Attend que la fenêtre soit fermée
-	 * 
-	 * @throws InterruptedException
-	 */
-	public void waitUntilExit(long timeout) throws InterruptedException
-	{
-		refresh();
-		synchronized(exit)
-		{
-			if(!needInit && !exit.alreadyExited)
-			{
-				System.out.println("Attente de l'arrêt de la fenêtre…");
-				exit.wait(timeout);
-			}
-		}
-	}
-
-	public void close()
-	{
-		exit.close();
 	}
 
 }

@@ -106,7 +106,7 @@ public class PrintBuffer
 	 * @param f
 	 * @param robot
 	 */
-	synchronized void print(Graphics g, Fenetre f, Chart a)
+	synchronized void print(Graphics g, GraphicPanel f, Chart a)
 	{
 		needRefresh = false;
 		Iterator<Printable> iter = new PrintableIterator(this);

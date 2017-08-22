@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import pfg.graphic.DebugTool;
-import pfg.graphic.Fenetre;
+import pfg.graphic.GraphicPanel;
 import pfg.graphic.PrintBuffer;
 import pfg.graphic.TimestampedList;
 import pfg.graphic.Vec2RO;
@@ -133,7 +133,7 @@ public class VideoReader
 		}
 
 		Scanner sc = new Scanner(System.in);
-		Fenetre fenetre = new DebugTool().getFenetre(new Vec2RO(0, 1000));
+		GraphicPanel fenetre = null;//new DebugTool().getFenetre(new Vec2RO(0, 1000));
 
 		try
 		{
@@ -332,7 +332,7 @@ public class VideoReader
 			special("Fin de l'enregistrement");
 			br.close();
 			
-			fenetre.waitUntilExit(0);
+//			fenetre.waitUntilExit(0);
 		}
 		catch(Exception e)
 		{}

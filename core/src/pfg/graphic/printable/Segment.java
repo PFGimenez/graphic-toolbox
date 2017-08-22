@@ -10,7 +10,7 @@ import java.awt.Graphics;
 import java.io.Serializable;
 
 import pfg.graphic.Chart;
-import pfg.graphic.Fenetre;
+import pfg.graphic.GraphicPanel;
 import pfg.graphic.Position;
 import pfg.graphic.Vec2RO;
 
@@ -43,7 +43,7 @@ public class Segment implements Printable, Serializable
 	}
 
 	@Override
-	public void print(Graphics g, Fenetre f, Chart aff)
+	public void print(Graphics g, GraphicPanel f, Chart aff)
 	{
 //		System.out.println("Positions écran : "+f.XtoWindow(a.getX())+" "+f.YtoWindow(a.getY())+" "+f.XtoWindow(b.getX())+" "+f.YtoWindow(b.getY()));
 		g.setColor(c);

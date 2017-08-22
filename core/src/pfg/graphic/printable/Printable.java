@@ -9,7 +9,7 @@ import java.awt.Graphics;
 import java.io.Serializable;
 
 import pfg.graphic.Chart;
-import pfg.graphic.Fenetre;
+import pfg.graphic.GraphicPanel;
 
 /**
  * Élément affichable
@@ -25,7 +25,7 @@ public interface Printable extends Serializable
 	 * 
 	 * @param g
 	 */
-	public void print(Graphics g, Fenetre f, Chart a);
+	public void print(Graphics g, GraphicPanel f, Chart a);
 
 	/**
 	 * Get the layer the object will be printed on.

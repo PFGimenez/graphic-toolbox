@@ -16,7 +16,7 @@ import java.util.List;
 import pfg.config.Config;
 import pfg.graphic.ConfigInfoGraphic;
 import pfg.graphic.DebugTool;
-import pfg.graphic.Fenetre;
+import pfg.graphic.GraphicPanel;
 import pfg.graphic.PrintBuffer;
 import pfg.graphic.Vec2RO;
 import pfg.graphic.printable.Printable;
@@ -34,8 +34,8 @@ public class ClientFenetre
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		Fenetre f = new DebugTool().getFenetre(new Vec2RO(0, 1000));
-		PrintBuffer buffer = f.getPrintBuffer();
+		GraphicPanel f = null;//new DebugTool().getFenetre(new Vec2RO(0, 1000));
+		PrintBuffer buffer = null;//f.getPrintBuffer();
 		InetAddress rpiAdresse = null;
 		Config config = new Config(ConfigInfoGraphic.values(), "graphic.conf", false);
 		boolean loop = false;
@@ -181,8 +181,8 @@ public class ClientFenetre
 		{
 			e.printStackTrace();
 		}
-		if(f != null)
-			f.waitUntilExit(0);
+//		if(f != null)
+//			f.waitUntilExit(0);
 		System.out.println("Arrêt du client d'affichage");
 
 	}
