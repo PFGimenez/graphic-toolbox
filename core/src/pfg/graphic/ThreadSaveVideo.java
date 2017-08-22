@@ -5,8 +5,6 @@
 
 package pfg.graphic;
 
-import java.io.IOException;
-
 import pfg.log.Log;
 
 /**
@@ -40,11 +38,11 @@ public class ThreadSaveVideo extends Thread
 				synchronized(buffer)
 				{
 					buffer.wait(400);
-					buffer.write();
+					buffer.saveState();
 				}
 			}
 		}
-		catch(InterruptedException | IOException e)
+		catch(InterruptedException e)
 		{
 			buffer.destructor();
 //			log.write("Arrêt de " + Thread.currentThread().getName(), Subject.DUMMY);

@@ -5,9 +5,16 @@
 
 package pfg.graphic;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import pfg.graphic.printable.Printable;
 
 /**
  * Une liste de listes d'objets timestampées
@@ -19,34 +26,68 @@ import java.util.List;
 public class TimestampedList implements Serializable
 {
 	private static final long serialVersionUID = -5167892162649965305L;
-	private List<Long> timestamps = new ArrayList<Long>();
-	private List<List<Serializable>> listes = new ArrayList<List<Serializable>>();
+	private final List<Long> listesTimestamped = new ArrayList<Long>();
+	private final List<byte[]> listes = new ArrayList<byte[]>();
 	private long dateInitiale;
+	private transient ObjectOutputStream tmp;
+	private transient ByteArrayOutputStream array;
 
 	public TimestampedList(long dateInitiale)
 	{
+		try {
+			array = new ByteArrayOutputStream();
+			tmp = new ObjectOutputStream(array);
+		} catch (IOException e) {
+			e.printStackTrace();
+			assert false : e;
+		}
 		this.dateInitiale = dateInitiale;
 	}
-
-	public void add(List<Serializable> o)
+	
+	@SuppressWarnings("unchecked")
+	public synchronized List<Printable> getList(int indexList)
 	{
-		timestamps.add(System.currentTimeMillis() - dateInitiale);
-		listes.add(o);
+		try {
+			byte b[] = listes.get(indexList);
+			ByteArrayInputStream array = new ByteArrayInputStream(b);
+			ObjectInputStream input = new ObjectInputStream(array);
+			List<Printable> o = (List<Printable>) input.readObject();
+			return o;
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			assert false : e;
+		}
+		return null;
 	}
 
-	public long getTimestamp(int index)
+	/**
+	 * On sérialise directement en byte[], ce qui fait donc une copie de l'objet à l'instant où cette méthode est appelée
+	 * @param o
+	 */
+	public synchronized void add(List<Printable> o)
 	{
-		return timestamps.get(index);
+		try {
+			tmp.writeObject(o);
+			tmp.flush();
+			listesTimestamped.add(System.currentTimeMillis() - dateInitiale);
+			listes.add(array.toByteArray());
+			array.reset();
+			assert listesTimestamped.size() == listes.size();
+		} catch (IOException e) {
+			e.printStackTrace(); // Impossible
+			assert false : e;
+		}
 	}
 
-	public List<Serializable> getListe(int index)
+	public long getTimestamp(int i)
 	{
-		return listes.get(index);
+		return listesTimestamped.get(i);
 	}
 
 	public int size()
 	{
-		return timestamps.size();
+		assert listesTimestamped.size() == listes.size();
+		return listesTimestamped.size();
 	}
 
 }

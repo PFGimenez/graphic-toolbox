@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +29,7 @@ import pfg.graphic.printable.Printable;
 
 public class PrintBuffer
 {	
+	
 	List<Integer> layersSupprimables = new ArrayList<Integer>();
 	List<Integer> layers = new ArrayList<Integer>();
 	HashMap<Integer, List<Printable>> elementsAffichablesSupprimables = new HashMap<Integer, List<Printable>>();
@@ -38,7 +38,6 @@ public class PrintBuffer
 	private boolean needRefresh = false;
 	private TimestampedList sauvegarde;
 
-	private ObjectOutputStream file;
 	private String filename;
 	
 	public PrintBuffer()
@@ -142,17 +141,13 @@ public class PrintBuffer
 		return needRefresh;
 	}
 
-	private synchronized List<Serializable> prepareList()
+	private synchronized List<Printable> prepareList()
 	{
-		List<Serializable> o = new ArrayList<Serializable>();
+		List<Printable> o = new ArrayList<Printable>();
 		Iterator<Printable> iter = new PrintableIterator(this);
 		
 		while(iter.hasNext())
-		{
-			// TODO
-//			Serializable elem = iter.next().clone();
-//			o.add(elem);
-		}
+			o.add(iter.next());
 
 		return o;
 	}
@@ -163,9 +158,9 @@ public class PrintBuffer
 	 * @param out
 	 * @throws IOException
 	 */
-	public synchronized void write() throws IOException
+	public synchronized void saveState()
 	{
-		List<Serializable> o = prepareList();
+		List<Printable> o = prepareList();
 		// System.out.println("Ajout de "+o.size()+" objets, date =
 		// "+System.currentTimeMillis());
 		sauvegarde.add(o);
@@ -215,7 +210,8 @@ public class PrintBuffer
 					return;
 				}
 			}
-			file = new ObjectOutputStream(fichier);
+
+			ObjectOutputStream file = new ObjectOutputStream(fichier);
 			file.writeObject(sauvegarde);
 			file.flush();
 			file.close();
