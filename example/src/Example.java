@@ -12,6 +12,7 @@ import pfg.graphic.WindowFrame;
 import pfg.graphic.printable.Layer;
 import pfg.graphic.printable.Printable;
 import pfg.graphic.printable.Segment;
+import pfg.log.Log;
 
 /*
  * Copyright (C) 2013-2017 Pierre-François Gimenez
@@ -23,12 +24,15 @@ public class Example
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		WindowFrame f = new DebugTool().getFenetre(new Vec2RO(0, 0));
+		DebugTool dt = new DebugTool(null);
+		WindowFrame f = dt.getWindowFrame(new Vec2RO(0, 0));
+		Log log = dt.getLog();
 		PrintBuffer buffer = f.getPrintBuffer();
 		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10), Layer.FOREGROUND, Color.RED);
 		buffer.add(s1);
 		Segment s2 = new Segment(new Vec2RO(-20, 20), new Vec2RO(-20, -20), Layer.FOREGROUND, Color.BLUE);
 		buffer.addSupprimable(s2);
+		log.write("Test !", null);
 		f.refresh();
 		Thread.sleep(1000);
 		buffer.clearSupprimables();

@@ -5,8 +5,11 @@
 
 package pfg.graphic;
 
+import java.awt.Container;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
 /**
@@ -17,6 +20,7 @@ import javax.swing.JFrame;
 
 public class WindowFrame extends JFrame
 {
+	private static final long serialVersionUID = 1L;
 
 	private class WindowExit extends WindowAdapter
 	{
@@ -44,21 +48,25 @@ public class WindowFrame extends JFrame
 
 	private WindowExit exit;
 	private GraphicPanel graphic;
+	private Container contentPane;
+	private ConsoleDisplay console;
 	
 	public WindowFrame(GraphicPanel graphic, ConsoleDisplay console)
 	{
 		super("Debug window");
 		this.graphic = graphic;
+		this.console = console;
+		contentPane = getContentPane();
 		
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
 		/*
 		 * Fermeture de la fenêtre quand on clique sur la croix
 		 */
 		exit = new WindowExit(this);
 		addWindowListener(exit);
 		
-		
-		getContentPane().add(graphic);
-//		getContentPane().add(console);
+		contentPane.add(graphic);
+		contentPane.add(console);
 		pack();
 		setVisible(true);
 	}

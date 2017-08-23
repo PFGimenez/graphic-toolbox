@@ -6,6 +6,8 @@
 package pfg.graphic;
 
 import pfg.config.Config;
+import pfg.injector.Injector;
+import pfg.injector.InjectorException;
 import pfg.log.Log;
 import pfg.log.SeverityCategory;
 
@@ -18,42 +20,92 @@ import pfg.log.SeverityCategory;
 public class DebugTool {
 
 	private Config config;
-	private Log log;
-	private WindowFrame fenetre;
-	private ThreadPrinting tp;
-	private PrintBuffer buffer;
+	private Injector injector;
+	private SeverityCategory cat;
 	
-	public DebugTool()
+	public DebugTool(SeverityCategory cat)
 	{
-		this("graphic.conf");
+		this("graphic.conf", cat);
 	}
 	
-	public DebugTool(String configFilename)
+	public DebugTool(String configFilename, SeverityCategory cat)
 	{
-		 config = new Config(ConfigInfoGraphic.values(), configFilename, false);
+		this.cat = cat;
+		config = new Config(ConfigInfoGraphic.values(), configFilename, false);
+		injector = new Injector();
+		injector.addService(Config.class, config);
+	}
+
+	public ThreadComm getThreadComm()
+	{
+		try {
+			return injector.getService(ThreadComm.class);
+		} catch (InjectorException e) {
+			e.printStackTrace();
+			assert false : e;
+			return null;
+		}
+	}
+	
+	public ThreadSaveVideo getThreadSaveVideo()
+	{
+		try {
+			return injector.getService(ThreadSaveVideo.class);
+		} catch (InjectorException e) {
+			e.printStackTrace();
+			assert false : e;
+			return null;
+		}
 	}
 	
 	public ThreadPrinting getThreadPrinting()
 	{
-		if(tp == null)
-			tp = new ThreadPrinting(log, buffer, fenetre);
-		return tp;
-	}
-	
-	public WindowFrame getFenetre(Position center)
-	{
-		if(fenetre == null)
-			fenetre = new WindowFrame(new GraphicPanel(center, config), new ConsoleDisplay(2, 10));
-		return fenetre;
-	}
-	
-	public Log getLog(SeverityCategory cat)
-	{
-		if(log == null)
-		{
-			log = new Log(cat);
-			log.useConfig(config);
+		try {
+			return injector.getService(ThreadPrinting.class);
+		} catch (InjectorException e) {
+			e.printStackTrace();
+			assert false : e;
+			return null;
 		}
+	}
+	
+	public WindowFrame getWindowFrame(Position center)
+	{
+		WindowFrame fenetre;
+		try {
+			fenetre = injector.getExistingService(WindowFrame.class);
+			if(fenetre == null)
+			{
+				GraphicPanel g = injector.getExistingService(GraphicPanel.class);
+				if(g == null)
+				{
+					g = new GraphicPanel(center, config);
+					injector.addService(GraphicPanel.class, g);
+					fenetre = injector.getService(WindowFrame.class);
+				}
+			}
+			injector.addService(WindowFrame.class, fenetre);
+			return fenetre;
+		} catch (InjectorException e) {
+			e.printStackTrace();
+			assert false : e;
+			return null;
+		}
+	}
+	
+	public Log getLog()
+	{
+		Log log;
+		try {
+			log = injector.getExistingService(Log.class);
+			if(log == null)
+				log = new Log(cat, injector.getService(ConsoleDisplay.class));
+		} catch (InjectorException e) {
+			e.printStackTrace();
+			assert false : e;
+			return null;
+		}
+		injector.addService(Log.class, log);
 		return log;
 	}
 

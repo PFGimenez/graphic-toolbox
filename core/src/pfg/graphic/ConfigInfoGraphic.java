@@ -24,6 +24,9 @@ public enum ConfigInfoGraphic implements ConfigInfo
 	FAST_LOG(false), // log rapide, sans reflection
 	STDOUT_LOG(false), // log into the stdout
 	
+	CONSOLE_NB_ROWS(10), // nombre de lignes dans la console affichée
+	CONSOLE_NB_COLUMNS(30), // nombre de colonnes dans la console affichée
+	
 	BACKGROUND_PATH(""), // background path ; empty if none	
 	GRAPHIC_SERVER_PORT_NUMBER(13370), // port number of the graphic server
 	SIZE_X_WINDOW(900), // taille par défaut (sans image) de la fenêtre

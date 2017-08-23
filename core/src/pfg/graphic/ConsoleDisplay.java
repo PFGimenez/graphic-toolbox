@@ -5,8 +5,12 @@
 
 package pfg.graphic;
 
+import java.awt.Color;
+
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
+import pfg.config.Config;
 
 /**
  * Affichage d'une console
@@ -19,9 +23,12 @@ public class ConsoleDisplay extends JPanel
 	private static final long serialVersionUID = 1L;
 	private JTextArea texte;
 	
-	public ConsoleDisplay(int rows, int columns)
+	public ConsoleDisplay(Config config)
 	{
-		texte = new JTextArea(rows, columns);
+		texte = new JTextArea(config.getInt(ConfigInfoGraphic.CONSOLE_NB_ROWS), config.getInt(ConfigInfoGraphic.CONSOLE_NB_COLUMNS));
+		texte.setEditable(false);
+		texte.setBackground(Color.WHITE);
+		add(texte);
 	}
 
 	public void write(String str)

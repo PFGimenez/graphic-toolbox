@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import pfg.config.Config;
 import pfg.graphic.ConfigInfoGraphic;
+import pfg.graphic.ConsoleDisplay;
 
 /**
  * Service de log, affiche à l'écran des informations avec différents niveaux de
@@ -33,6 +34,7 @@ public class Log
 	private boolean fastLog = false;
 	private boolean stdoutLog;
 	private SeverityCategory defaultSeverity;
+	private ConsoleDisplay console;
 
 	/**
 	 * date du démarrage
@@ -40,9 +42,10 @@ public class Log
 	private static final long dateInitiale = System.currentTimeMillis();
 	private long dateDebutMatch = -1;
 
-	public Log(SeverityCategory defaultSeverity)
+	public Log(SeverityCategory defaultSeverity, ConsoleDisplay console)
 	{
 		this.defaultSeverity = defaultSeverity;
+		this.console = console;
 		try {
 			Runtime.getRuntime().exec("rm logs/last.txt");
 		} catch (IOException e) {
@@ -98,6 +101,7 @@ public class Log
 				StackTraceElement elem = Thread.currentThread().getStackTrace()[3];
 				affichage = date + tempsMatch + " "+ niveau + " " + elem.getClassName().substring(elem.getClassName().lastIndexOf(".") + 1) + ":" + elem.getLineNumber() + " (" + Thread.currentThread().getName() + ") > " + message;
 			}
+			console.write(affichage + "\n");
 
 			if(writer != null)
 			{
