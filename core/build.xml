@@ -10,6 +10,7 @@
         <pathelement location="lib/config.jar"/>
         <pathelement location="lib/jcommon-1.0.13.jar"/>
         <pathelement location="lib/jfreechart-1.0.13.jar"/>
+        <pathelement location="lib/injector.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
