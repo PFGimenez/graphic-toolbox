@@ -8,6 +8,7 @@ package pfg.graphic;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import pfg.config.Config;
+import pfg.graphic.printable.BackgroundGrid;
 import pfg.graphic.printable.BackgroundImage;
 
 import java.awt.*;
@@ -37,7 +38,6 @@ public class GraphicPanel extends JPanel
 
 	private boolean afficheFond;
 	private int sizeX, sizeY;
-	private boolean needInit = true;
 	private double zoom;
 	private Vec2RO center;
 	private Vec2RO deltaBasGauche, deltaHautDroite;
@@ -59,8 +59,28 @@ public class GraphicPanel extends JPanel
 		coinBasGaucheEcran = new Vec2RW(-sizeXUnitaryZoom / 2 + center.getX(), -sizeYUnitaryZoom / 2 + center.getY());
 		coinHautDroiteEcran = new Vec2RW(sizeXUnitaryZoom / 2 + center.getX(), sizeYUnitaryZoom / 2 + center.getY());
 		
-		sizeX = config.getInt(ConfigInfoGraphic.SIZE_X_WINDOW);
-		sizeY = config.getInt(ConfigInfoGraphic.SIZE_Y_WINDOW);
+		if(afficheFond)
+		{
+			try
+			{
+				Image image = ImageIO.read(new File(backgroundPath));
+				sizeX = image.getWidth(this); // on ajuste la taille de la fenêtre à l'image
+				sizeY = image.getHeight(this);
+				buffer.add(new BackgroundImage(image));
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			buffer.add(new BackgroundGrid());
+			sizeX = config.getInt(ConfigInfoGraphic.SIZE_X_WINDOW);
+			sizeY = config.getInt(ConfigInfoGraphic.SIZE_Y_WINDOW);
+		}
+//		setBackground(Color.WHITE);
+//		setPreferredSize(new Dimension(sizeX, sizeY));
 	}
 	
 	/**
@@ -84,31 +104,16 @@ public class GraphicPanel extends JPanel
 		return buffer;
 	}
 
-	/**
-	 * Initialisation
-	 */
-	private void init()
+	public Vec2RO getCurrentCoinHautDroite()
 	{
-		needInit = false;
-		if(afficheFond)
-		{
-			try
-			{
-				Image image = ImageIO.read(new File(backgroundPath));
-				sizeX = image.getWidth(this); // on ajuste la taille de la
-												// fenêtre à l'image
-				sizeY = image.getHeight(this);
-				buffer.add(new BackgroundImage(image));
-			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-
-		showOnFrame();
+		return coinHautDroiteEcran;
 	}
-
+	
+	public Vec2RO getCurrentCoinBasGauche()
+	{
+		return coinBasGaucheEcran;
+	}
+	
 	public int distanceXtoWindow(int dist)
 	{
 		return (int) (dist * sizeX / (coinHautDroiteEcran.getX() - coinBasGaucheEcran.getX()));
@@ -148,15 +153,4 @@ public class GraphicPanel extends JPanel
 		}
 		buffer.print(g, this, aff);
 	}
-
-	/**
-	 * Affiche la fenêtre
-	 */
-	private void showOnFrame()
-	{
-		setBackground(Color.WHITE);
-		setPreferredSize(new Dimension(sizeX, sizeY));
-
-	}
-
 }

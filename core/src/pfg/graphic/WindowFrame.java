@@ -5,6 +5,7 @@
 
 package pfg.graphic;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -67,6 +68,7 @@ public class WindowFrame extends JFrame
 		
 		contentPane.add(graphic);
 		contentPane.add(console);
+		setBackground(Color.WHITE);
 		pack();
 		setVisible(true);
 	}
