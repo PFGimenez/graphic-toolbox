@@ -21,7 +21,7 @@ import pfg.graphic.Vec2RO;
 public class BackgroundGrid implements Printable
 {
 	private static final long serialVersionUID = 1422929627673510227L;
-	private Color c = new Color(0,50,50,50);
+	private Color c = new Color(200,200,200);
 	
 	@Override
 	public void print(Graphics g, GraphicPanel f, Chart a)
@@ -30,15 +30,23 @@ public class BackgroundGrid implements Printable
 		Vec2RO basGauche = f.getCurrentCoinBasGauche();
 		Vec2RO hautDroite = f.getCurrentCoinHautDroite();
 		
-		double pasX = Math.pow(10, Math.floor(Math.log10(hautDroite.getX() - basGauche.getX())));
+		double pasX = Math.pow(10, Math.floor(Math.log10(hautDroite.getX() - basGauche.getX()))-1);
 		double startX = Math.ceil(basGauche.getX() / pasX) * pasX;
-		for(int i = 0; i < 10; i++)
+		int i = 0;
+		while(startX + i*pasX < hautDroite.getX())
+		{
 			g.drawLine(f.XtoWindow(startX + i*pasX), f.YtoWindow(basGauche.getY()), f.XtoWindow(startX + i*pasX), f.YtoWindow(hautDroite.getY()));
+			i++;
+		}
 
-		double pasY = Math.pow(10, Math.floor(Math.log10(hautDroite.getY() - basGauche.getY())));
+		double pasY = Math.pow(10, Math.floor(Math.log10(hautDroite.getY() - basGauche.getY()))-1);
 		double startY = Math.ceil(basGauche.getY() / pasY) * pasY;
-		for(int i = 0; i < 10; i++)
+		i = 0;
+		while(startY + i*pasY < hautDroite.getY())
+		{
 			g.drawLine(f.XtoWindow(basGauche.getX()), f.YtoWindow(startY + i*pasY), f.XtoWindow(hautDroite.getX()), f.YtoWindow(startY + i*pasY));
+			i++;
+		}
 	}
 
 	@Override

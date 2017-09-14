@@ -79,8 +79,7 @@ public class GraphicPanel extends JPanel
 			sizeX = config.getInt(ConfigInfoGraphic.SIZE_X_WINDOW);
 			sizeY = config.getInt(ConfigInfoGraphic.SIZE_Y_WINDOW);
 		}
-//		setBackground(Color.WHITE);
-//		setPreferredSize(new Dimension(sizeX, sizeY));
+		setPreferredSize(new Dimension(sizeX, sizeY));
 	}
 	
 	/**
