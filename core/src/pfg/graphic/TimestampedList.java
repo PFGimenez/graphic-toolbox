@@ -90,4 +90,10 @@ public class TimestampedList implements Serializable
 		return listesTimestamped.size();
 	}
 
+	public boolean isEmpty()
+	{
+		assert listesTimestamped.isEmpty() == listes.isEmpty();
+		return listesTimestamped.isEmpty();
+	}
+
 }

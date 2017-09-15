@@ -180,48 +180,52 @@ public class PrintBuffer
 
 	public synchronized void destructor()
 	{
-		System.out.println("Sauvegarde de la vidéo en cours… ÇA PEUT PRENDRE DU TEMPS !");
-
-		try
+		// On ne sauvegarde que s'il y a quelque chose à sauvegarder…
+		if(!sauvegarde.isEmpty())
 		{
-			FileOutputStream fichier = null;
+			System.out.println("Sauvegarde de la vidéo en cours… ÇA PEUT PRENDRE DU TEMPS !");
+	
 			try
 			{
-				fichier = new FileOutputStream(filename);
-			}
-			catch(FileNotFoundException e)
-			{
+				FileOutputStream fichier = null;
 				try
 				{
-					Runtime.getRuntime().exec("mkdir videos");
-					try
-					{
-						Thread.sleep(50);
-					}
-					catch(InterruptedException e1)
-					{
-						e1.printStackTrace();
-					}
 					fichier = new FileOutputStream(filename);
 				}
-				catch(FileNotFoundException e1)
+				catch(FileNotFoundException e)
 				{
-					System.err.println("Erreur (1) lors de la création du fichier : " + e1);
-					return;
+					try
+					{
+						Runtime.getRuntime().exec("mkdir videos");
+						try
+						{
+							Thread.sleep(50);
+						}
+						catch(InterruptedException e1)
+						{
+							e1.printStackTrace();
+						}
+						fichier = new FileOutputStream(filename);
+					}
+					catch(FileNotFoundException e1)
+					{
+						System.err.println("Erreur (1) lors de la création du fichier : " + e1);
+						return;
+					}
 				}
+	
+				ObjectOutputStream file = new ObjectOutputStream(fichier);
+				file.writeObject(sauvegarde);
+				file.flush();
+				file.close();
+				Runtime.getRuntime().exec("cp "+filename+" videos/last.dat");
+	
+				System.out.println("Sauvegarde de la vidéo terminée");
 			}
-
-			ObjectOutputStream file = new ObjectOutputStream(fichier);
-			file.writeObject(sauvegarde);
-			file.flush();
-			file.close();
-			Runtime.getRuntime().exec("cp "+filename+" videos/last.dat");
-
-			System.out.println("Sauvegarde de la vidéo terminée");
-		}
-		catch(IOException e)
-		{
-			System.err.println("Erreur lors de la sauvegarde du buffer graphique ! " + e);
+			catch(IOException e)
+			{
+				System.err.println("Erreur lors de la sauvegarde du buffer graphique ! " + e);
+			}
 		}
 	}
 
