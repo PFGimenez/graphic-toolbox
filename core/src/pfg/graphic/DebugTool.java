@@ -34,7 +34,8 @@ public class DebugTool {
 	public DebugTool(String configFilename, HashMap<ConfigInfo, Object> override, SeverityCategory cat)
 	{
 		this.cat = cat;
-		config = new Config(ConfigInfoGraphic.values(), configFilename, override, false);
+		config = new Config(ConfigInfoGraphic.values(), configFilename, false);
+		config.override(override);
 		injector = new Injector();
 		injector.addService(Config.class, config);
 	}

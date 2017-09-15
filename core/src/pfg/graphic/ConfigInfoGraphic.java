@@ -35,48 +35,15 @@ public enum ConfigInfoGraphic implements ConfigInfo
 	SIZE_Y_WITH_UNITARY_ZOOM(50); // taille en mm de la zone à afficher (sur l'axe Y)
 
 	private Object defaultValue;
-	public boolean overridden = false;
 	public volatile boolean uptodate;
-	public final boolean constant;
 
-	/**
-	 * Par défaut, une valeur est constante
-	 * 
-	 * @param defaultValue
-	 */
 	private ConfigInfoGraphic(Object defaultValue)
 	{
-		this(defaultValue, true);
-	}
-
-	private ConfigInfoGraphic(Object defaultValue, boolean constant)
-	{
-		uptodate = constant;
 		this.defaultValue = defaultValue;
-		this.constant = constant;
 	}
 
 	public Object getDefaultValue()
 	{
 		return defaultValue;
 	}
-
-	/**
-	 * Pour les modifications de config avant même de démarrer le service de
-	 * config
-	 * 
-	 * @param o
-	 */
-	public void setDefaultValue(Object o)
-	{
-		defaultValue = o;
-		overridden = true;
-	}
-
-	@Override
-	public boolean isMutable()
-	{
-		return !overridden;
-	}
-
 }
