@@ -5,7 +5,10 @@
 
 package pfg.graphic;
 
+import java.util.HashMap;
+
 import pfg.config.Config;
+import pfg.config.ConfigInfo;
 import pfg.injector.Injector;
 import pfg.injector.InjectorException;
 import pfg.log.Log;
@@ -25,13 +28,13 @@ public class DebugTool {
 	
 	public DebugTool(SeverityCategory cat)
 	{
-		this("graphic.conf", cat);
+		this("graphic.conf", new HashMap<ConfigInfo, Object>(), cat);
 	}
 	
-	public DebugTool(String configFilename, SeverityCategory cat)
+	public DebugTool(String configFilename, HashMap<ConfigInfo, Object> override, SeverityCategory cat)
 	{
 		this.cat = cat;
-		config = new Config(ConfigInfoGraphic.values(), configFilename, false);
+		config = new Config(ConfigInfoGraphic.values(), configFilename, override, false);
 		injector = new Injector();
 		injector.addService(Config.class, config);
 	}
