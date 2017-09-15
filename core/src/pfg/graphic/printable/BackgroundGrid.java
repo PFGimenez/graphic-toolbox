@@ -33,7 +33,7 @@ public class BackgroundGrid implements Printable
 		double pasX = Math.pow(10, Math.floor(Math.log10(hautDroite.getX() - basGauche.getX()))-1);
 		double startX = Math.ceil(basGauche.getX() / pasX) * pasX;
 		int i = 0;
-		while(startX + i*pasX < hautDroite.getX())
+		while(startX + i*pasX <= hautDroite.getX())
 		{
 			g.drawLine(f.XtoWindow(startX + i*pasX), f.YtoWindow(basGauche.getY()), f.XtoWindow(startX + i*pasX), f.YtoWindow(hautDroite.getY()));
 			i++;
@@ -42,7 +42,7 @@ public class BackgroundGrid implements Printable
 		double pasY = Math.pow(10, Math.floor(Math.log10(hautDroite.getY() - basGauche.getY()))-1);
 		double startY = Math.ceil(basGauche.getY() / pasY) * pasY;
 		i = 0;
-		while(startY + i*pasY < hautDroite.getY())
+		while(startY + i*pasY <= hautDroite.getY())
 		{
 			g.drawLine(f.XtoWindow(basGauche.getX()), f.YtoWindow(startY + i*pasY), f.XtoWindow(hautDroite.getX()), f.YtoWindow(startY + i*pasY));
 			i++;
