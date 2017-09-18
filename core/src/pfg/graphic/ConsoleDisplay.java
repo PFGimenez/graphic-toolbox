@@ -6,7 +6,6 @@
 package pfg.graphic;
 
 import java.awt.Color;
-
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -28,6 +27,8 @@ public class ConsoleDisplay extends JPanel
 		texte = new JTextArea(config.getInt(ConfigInfoGraphic.CONSOLE_NB_ROWS), config.getInt(ConfigInfoGraphic.CONSOLE_NB_COLUMNS));
 		texte.setEditable(false);
 		texte.setBackground(Color.WHITE);
+		texte.setLineWrap(true);
+		texte.setWrapStyleWord(true);
 		add(texte);
 	}
 

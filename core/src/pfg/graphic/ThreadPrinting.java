@@ -5,7 +5,6 @@
 
 package pfg.graphic;
 
-import pfg.graphic.GraphicPanel;
 import pfg.graphic.PrintBuffer;
 import pfg.log.Log;
 
