@@ -27,8 +27,8 @@
     <target depends="build-subprojects,build-project" name="build">
             <jar destfile="graphic.jar">
                 <fileset dir="bin" />
-		<fileset dir="src" />
-		 <zipgroupfileset dir="lib" />
+        		<fileset dir="src" />
+		        <zipgroupfileset dir="lib" />
             </jar>
     </target>
     <target name="build-subprojects"/>

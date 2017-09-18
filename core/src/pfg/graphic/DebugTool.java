@@ -28,13 +28,13 @@ public class DebugTool {
 	
 	public DebugTool(SeverityCategory cat)
 	{
-		this("graphic.conf", new HashMap<ConfigInfo, Object>(), cat);
+		this("graphic.conf", "default", new HashMap<ConfigInfo, Object>(), cat);
 	}
 	
-	public DebugTool(String configFilename, HashMap<ConfigInfo, Object> override, SeverityCategory cat)
+	public DebugTool(String configFilename, String configprofile, HashMap<ConfigInfo, Object> override, SeverityCategory cat)
 	{
 		this.cat = cat;
-		config = new Config(ConfigInfoGraphic.values(), configFilename, false);
+		config = new Config(ConfigInfoGraphic.values(), configFilename, configprofile, false);
 		config.override(override);
 		injector = new Injector();
 		injector.addService(Config.class, config);

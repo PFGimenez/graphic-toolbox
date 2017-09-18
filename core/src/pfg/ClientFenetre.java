@@ -37,7 +37,7 @@ public class ClientFenetre
 		GraphicPanel f = null;//new DebugTool().getFenetre(new Vec2RO(0, 1000));
 		PrintBuffer buffer = null;//f.getPrintBuffer();
 		InetAddress rpiAdresse = null;
-		Config config = new Config(ConfigInfoGraphic.values(), "graphic.conf", false);
+		Config config = new Config(ConfigInfoGraphic.values(), "graphic.conf", "default", false);
 		boolean loop = false;
 		System.out.println("Démarrage du client d'affichage");
 		try
