@@ -35,7 +35,15 @@ public class PrintablePoint implements Printable, Serializable
 		this.l = l;
 		this.c = c;
 	}
-	
+
+	public PrintablePoint(double x, double y, int taille, Layer l, Color c)
+	{
+		this.a = new Vec2RO(x, y);
+		this.l = l;
+		this.c = c;
+		this.taille = taille;
+	}
+
 	public PrintablePoint(Position a, Layer l, Color c)
 	{
 		this.a = new Vec2RO(a.getX(), a.getY());
