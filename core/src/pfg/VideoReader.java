@@ -19,6 +19,7 @@ import pfg.graphic.GraphicPanel;
 import pfg.graphic.PrintBuffer;
 import pfg.graphic.TimestampedList;
 import pfg.graphic.Vec2RO;
+import pfg.graphic.printable.ColoredPrintable;
 import pfg.graphic.printable.Printable;
 
 /**
@@ -261,7 +262,7 @@ public class VideoReader
 				
 				if(nextVid < nextLog)
 				{
-					List<Printable> tab = listes.getList(indexListe);
+					List<ColoredPrintable> tab = listes.getList(indexListe);
 					long deltaT = (long) ((nextVid - firstTimestamp) / vitesse);
 					long deltaP = System.currentTimeMillis() - initialDate;
 					long delta = deltaT - deltaP;
@@ -275,7 +276,7 @@ public class VideoReader
 						int i = 0;
 						while(i < tab.size())
 						{
-							Printable o = tab.get(i++);
+							ColoredPrintable o = tab.get(i++);
 							/*if(o instanceof Cinematique)
 							{
 								if(debug)
@@ -297,7 +298,7 @@ public class VideoReader
 								if(debug)
 									System.out.println("Ajout : " + o);
 //								Layer l = (Layer) tab.get(i++);
-								buffer.addSupprimable( o);
+								buffer.addSupprimable(o.p, o.c, o.l);
 							}
 						}
 					}

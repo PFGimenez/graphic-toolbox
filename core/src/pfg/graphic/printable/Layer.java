@@ -19,4 +19,6 @@ public enum Layer
 	BACKGROUND,
 	MIDDLE,
 	FOREGROUND;
+	
+	public final int layer = 100*ordinal();
 }

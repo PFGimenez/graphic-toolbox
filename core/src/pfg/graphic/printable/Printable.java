@@ -26,12 +26,4 @@ public interface Printable extends Serializable
 	 * @param g
 	 */
 	public void print(Graphics g, GraphicPanel f, Chart a);
-
-	/**
-	 * Get the layer the object will be printed on.
-	 * Low values for background, high values for foreground
-	 * 
-	 * @return
-	 */
-	public int getLayer();
 }

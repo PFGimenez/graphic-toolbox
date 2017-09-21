@@ -34,10 +34,4 @@ public class BackgroundImage implements Printable
 		g.drawImage(image, f.XtoWindow(-1500), f.YtoWindow(2000), f.distanceXtoWindow(3000), f.distanceYtoWindow(2000), f);
 	}
 
-	@Override
-	public int getLayer()
-	{
-		return Layer.IMAGE_BACKGROUND.ordinal();
-	}
-
 }

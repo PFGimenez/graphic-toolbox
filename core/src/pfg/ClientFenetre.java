@@ -19,6 +19,7 @@ import pfg.graphic.DebugTool;
 import pfg.graphic.GraphicPanel;
 import pfg.graphic.PrintBuffer;
 import pfg.graphic.Vec2RO;
+import pfg.graphic.printable.ColoredPrintable;
 import pfg.graphic.printable.Printable;
 
 /**
@@ -139,10 +140,10 @@ public class ClientFenetre
 								// "+((Cinematique)o).getPosition());
 								robot.setCinematique((Cinematique) o);
 							}
-							else */if(o instanceof Printable)
+							else */if(o instanceof ColoredPrintable)
 							{
 //								Layer l = (Layer) tab.get(i++);
-								buffer.addSupprimable((Printable) o);
+								buffer.addSupprimable(((ColoredPrintable) o).p, ((ColoredPrintable) o).c, ((ColoredPrintable) o).l);
 							}
 							else
 								System.err.println("Erreur ! Objet non affichable : " + o.getClass());

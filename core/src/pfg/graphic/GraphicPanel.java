@@ -10,7 +10,7 @@ import javax.swing.*;
 import pfg.config.Config;
 import pfg.graphic.printable.BackgroundGrid;
 import pfg.graphic.printable.BackgroundImage;
-
+import pfg.graphic.printable.Layer;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +36,6 @@ public class GraphicPanel extends JPanel
 	private PrintBuffer buffer;
 	private Chart aff;
 
-	private boolean afficheFond;
 	private int sizeX, sizeY;
 	private double zoom;
 	private Vec2RO center;
@@ -51,7 +50,8 @@ public class GraphicPanel extends JPanel
 		buffer = new PrintBuffer();
 		aff = new Chart("Debug", "Time", "Value");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
-		afficheFond = !backgroundPath.isEmpty();
+		boolean afficheFond = !backgroundPath.isEmpty();
+		boolean afficheGrid = config.getBoolean(ConfigInfoGraphic.DISPLAY_GRID);
 		zoom = 0;
 		sizeXUnitaryZoom = config.getInt(ConfigInfoGraphic.SIZE_X_WITH_UNITARY_ZOOM);
 		sizeYUnitaryZoom = config.getInt(ConfigInfoGraphic.SIZE_Y_WITH_UNITARY_ZOOM);
@@ -66,7 +66,7 @@ public class GraphicPanel extends JPanel
 				Image image = ImageIO.read(new File(backgroundPath));
 				sizeX = image.getWidth(this); // on ajuste la taille de la fenêtre à l'image
 				sizeY = image.getHeight(this);
-				buffer.add(new BackgroundImage(image));
+				buffer.add(new BackgroundImage(image), null, Layer.IMAGE_BACKGROUND.layer);
 			}
 			catch(IOException e)
 			{
@@ -75,10 +75,12 @@ public class GraphicPanel extends JPanel
 		}
 		else
 		{
-			buffer.add(new BackgroundGrid());
 			sizeX = config.getInt(ConfigInfoGraphic.SIZE_X_WINDOW);
 			sizeY = config.getInt(ConfigInfoGraphic.SIZE_Y_WINDOW);
 		}
+
+		if(afficheGrid)
+			buffer.add(new BackgroundGrid(), new Color(200,200,200), Layer.IMAGE_BACKGROUND.layer);
 		setPreferredSize(new Dimension(sizeX, sizeY));
 	}
 	

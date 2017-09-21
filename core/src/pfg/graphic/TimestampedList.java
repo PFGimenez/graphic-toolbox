@@ -13,8 +13,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import pfg.graphic.printable.Printable;
+import pfg.graphic.printable.ColoredPrintable;
 
 /**
  * Une liste de listes d'objets timestampées
@@ -45,13 +44,13 @@ public class TimestampedList implements Serializable
 	}
 	
 	@SuppressWarnings("unchecked")
-	public synchronized List<Printable> getList(int indexList)
+	public synchronized List<ColoredPrintable> getList(int indexList)
 	{
 		try {
 			byte b[] = listes.get(indexList);
 			ByteArrayInputStream array = new ByteArrayInputStream(b);
 			ObjectInputStream input = new ObjectInputStream(array);
-			List<Printable> o = (List<Printable>) input.readObject();
+			List<ColoredPrintable> o = (List<ColoredPrintable>) input.readObject();
 			return o;
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -64,7 +63,7 @@ public class TimestampedList implements Serializable
 	 * On sérialise directement en byte[], ce qui fait donc une copie de l'objet à l'instant où cette méthode est appelée
 	 * @param o
 	 */
-	public synchronized void add(List<Printable> o)
+	public synchronized void add(List<ColoredPrintable> o)
 	{
 		try {
 			tmp.writeObject(o);

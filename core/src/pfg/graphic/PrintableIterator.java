@@ -6,8 +6,7 @@
 package pfg.graphic;
 
 import java.util.Iterator;
-
-import pfg.graphic.printable.Printable;
+import pfg.graphic.printable.ColoredPrintable;
 
 /**
  * An iterotar on the printable
@@ -15,11 +14,11 @@ import pfg.graphic.printable.Printable;
  *
  */
 
-public class PrintableIterator implements Iterator<Printable>
+public class PrintableIterator implements Iterator<ColoredPrintable>
 {
 	private PrintBuffer buffer;
 	private int indexObs = 0, indexObsSupp = 0;
-	private Iterator<Printable> current = null;
+	private Iterator<ColoredPrintable> current = null;
 	
 	PrintableIterator(PrintBuffer buffer)
 	{
@@ -60,7 +59,7 @@ public class PrintableIterator implements Iterator<Printable>
 	}
 
 	@Override
-	public Printable next()
+	public ColoredPrintable next()
 	{
 		return current.next();
 	}

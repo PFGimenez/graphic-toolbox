@@ -5,7 +5,6 @@
 
 package pfg.graphic.printable;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import pfg.graphic.Chart;
@@ -21,12 +20,10 @@ import pfg.graphic.Vec2RO;
 public class BackgroundGrid implements Printable
 {
 	private static final long serialVersionUID = 1422929627673510227L;
-	private Color c = new Color(200,200,200);
 	
 	@Override
 	public void print(Graphics g, GraphicPanel f, Chart a)
 	{
-		g.setColor(c);
 		Vec2RO basGauche = f.getCurrentCoinBasGauche();
 		Vec2RO hautDroite = f.getCurrentCoinHautDroite();
 		
@@ -48,11 +45,4 @@ public class BackgroundGrid implements Printable
 			i++;
 		}
 	}
-
-	@Override
-	public int getLayer()
-	{
-		return Layer.IMAGE_BACKGROUND.ordinal();
-	}
-
 }
