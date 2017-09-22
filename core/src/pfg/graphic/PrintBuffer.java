@@ -38,6 +38,7 @@ public class PrintBuffer
 
 	private boolean needRefresh = false;
 	private TimestampedList sauvegarde;
+	private WindowFrame f;
 
 	private String filename;
 	
@@ -45,6 +46,16 @@ public class PrintBuffer
 	{
 		sauvegarde = new TimestampedList(System.currentTimeMillis());
 		filename = "videos/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".dat";
+	}
+	
+	void setWindowFrame(WindowFrame f)
+	{
+		this.f = f;
+	}
+	
+	public void refresh()
+	{
+		f.refresh();
 	}
 	
 	/**

@@ -106,6 +106,7 @@ public class WindowFrame extends JFrame
 
 	public PrintBuffer getPrintBuffer()
 	{
+		graphic.getPrintBuffer().setWindowFrame(this);
 		return graphic.getPrintBuffer();
 	}
 
