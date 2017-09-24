@@ -50,13 +50,13 @@ public class WindowFrame extends JFrame
 	private WindowExit exit;
 	private GraphicPanel graphic;
 	private Container contentPane;
-	private ConsoleDisplay console;
+//	private ConsoleDisplay console;
 	
 	public WindowFrame(GraphicPanel graphic, ConsoleDisplay console)
 	{
 		super("Debug window");
 		this.graphic = graphic;
-		this.console = console;
+//		this.console = console;
 		contentPane = getContentPane();
 		
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));

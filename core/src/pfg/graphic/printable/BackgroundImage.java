@@ -8,7 +8,6 @@ package pfg.graphic.printable;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import pfg.graphic.Chart;
 import pfg.graphic.GraphicPanel;
 
 /**
@@ -29,7 +28,7 @@ public class BackgroundImage implements Printable
 	}
 
 	@Override
-	public void print(Graphics g, GraphicPanel f, Chart a)
+	public void print(Graphics g, GraphicPanel f)
 	{
 		g.drawImage(image, f.XtoWindow(-1500), f.YtoWindow(2000), f.distanceXtoWindow(3000), f.distanceYtoWindow(2000), f);
 	}

@@ -272,7 +272,7 @@ public class VideoReader
 
 					synchronized(buffer)
 					{
-						buffer.clearSupprimables();
+						buffer.clearTemporaryPrintables();
 						int i = 0;
 						while(i < tab.size())
 						{
@@ -298,7 +298,7 @@ public class VideoReader
 								if(debug)
 									System.out.println("Ajout : " + o);
 //								Layer l = (Layer) tab.get(i++);
-								buffer.addSupprimable(o.p, o.c, o.l);
+								buffer.addTemporaryPrintable(o.p, o.c, o.l);
 							}
 						}
 					}

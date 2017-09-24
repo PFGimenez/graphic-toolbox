@@ -8,7 +8,6 @@ package pfg.graphic.printable;
 import java.awt.Graphics;
 import java.io.Serializable;
 
-import pfg.graphic.Chart;
 import pfg.graphic.GraphicPanel;
 import pfg.graphic.Position;
 import pfg.graphic.Vec2RO;
@@ -43,7 +42,7 @@ public class PrintablePoint implements Printable, Serializable
 	}
 
 	@Override
-	public void print(Graphics g, GraphicPanel f, Chart aff)
+	public void print(Graphics g, GraphicPanel f)
 	{
 		g.fillOval(f.XtoWindow(a.getX())-taille/2, f.YtoWindow(a.getY())-taille/2, taille, taille);
 	}

@@ -35,14 +35,14 @@ public class ThreadComm extends Thread
 	 */
 	private class ThreadSocket implements Runnable
 	{
-		protected Log log;
+//		protected Log log;
 		private PrintBuffer buffer;
 		private Socket socket;
 		private int nb;
 
-		public ThreadSocket(Log log, PrintBuffer buffer, Socket socket, int nb)
+		public ThreadSocket(PrintBuffer buffer, Socket socket, int nb)
 		{
-			this.log = log;
+//			this.log = log;
 			this.buffer = buffer;
 			this.socket = socket;
 			this.nb = nb;
@@ -100,7 +100,7 @@ public class ThreadComm extends Thread
 				{
 					Socket socket = ssocket.accept();
 					socket.setTcpNoDelay(true);
-					Thread t = new Thread(new ThreadSocket(log, buffer, socket, nbConnexions++));
+					Thread t = new Thread(new ThreadSocket(buffer, socket, nbConnexions++));
 					t.start();
 					threads.add(t);
 				}

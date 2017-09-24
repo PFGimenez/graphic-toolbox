@@ -29,6 +29,7 @@ public class Log
 	private boolean logClosed = false;
 	private BufferedWriter writer = null;
 	private String file;
+	private boolean save;
 
 	// Ecriture plus rapide sans appel à la pile d'exécution
 	private boolean fastLog = false;
@@ -145,35 +146,39 @@ public class Log
 	{
 		fastLog = config.getBoolean(ConfigInfoGraphic.FAST_LOG);
 		stdoutLog = config.getBoolean(ConfigInfoGraphic.STDOUT_LOG);
+		save = config.getBoolean(ConfigInfoGraphic.SAVE_LOG);
 		
-		file = "logs/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".txt";
-		try
+		if(save)
 		{
-			writer = new BufferedWriter(new FileWriter(file));
-		}
-		catch(FileNotFoundException e)
-		{
+			file = "logs/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".txt";
 			try
 			{
-				Runtime.getRuntime().exec("mkdir logs");
-				try
-				{
-					Thread.sleep(50);
-				}
-				catch(InterruptedException e1)
-				{
-					e1.printStackTrace();
-				}
 				writer = new BufferedWriter(new FileWriter(file));
 			}
-			catch(IOException e1)
+			catch(FileNotFoundException e)
 			{
-				System.err.println("Erreur (1) lors de la création du fichier : " + e1);
+				try
+				{
+					Runtime.getRuntime().exec("mkdir logs");
+					try
+					{
+						Thread.sleep(50);
+					}
+					catch(InterruptedException e1)
+					{
+						e1.printStackTrace();
+					}
+					writer = new BufferedWriter(new FileWriter(file));
+				}
+				catch(IOException e1)
+				{
+					System.err.println("Erreur (1) lors de la création du fichier : " + e1);
+				}
 			}
-		}
-		catch(IOException e)
-		{
-			System.err.println("Erreur (2) lors de la création du fichier : " + e);
+			catch(IOException e)
+			{
+				System.err.println("Erreur (2) lors de la création du fichier : " + e);
+			}
 		}
 	}
 	

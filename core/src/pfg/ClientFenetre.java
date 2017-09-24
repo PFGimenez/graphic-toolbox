@@ -129,7 +129,7 @@ public class ClientFenetre
 					List<Object> tab = (List<Object>) in.readObject();
 					synchronized(buffer)
 					{
-						buffer.clearSupprimables();
+						buffer.clearTemporaryPrintables();
 						int i = 0;
 						while(i < tab.size())
 						{
@@ -143,7 +143,7 @@ public class ClientFenetre
 							else */if(o instanceof ColoredPrintable)
 							{
 //								Layer l = (Layer) tab.get(i++);
-								buffer.addSupprimable(((ColoredPrintable) o).p, ((ColoredPrintable) o).c, ((ColoredPrintable) o).l);
+								buffer.addTemporaryPrintable(((ColoredPrintable) o).p, ((ColoredPrintable) o).c, ((ColoredPrintable) o).l);
 							}
 							else
 								System.err.println("Erreur ! Objet non affichable : " + o.getClass());

@@ -21,6 +21,7 @@ import pfg.config.ConfigInfo;
 
 public enum ConfigInfoGraphic implements ConfigInfo
 {
+	SAVE_LOG(false), // save the log into a log file
 	FAST_LOG(false), // log rapide, sans reflection
 	STDOUT_LOG(false), // log into the stdout
 	

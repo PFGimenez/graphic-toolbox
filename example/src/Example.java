@@ -1,16 +1,14 @@
 import java.awt.Color;
-import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.Random;
 
 import pfg.graphic.Chart;
 import pfg.graphic.DebugTool;
-import pfg.graphic.GraphicPanel;
 import pfg.graphic.PrintBuffer;
 import pfg.graphic.Vec2RO;
 import pfg.graphic.WindowFrame;
 import pfg.graphic.printable.Layer;
-import pfg.graphic.printable.Printable;
+import pfg.graphic.printable.Plottable;
 import pfg.graphic.printable.Segment;
 import pfg.log.Log;
 
@@ -29,17 +27,17 @@ public class Example
 		Log log = dt.getLog();
 		PrintBuffer buffer = f.getPrintBuffer();
 		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10));
-		buffer.add(s1, Color.RED, Layer.FOREGROUND.layer);
+		buffer.addPrintable(s1, Color.RED, Layer.FOREGROUND.layer);
 		Segment s2 = new Segment(new Vec2RO(-20, 20), new Vec2RO(-20, -20));
-		buffer.addSupprimable(s2, Color.BLUE, Layer.FOREGROUND.layer);
+		buffer.addTemporaryPrintable(s2, Color.BLUE, Layer.FOREGROUND.layer);
 		log.write("Test !", null);
 		f.refresh();
 		Thread.sleep(1000);
-		buffer.clearSupprimables();
+		buffer.clearTemporaryPrintables();
 		f.refresh();
 		Thread.sleep(1000);
-		buffer.add(new RandomValue("Test 1"), null, 0);
-		buffer.add(new RandomValue("Test 2"), null, 0);
+		buffer.addPlottable(new RandomValue("Test 1"));
+		buffer.addPlottable(new RandomValue("Test 2"));
 		for(int i = 0; i < 10; i++)
 		{
 			f.refresh();
@@ -47,7 +45,7 @@ public class Example
 		}
 	}
 	
-	public static class RandomValue implements Printable
+	public static class RandomValue implements Plottable
 	{
 		private static final long serialVersionUID = 1L;
 		private int value = 0;
@@ -60,7 +58,7 @@ public class Example
 		}
 
 		@Override
-		public void print(Graphics g, GraphicPanel f, Chart a)
+		public void plot(Chart a)
 		{
 			HashMap<String, Double> values = new HashMap<String, Double>();
 			values.put(nom, (double) value);

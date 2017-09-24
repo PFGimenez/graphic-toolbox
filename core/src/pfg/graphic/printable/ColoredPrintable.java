@@ -3,7 +3,6 @@ package pfg.graphic.printable;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
-import pfg.graphic.Chart;
 import pfg.graphic.GraphicPanel;
 
 /**
@@ -26,11 +25,11 @@ public class ColoredPrintable implements Serializable
 		this.l = l;
 	}
 	
-	public void print(Graphics g, GraphicPanel f, Chart a)
+	public void print(Graphics g, GraphicPanel f)
 	{
 		if(c != null)
 			g.setColor(c);
-		p.print(g, f, a);
+		p.print(g, f);
 	}
 
 }

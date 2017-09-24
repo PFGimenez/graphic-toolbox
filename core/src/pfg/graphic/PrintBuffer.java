@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import pfg.graphic.printable.ColoredPrintable;
+import pfg.graphic.printable.Plottable;
 import pfg.graphic.printable.Printable;
 
 /**
@@ -33,6 +34,7 @@ public class PrintBuffer
 	
 	List<Integer> layersSupprimables = new ArrayList<Integer>();
 	List<Integer> layers = new ArrayList<Integer>();
+	List<Plottable> plottables = new ArrayList<Plottable>();
 	HashMap<Integer, List<ColoredPrintable>> elementsAffichablesSupprimables = new HashMap<Integer, List<ColoredPrintable>>();
 	HashMap<Integer, List<ColoredPrintable>> elementsAffichables = new HashMap<Integer, List<ColoredPrintable>>();
 
@@ -53,6 +55,9 @@ public class PrintBuffer
 		this.f = f;
 	}
 	
+	/**
+	 * Force the refresh
+	 */
 	public void refresh()
 	{
 		f.refresh();
@@ -63,7 +68,7 @@ public class PrintBuffer
 	 * 
 	 * @param c
 	 */
-	public synchronized void clearSupprimables()
+	public synchronized void clearTemporaryPrintables()
 	{
 		elementsAffichablesSupprimables.clear();
 		layersSupprimables.clear();
@@ -76,7 +81,7 @@ public class PrintBuffer
 	 * 
 	 * @param o
 	 */
-	public synchronized void addSupprimable(Printable o, Color c, int layer)
+	public synchronized void addTemporaryPrintable(Printable o, Color c, int layer)
 	{
 		List<ColoredPrintable> l = elementsAffichablesSupprimables.get(layer);
 		if(l == null)
@@ -96,7 +101,7 @@ public class PrintBuffer
 	 * 
 	 * @param o
 	 */
-	public synchronized void add(Printable o, Color c, int layer)
+	public synchronized void addPrintable(Printable o, Color c, int layer)
 	{
 		List<ColoredPrintable> l = elementsAffichables.get(layer);
 		if(l == null)
@@ -118,26 +123,49 @@ public class PrintBuffer
 	 * @param f
 	 * @param robot
 	 */
-	synchronized void print(Graphics g, GraphicPanel f, Chart a)
+	synchronized void print(Graphics g, GraphicPanel f)
 	{
 		needRefresh = false;
 		Iterator<ColoredPrintable> iter = new PrintableIterator(this);
 		while(iter.hasNext())
 		{
 			ColoredPrintable p = iter.next();
-			p.print(g, f, a);
+			p.print(g, f);
 		}
 	}
 
+	synchronized void plot(Chart aff)
+	{
+		for(Plottable p : plottables)
+			p.plot(aff);
+	}
+	
 	/**
-	 * Supprime un printable ajouté à la liste des supprimables
-	 * Ce n'est pas grave s'il y a une double suppression
-	 * 
+	 * Register a new plottable
+	 * @param p
+	 */
+	public synchronized void addPlottable(Plottable p)
+	{
+		plottables.add(p);
+	}
+
+	/**
+	 * Unregister a plottable
+	 * @param p
+	 * @return
+	 */
+	public synchronized boolean removePlottable(Plottable p)
+	{
+		return plottables.remove(p);
+	}
+
+	/**
+	 * Unregister a printable
 	 * @param o
 	 */
-	public synchronized boolean removeSupprimable(Printable o)
+	public synchronized boolean removePrintable(Printable o)
 	{
-		int l = -1;
+		Integer l = null;
 		for(Integer layer : elementsAffichablesSupprimables.keySet())
 			if(elementsAffichablesSupprimables.get(layer).contains(o))
 			{
@@ -145,7 +173,7 @@ public class PrintBuffer
 				break;
 			}
 		
-		if(elementsAffichablesSupprimables.get(l).remove(o))
+		if(l != null && elementsAffichablesSupprimables.get(l).remove(o))
 		{
 			if(elementsAffichablesSupprimables.get(l).isEmpty())
 				layersSupprimables.remove(l);
@@ -153,12 +181,30 @@ public class PrintBuffer
 			needRefresh = true;
 			return true;
 		}
+		
+		l = null;
+		for(Integer layer : elementsAffichables.keySet())
+			if(elementsAffichables.get(layer).contains(o))
+			{
+				l = layer;
+				break;
+			}
+		
+		if(l != null && elementsAffichables.get(l).remove(o))
+		{
+			if(elementsAffichables.get(l).isEmpty())
+				layers.remove(l);
+			notify();
+			needRefresh = true;
+			return true;
+		}
+		
 		return false;
 	}
 
-	public boolean needRefresh()
+	boolean needRefresh()
 	{
-		return needRefresh;
+		return needRefresh || !plottables.isEmpty(); // si on a des plottables, on refresh quand même
 	}
 
 	private synchronized List<ColoredPrintable> prepareList()
@@ -178,7 +224,7 @@ public class PrintBuffer
 	 * @param out
 	 * @throws IOException
 	 */
-	public synchronized void saveState()
+	synchronized void saveState()
 	{
 		List<ColoredPrintable> o = prepareList();
 		// System.out.println("Ajout de "+o.size()+" objets, date =
@@ -192,13 +238,13 @@ public class PrintBuffer
 	 * @param out
 	 * @throws IOException
 	 */
-	public synchronized void send(ObjectOutputStream out) throws IOException
+	synchronized void send(ObjectOutputStream out) throws IOException
 	{
 		out.writeObject(prepareList());
 		out.flush(); // on force l'envoi !
 	}
 
-	public synchronized void destructor()
+	synchronized void destructor()
 	{
 		// On ne sauvegarde que s'il y a quelque chose à sauvegarder…
 		if(!sauvegarde.isEmpty())
@@ -248,6 +294,4 @@ public class PrintBuffer
 			}
 		}
 	}
-
-	
 }

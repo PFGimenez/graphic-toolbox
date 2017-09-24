@@ -23,6 +23,7 @@ public class Vec2RO implements Serializable, Position
 	protected volatile double y;
 	private static NumberFormat formatter = new DecimalFormat("#0.00");
 
+	@SuppressWarnings("unused")
 	public Vec2RO(double longueur, double angle, boolean useless)
 	{
 		x = Math.cos(angle) * longueur;

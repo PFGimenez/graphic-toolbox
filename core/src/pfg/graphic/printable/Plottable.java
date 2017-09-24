@@ -5,10 +5,9 @@
 
 package pfg.graphic.printable;
 
-import java.awt.Graphics;
 import java.io.Serializable;
 
-import pfg.graphic.GraphicPanel;
+import pfg.graphic.Chart;
 
 /**
  * Élément affichable
@@ -17,12 +16,12 @@ import pfg.graphic.GraphicPanel;
  *
  */
 
-public interface Printable extends Serializable
+public interface Plottable extends Serializable
 {
 	/**
-	 * Print that object
+	 * Plot that object
 	 * 
 	 * @param g
 	 */
-	public void print(Graphics g, GraphicPanel f);
+	public void plot(Chart a);
 }

@@ -66,7 +66,7 @@ public class GraphicPanel extends JPanel
 				Image image = ImageIO.read(new File(backgroundPath));
 				sizeX = image.getWidth(this); // on ajuste la taille de la fenêtre à l'image
 				sizeY = image.getHeight(this);
-				buffer.add(new BackgroundImage(image), null, Layer.IMAGE_BACKGROUND.layer);
+				buffer.addPrintable(new BackgroundImage(image), null, Layer.IMAGE_BACKGROUND.layer);
 			}
 			catch(IOException e)
 			{
@@ -80,7 +80,7 @@ public class GraphicPanel extends JPanel
 		}
 
 		if(afficheGrid)
-			buffer.add(new BackgroundGrid(), new Color(200,200,200), Layer.IMAGE_BACKGROUND.layer);
+			buffer.addPrintable(new BackgroundGrid(), new Color(200,200,200), Layer.IMAGE_BACKGROUND.layer);
 		setPreferredSize(new Dimension(sizeX, sizeY));
 	}
 	
@@ -152,6 +152,7 @@ public class GraphicPanel extends JPanel
 			currentCenter.copy(coinHautDroiteEcran);
 			coinHautDroiteEcran.plus(deltaHautDroite);
 		}
-		buffer.print(g, this, aff);
+		buffer.print(g, this);
+		buffer.plot(aff);
 	}
 }

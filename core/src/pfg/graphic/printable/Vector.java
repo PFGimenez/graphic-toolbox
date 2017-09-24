@@ -11,7 +11,6 @@ import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 
-import pfg.graphic.Chart;
 import pfg.graphic.GraphicPanel;
 import pfg.graphic.Position;
 import pfg.graphic.Vec2RO;
@@ -50,7 +49,7 @@ public class Vector implements Printable, Serializable
 	}
 
 	@Override
-	public void print(Graphics g, GraphicPanel f, Chart a)
+	public void print(Graphics g, GraphicPanel f)
 	{
 		g.drawLine(f.XtoWindow(a.getX()), f.YtoWindow(a.getY()), f.XtoWindow(b.getX()), f.YtoWindow(b.getY()));
 	    tx.setToIdentity();

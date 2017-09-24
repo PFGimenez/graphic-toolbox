@@ -7,7 +7,6 @@ package pfg.graphic.printable;
 
 import java.awt.Graphics;
 
-import pfg.graphic.Chart;
 import pfg.graphic.GraphicPanel;
 import pfg.graphic.Vec2RO;
 
@@ -22,7 +21,7 @@ public class BackgroundGrid implements Printable
 	private static final long serialVersionUID = 1422929627673510227L;
 	
 	@Override
-	public void print(Graphics g, GraphicPanel f, Chart a)
+	public void print(Graphics g, GraphicPanel f)
 	{
 		Vec2RO basGauche = f.getCurrentCoinBasGauche();
 		Vec2RO hautDroite = f.getCurrentCoinHautDroite();
