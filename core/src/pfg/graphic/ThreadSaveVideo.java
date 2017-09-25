@@ -17,9 +17,9 @@ import pfg.log.Log;
 public class ThreadSaveVideo extends Thread
 {
 	protected Log log;
-	private PrintBuffer buffer;
+	private GraphicDisplay buffer;
 
-	public ThreadSaveVideo(Log log, PrintBuffer buffer)
+	public ThreadSaveVideo(Log log, GraphicDisplay buffer)
 	{
 		this.log = log;
 		this.buffer = buffer;

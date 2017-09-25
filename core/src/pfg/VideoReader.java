@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 import pfg.graphic.DebugTool;
 import pfg.graphic.GraphicPanel;
-import pfg.graphic.PrintBuffer;
+import pfg.graphic.GraphicDisplay;
 import pfg.graphic.TimestampedList;
 import pfg.graphic.Vec2RO;
 import pfg.graphic.printable.ColoredPrintable;
@@ -138,7 +138,7 @@ public class VideoReader
 
 		try
 		{
-			PrintBuffer buffer = fenetre.getPrintBuffer();
+			GraphicDisplay buffer = fenetre.getPrintBuffer();
 			TimestampedList listes = null;
 
 			special("Fichier vidéo : " + filename);

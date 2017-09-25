@@ -36,11 +36,11 @@ public class ThreadComm extends Thread
 	private class ThreadSocket implements Runnable
 	{
 //		protected Log log;
-		private PrintBuffer buffer;
+		private GraphicDisplay buffer;
 		private Socket socket;
 		private int nb;
 
-		public ThreadSocket(PrintBuffer buffer, Socket socket, int nb)
+		public ThreadSocket(GraphicDisplay buffer, Socket socket, int nb)
 		{
 //			this.log = log;
 			this.buffer = buffer;
@@ -72,12 +72,12 @@ public class ThreadComm extends Thread
 	}
 
 	protected Log log;
-	private PrintBuffer buffer;
+	private GraphicDisplay buffer;
 	private int port;
 	private ServerSocket ssocket = null;
 	private List<Thread> threads = new ArrayList<Thread>();
 
-	public ThreadComm(Log log, PrintBuffer buffer, Config config)
+	public ThreadComm(Log log, GraphicDisplay buffer, Config config)
 	{
 		this.log = log;
 		this.buffer = buffer;

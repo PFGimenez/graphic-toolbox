@@ -33,7 +33,7 @@ public class GraphicPanel extends JPanel
 	 */
 
 	private static final long serialVersionUID = 1L;
-	private PrintBuffer buffer;
+	private GraphicDisplay buffer;
 	private Chart aff;
 
 	private int sizeX, sizeY;
@@ -47,7 +47,7 @@ public class GraphicPanel extends JPanel
 
 	public GraphicPanel(Position center, Config config)
 	{
-		buffer = new PrintBuffer();
+		buffer = new GraphicDisplay();
 		aff = new Chart("Debug", "Time", "Value");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
 		boolean afficheFond = !backgroundPath.isEmpty();
@@ -100,7 +100,7 @@ public class GraphicPanel extends JPanel
 		}
 	}
 	
-	public PrintBuffer getPrintBuffer()
+	public GraphicDisplay getPrintBuffer()
 	{
 		return buffer;
 	}

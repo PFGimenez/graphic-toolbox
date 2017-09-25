@@ -85,9 +85,7 @@ public class Log
 	 */
 	private synchronized void write_(String message, SeverityCategory niveau, LogCategory categorie)
 	{
-		if(logClosed)
-			System.out.println("WARNING * Log fermé! Message: " + message);
-		else
+		if(!logClosed)
 		{
 			long date = System.currentTimeMillis() - dateInitiale;
 			String tempsMatch = "";
@@ -121,24 +119,26 @@ public class Log
 	}
 
 	/**
-	 * Sorte de destructeur, dans lequel le fichier est sauvegardé.
+	 * Log closing ; save the log file if necessray.
 	 */
-	public void close()
+	private void close()
 	{
-		try
+		if(!logClosed && save)
 		{
-			if(writer != null)
+			try
 			{
-				writer.flush();
-				writer.close();
+				if(writer != null)
+				{
+					writer.flush();
+					writer.close();
+					Runtime.getRuntime().exec("cp "+file+" logs/last.txt");
+				}
 			}
-			Runtime.getRuntime().exec("cp "+file+" logs/last.txt");
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-
 		logClosed = true;
 	}
 
@@ -147,9 +147,10 @@ public class Log
 		fastLog = config.getBoolean(ConfigInfoGraphic.FAST_LOG);
 		stdoutLog = config.getBoolean(ConfigInfoGraphic.STDOUT_LOG);
 		save = config.getBoolean(ConfigInfoGraphic.SAVE_LOG);
-		
+
 		if(save)
 		{
+			Runtime.getRuntime().addShutdownHook(new ThreadCloseOnShutdown(this));
 			file = "logs/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".txt";
 			try
 			{
@@ -192,4 +193,20 @@ public class Log
 		return new PrintWriter(writer);
 	}
 
+	public class ThreadCloseOnShutdown extends Thread
+	{
+		private Log log;
+
+		public ThreadCloseOnShutdown(Log log)
+		{
+			this.log = log;
+		}
+
+		@Override
+		public void run()
+		{
+			Thread.currentThread().setName(getClass().getSimpleName());
+			log.close();
+		}
+	}
 }

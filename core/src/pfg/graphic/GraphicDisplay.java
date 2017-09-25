@@ -29,7 +29,7 @@ import pfg.graphic.printable.Printable;
  *
  */
 
-public class PrintBuffer
+public class GraphicDisplay
 {	
 	
 	List<Integer> layersSupprimables = new ArrayList<Integer>();
@@ -44,7 +44,7 @@ public class PrintBuffer
 
 	private String filename;
 	
-	public PrintBuffer()
+	public GraphicDisplay()
 	{
 		sauvegarde = new TimestampedList(System.currentTimeMillis());
 		filename = "videos/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".dat";

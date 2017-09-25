@@ -103,7 +103,10 @@ public class DebugTool {
 		try {
 			log = injector.getExistingService(Log.class);
 			if(log == null)
+			{
 				log = new Log(cat, injector.getService(ConsoleDisplay.class));
+				log.useConfig(config);
+			}
 		} catch (InjectorException e) {
 			e.printStackTrace();
 			assert false : e;

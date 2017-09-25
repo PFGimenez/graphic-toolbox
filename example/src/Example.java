@@ -4,7 +4,7 @@ import java.util.Random;
 
 import pfg.graphic.Chart;
 import pfg.graphic.DebugTool;
-import pfg.graphic.PrintBuffer;
+import pfg.graphic.GraphicDisplay;
 import pfg.graphic.Vec2RO;
 import pfg.graphic.WindowFrame;
 import pfg.graphic.printable.Layer;
@@ -25,7 +25,7 @@ public class Example
 		DebugTool dt = new DebugTool(null);
 		WindowFrame f = dt.getWindowFrame(new Vec2RO(0, 0));
 		Log log = dt.getLog();
-		PrintBuffer buffer = f.getPrintBuffer();
+		GraphicDisplay buffer = f.getPrintBuffer();
 		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10));
 		buffer.addPrintable(s1, Color.RED, Layer.FOREGROUND.layer);
 		Segment s2 = new Segment(new Vec2RO(-20, 20), new Vec2RO(-20, -20));

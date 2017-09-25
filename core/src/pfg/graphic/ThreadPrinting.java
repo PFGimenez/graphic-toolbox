@@ -5,7 +5,7 @@
 
 package pfg.graphic;
 
-import pfg.graphic.PrintBuffer;
+import pfg.graphic.GraphicDisplay;
 import pfg.log.Log;
 
 /**
@@ -20,9 +20,9 @@ public class ThreadPrinting extends Thread
 
 	protected Log log;
 	private WindowFrame fenetre;
-	private PrintBuffer buffer;
+	private GraphicDisplay buffer;
 
-	public ThreadPrinting(Log log, PrintBuffer buffer, WindowFrame fenetre)
+	public ThreadPrinting(Log log, GraphicDisplay buffer, WindowFrame fenetre)
 	{
 		this.fenetre = fenetre;
 		this.log = log;

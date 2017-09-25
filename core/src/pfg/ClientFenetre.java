@@ -17,7 +17,7 @@ import pfg.config.Config;
 import pfg.graphic.ConfigInfoGraphic;
 import pfg.graphic.DebugTool;
 import pfg.graphic.GraphicPanel;
-import pfg.graphic.PrintBuffer;
+import pfg.graphic.GraphicDisplay;
 import pfg.graphic.Vec2RO;
 import pfg.graphic.printable.ColoredPrintable;
 import pfg.graphic.printable.Printable;
@@ -36,7 +36,7 @@ public class ClientFenetre
 	public static void main(String[] args) throws InterruptedException
 	{
 		GraphicPanel f = null;//new DebugTool().getFenetre(new Vec2RO(0, 1000));
-		PrintBuffer buffer = null;//f.getPrintBuffer();
+		GraphicDisplay buffer = null;//f.getPrintBuffer();
 		InetAddress rpiAdresse = null;
 		Config config = new Config(ConfigInfoGraphic.values(), false, "graphic.conf", "default");
 		boolean loop = false;

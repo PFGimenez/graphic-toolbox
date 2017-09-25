@@ -16,11 +16,11 @@ import pfg.graphic.printable.ColoredPrintable;
 
 public class PrintableIterator implements Iterator<ColoredPrintable>
 {
-	private PrintBuffer buffer;
+	private GraphicDisplay buffer;
 	private int indexObs = 0, indexObsSupp = 0;
 	private Iterator<ColoredPrintable> current = null;
 	
-	PrintableIterator(PrintBuffer buffer)
+	PrintableIterator(GraphicDisplay buffer)
 	{
 		this.buffer = buffer;
 	}
