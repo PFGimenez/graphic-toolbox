@@ -13,6 +13,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
+import pfg.config.Config;
+
 /**
  * La fenêtre
  * @author pf
@@ -52,7 +54,7 @@ public class WindowFrame extends JFrame
 	private Container contentPane;
 //	private ConsoleDisplay console;
 	
-	public WindowFrame(GraphicPanel graphic, ConsoleDisplay console)
+	public WindowFrame(Config config, GraphicPanel graphic, ConsoleDisplay console)
 	{
 		super("Debug window");
 		this.graphic = graphic;
@@ -67,7 +69,8 @@ public class WindowFrame extends JFrame
 		addWindowListener(exit);
 		
 		contentPane.add(graphic);
-		contentPane.add(console);
+		if(config.getBoolean(ConfigInfoGraphic.ENABLE_CONSOLE))
+			contentPane.add(console);
 		setBackground(Color.WHITE);
 		pack();
 		setVisible(true);
