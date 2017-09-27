@@ -13,11 +13,12 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.PriorityQueue;
+
 import pfg.graphic.printable.ColoredPrintable;
 import pfg.graphic.printable.Plottable;
 import pfg.graphic.printable.Printable;
@@ -31,13 +32,17 @@ import pfg.graphic.printable.Printable;
 
 public class GraphicDisplay
 {	
+	private class ColoredPrintableComparator implements Comparator<ColoredPrintable>
+	{
+		@Override
+		public int compare(ColoredPrintable arg0, ColoredPrintable arg1)
+		{
+			return arg0.l - arg1.l;
+		}
+	}
 	
-	List<Integer> layersSupprimables = new ArrayList<Integer>();
-	List<Integer> layers = new ArrayList<Integer>();
 	List<Plottable> plottables = new ArrayList<Plottable>();
-	HashMap<Integer, List<ColoredPrintable>> elementsAffichablesSupprimables = new HashMap<Integer, List<ColoredPrintable>>();
-	HashMap<Integer, List<ColoredPrintable>> elementsAffichables = new HashMap<Integer, List<ColoredPrintable>>();
-
+	private PriorityQueue<ColoredPrintable> printables = new PriorityQueue<ColoredPrintable>(500, new ColoredPrintableComparator());
 	private boolean needRefresh = false;
 	private TimestampedList sauvegarde;
 	private WindowFrame f;
@@ -63,6 +68,11 @@ public class GraphicDisplay
 		f.refresh();
 	}
 	
+	synchronized void updatePrintable(PriorityQueue<ColoredPrintable> l)
+	{
+		printables = l;
+	}
+	
 	/**
 	 * Supprime tous les obstacles supprimables
 	 * 
@@ -70,8 +80,10 @@ public class GraphicDisplay
 	 */
 	public synchronized void clearTemporaryPrintables()
 	{
-		elementsAffichablesSupprimables.clear();
-		layersSupprimables.clear();
+		Iterator<ColoredPrintable> iter = printables.iterator();
+		while(iter.hasNext())
+			if(iter.next().temporary)
+				iter.remove();
 		notify();
 		needRefresh = true;
 	}
@@ -83,15 +95,7 @@ public class GraphicDisplay
 	 */
 	public synchronized void addTemporaryPrintable(Printable o, Color c, int layer)
 	{
-		List<ColoredPrintable> l = elementsAffichablesSupprimables.get(layer);
-		if(l == null)
-		{
-			layersSupprimables.add(layer);
-			Collections.sort(layersSupprimables);
-			l = new ArrayList<ColoredPrintable>();
-			elementsAffichablesSupprimables.put(layer, l);
-		}
-		l.add(new ColoredPrintable(o, c, layer));
+		printables.add(new ColoredPrintable(o, c, layer, true));
 		notify();
 		needRefresh = true;
 	}
@@ -103,15 +107,7 @@ public class GraphicDisplay
 	 */
 	public synchronized void addPrintable(Printable o, Color c, int layer)
 	{
-		List<ColoredPrintable> l = elementsAffichables.get(layer);
-		if(l == null)
-		{
-			layers.add(layer);
-			Collections.sort(layers);
-			l = new ArrayList<ColoredPrintable>();
-			elementsAffichables.put(layer, l);
-		}
-		l.add(new ColoredPrintable(o, c, layer));
+		printables.add(new ColoredPrintable(o, c, layer, false));
 		notify();
 		needRefresh = true;
 	}
@@ -126,7 +122,7 @@ public class GraphicDisplay
 	synchronized void print(Graphics g, GraphicPanel f)
 	{
 		needRefresh = false;
-		Iterator<ColoredPrintable> iter = new PrintableIterator(this);
+		Iterator<ColoredPrintable> iter = printables.iterator();
 		while(iter.hasNext())
 		{
 			ColoredPrintable p = iter.next();
@@ -165,57 +161,12 @@ public class GraphicDisplay
 	 */
 	public synchronized boolean removePrintable(Printable o)
 	{
-		Integer l = null;
-		for(Integer layer : elementsAffichablesSupprimables.keySet())
-			if(elementsAffichablesSupprimables.get(layer).contains(o))
-			{
-				l = layer;
-				break;
-			}
-		
-		if(l != null && elementsAffichablesSupprimables.get(l).remove(o))
-		{
-			if(elementsAffichablesSupprimables.get(l).isEmpty())
-				layersSupprimables.remove(l);
-			notify();
-			needRefresh = true;
-			return true;
-		}
-		
-		l = null;
-		for(Integer layer : elementsAffichables.keySet())
-			if(elementsAffichables.get(layer).contains(o))
-			{
-				l = layer;
-				break;
-			}
-		
-		if(l != null && elementsAffichables.get(l).remove(o))
-		{
-			if(elementsAffichables.get(l).isEmpty())
-				layers.remove(l);
-			notify();
-			needRefresh = true;
-			return true;
-		}
-		
-		return false;
+		return printables.remove(o);
 	}
 
 	boolean needRefresh()
 	{
 		return needRefresh || !plottables.isEmpty(); // si on a des plottables, on refresh quand même
-	}
-
-	private synchronized List<ColoredPrintable> prepareList()
-	{
-		List<ColoredPrintable> o = new ArrayList<ColoredPrintable>();
-		Iterator<ColoredPrintable> iter = new PrintableIterator(this);
-		
-		while(iter.hasNext())
-			o.add(iter.next());
-
-		return o;
 	}
 
 	/**
@@ -226,10 +177,8 @@ public class GraphicDisplay
 	 */
 	synchronized void saveState()
 	{
-		List<ColoredPrintable> o = prepareList();
-		// System.out.println("Ajout de "+o.size()+" objets, date =
-		// "+System.currentTimeMillis());
-		sauvegarde.add(o);
+		sauvegarde.add(printables);
+		// TODO : plottables aussi !
 	}
 
 	/**
@@ -240,7 +189,8 @@ public class GraphicDisplay
 	 */
 	synchronized void send(ObjectOutputStream out) throws IOException
 	{
-		out.writeObject(prepareList());
+		out.writeObject(printables);
+		// TODO : plottables aussi !
 		out.flush(); // on force l'envoi !
 	}
 

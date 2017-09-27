@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package pfg;
+package pfg.graphic;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -14,11 +14,6 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 import pfg.config.Config;
-import pfg.graphic.ConfigInfoGraphic;
-import pfg.graphic.DebugTool;
-import pfg.graphic.GraphicPanel;
-import pfg.graphic.GraphicDisplay;
-import pfg.graphic.Vec2RO;
 import pfg.graphic.printable.ColoredPrintable;
 import pfg.graphic.printable.Printable;
 

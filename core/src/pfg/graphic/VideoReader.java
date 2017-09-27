@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package pfg;
+package pfg.graphic;
 
 
 import java.io.BufferedReader;
@@ -11,16 +11,10 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
-import pfg.graphic.DebugTool;
-import pfg.graphic.GraphicPanel;
-import pfg.graphic.GraphicDisplay;
-import pfg.graphic.TimestampedList;
-import pfg.graphic.Vec2RO;
 import pfg.graphic.printable.ColoredPrintable;
-import pfg.graphic.printable.Printable;
 
 /**
  * Un lecteur de vidéo enregistrée sur le rover
@@ -262,7 +256,7 @@ public class VideoReader
 				
 				if(nextVid < nextLog)
 				{
-					List<ColoredPrintable> tab = listes.getList(indexListe);
+					PriorityQueue<ColoredPrintable> tab = listes.getList(indexListe);
 					long deltaT = (long) ((nextVid - firstTimestamp) / vitesse);
 					long deltaP = System.currentTimeMillis() - initialDate;
 					long delta = deltaT - deltaP;
@@ -270,13 +264,15 @@ public class VideoReader
 					if(delta > 0 && dateSkip < nextVid)
 						Thread.sleep(delta);
 
-					synchronized(buffer)
+					buffer.updatePrintable(tab);
+/*					synchronized(buffer)
 					{
 						buffer.clearTemporaryPrintables();
 						int i = 0;
+						
 						while(i < tab.size())
 						{
-							ColoredPrintable o = tab.get(i++);
+							ColoredPrintable o = tab.get(i++);*/
 							/*if(o instanceof Cinematique)
 							{
 								if(debug)
@@ -294,14 +290,14 @@ public class VideoReader
 								robot.setVector((Vector) o);
 							}
 							else */
-							{
+/*							{
 								if(debug)
 									System.out.println("Ajout : " + o);
 //								Layer l = (Layer) tab.get(i++);
 								buffer.addTemporaryPrintable(o.p, o.c, o.l);
 							}
 						}
-					}
+					}*/
 
 					indexListe++;
 					if(indexListe < listes.size())

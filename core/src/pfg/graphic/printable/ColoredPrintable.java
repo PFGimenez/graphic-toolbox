@@ -17,12 +17,14 @@ public class ColoredPrintable implements Serializable
 	public final Printable p;
 	public final Color c;
 	public final int l;
+	public final boolean temporary;
 	
-	public ColoredPrintable(Printable p, Color c, int l)
+	public ColoredPrintable(Printable p, Color c, int l, boolean temporary)
 	{
 		this.p = p;
 		this.c = c;
 		this.l = l;
+		this.temporary = temporary;
 	}
 	
 	public void print(Graphics g, GraphicPanel f)
@@ -32,4 +34,15 @@ public class ColoredPrintable implements Serializable
 		p.print(g, f);
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return p.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		return o == p;
+	}
 }
