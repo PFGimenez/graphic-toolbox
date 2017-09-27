@@ -23,7 +23,7 @@ import pfg.log.Log;
  *
  */
 
-public class ThreadComm extends Thread
+public class ThreadPrintServer extends Thread
 {
 
 	/**
@@ -59,6 +59,7 @@ public class ThreadComm extends Thread
 				while(true)
 				{
 					buffer.send(out);
+					System.out.println("Envoi !");
 					Thread.sleep(200); // on met à jour toutes les 200ms
 				}
 			}
@@ -77,7 +78,7 @@ public class ThreadComm extends Thread
 	private ServerSocket ssocket = null;
 	private List<Thread> threads = new ArrayList<Thread>();
 
-	public ThreadComm(Log log, GraphicDisplay buffer, Config config)
+	public ThreadPrintServer(Log log, GraphicDisplay buffer, Config config)
 	{
 		this.log = log;
 		this.buffer = buffer;
@@ -100,6 +101,7 @@ public class ThreadComm extends Thread
 				{
 					Socket socket = ssocket.accept();
 					socket.setTcpNoDelay(true);
+					System.out.println("Nouvelle connexion !");
 					Thread t = new Thread(new ThreadSocket(buffer, socket, nbConnexions++));
 					t.start();
 					threads.add(t);

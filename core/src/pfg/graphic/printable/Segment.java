@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 import pfg.graphic.GraphicPanel;
 import pfg.graphic.Position;
-import pfg.graphic.Vec2RO;
+import pfg.graphic.Vec2RW;
 
 /**
  * Un segment affichable
@@ -22,12 +22,12 @@ import pfg.graphic.Vec2RO;
 public class Segment implements Printable, Serializable
 {
 	private static final long serialVersionUID = 3887897521575363643L;
-	private Vec2RO a, b;
+	public Vec2RW a, b;
 
 	public Segment(Position a, Position b)
 	{
-		this.a = new Vec2RO(a.getX(), a.getY());
-		this.b = new Vec2RO(b.getX(), b.getY());
+		this.a = new Vec2RW(a.getX(), a.getY());
+		this.b = new Vec2RW(b.getX(), b.getY());
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class Example
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		DebugTool dt = new DebugTool(null);
+		DebugTool dt = DebugTool.getDebugTool(null);
 		WindowFrame f = dt.getWindowFrame(new Vec2RO(0, 0));
 		Log log = dt.getLog();
 		GraphicDisplay buffer = f.getPrintBuffer();

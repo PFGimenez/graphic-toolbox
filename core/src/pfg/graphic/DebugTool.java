@@ -24,52 +24,82 @@ public class DebugTool {
 
 	private Config config;
 	private Injector injector;
-	private SeverityCategory cat;
+	private static DebugTool instance = null;
 	
-	public DebugTool(SeverityCategory cat)
+	public static DebugTool getDebugTool(SeverityCategory cat)
 	{
-		this(new HashMap<ConfigInfo, Object>(), cat, "graphic.conf", "default");
+		if(instance == null)
+			instance = new DebugTool(new HashMap<ConfigInfo, Object>(), cat, "graphic.conf", "default");
+		return instance;
 	}
 	
-	public DebugTool(HashMap<ConfigInfo, Object> override, SeverityCategory cat, String configFilename, String... configprofile)
+	public static DebugTool getExistingDebugTool()
 	{
-		this.cat = cat;
+		return instance;
+	}
+	
+	public static DebugTool getDebugTool(HashMap<ConfigInfo, Object> override, SeverityCategory cat, String configFilename, String... configprofile)
+	{
+		if(instance == null)
+			instance = new DebugTool(override, cat, configFilename, configprofile);
+		return instance;
+	}
+	
+	private DebugTool(HashMap<ConfigInfo, Object> override, SeverityCategory cat, String configFilename, String... configprofile)
+	{
 		config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
 		config.override(override);
 		injector = new Injector();
-		injector.addService(Config.class, config);
+		injector.addService(config);
+		Log log;
+		try {
+			log = new Log(cat, injector.getService(ConsoleDisplay.class));
+			log.useConfig(config);
+			injector.addService(log);
+		} catch (InjectorException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public ThreadComm getThreadComm()
+	public void startPrintClient(String hostname)
 	{
 		try {
-			return injector.getService(ThreadComm.class);
+			ThreadPrintClient th = injector.getService(ThreadPrintClient.class);
+			th.setHostname(hostname);
+			th.start();
 		} catch (InjectorException e) {
 			e.printStackTrace();
 			assert false : e;
-			return null;
 		}
 	}
 	
-	public ThreadSaveVideo getThreadSaveVideo()
+	public void startPrintServer()
 	{
 		try {
-			return injector.getService(ThreadSaveVideo.class);
+			injector.getService(ThreadPrintServer.class).start();
 		} catch (InjectorException e) {
 			e.printStackTrace();
 			assert false : e;
-			return null;
 		}
 	}
 	
-	public ThreadPrinting getThreadPrinting()
+	public void startSaveVideo()
 	{
 		try {
-			return injector.getService(ThreadPrinting.class);
+			injector.getService(ThreadSaveVideo.class).start();;
 		} catch (InjectorException e) {
 			e.printStackTrace();
 			assert false : e;
-			return null;
+		}
+	}
+	
+	public void startAutomaticRefresh()
+	{
+		try {
+			injector.getService(ThreadPrinting.class).start();
+		} catch (InjectorException e) {
+			e.printStackTrace();
+			assert false : e;
 		}
 	}
 	
@@ -99,21 +129,7 @@ public class DebugTool {
 	
 	public Log getLog()
 	{
-		Log log;
-		try {
-			log = injector.getExistingService(Log.class);
-			if(log == null)
-			{
-				log = new Log(cat, injector.getService(ConsoleDisplay.class));
-				log.useConfig(config);
-			}
-		} catch (InjectorException e) {
-			e.printStackTrace();
-			assert false : e;
-			return null;
-		}
-		injector.addService(Log.class, log);
-		return log;
+		return injector.getExistingService(Log.class);
 	}
 
 }
