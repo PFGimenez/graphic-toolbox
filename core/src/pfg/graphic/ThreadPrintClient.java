@@ -100,16 +100,17 @@ public class ThreadPrintClient extends Thread
 				{
 					while(true)
 					{
-						System.out.println("Lecture !");
 						@SuppressWarnings("unchecked")
 						PriorityQueue<ColoredPrintable> tab = (PriorityQueue<ColoredPrintable>) in.readObject();
+						System.out.println("Lecture de "+tab.hashCode());
 						buffer.updatePrintable(tab);
+						buffer.refresh();
 					}
 				}
 				catch(IOException e)
 				{
 					System.err.println("Le serveur a coupé la connexion : " + e);
-					e.printStackTrace();
+//					e.printStackTrace();
 				}
 				catch(ClassNotFoundException e)
 				{

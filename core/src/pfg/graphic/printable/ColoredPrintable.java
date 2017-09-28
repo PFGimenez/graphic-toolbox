@@ -3,6 +3,7 @@ package pfg.graphic.printable;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.Serializable;
+
 import pfg.graphic.GraphicPanel;
 
 /**

@@ -26,10 +26,10 @@ public class DebugTool {
 	private Injector injector;
 	private static DebugTool instance = null;
 	
-	public static DebugTool getDebugTool(SeverityCategory cat)
+	public static DebugTool getDebugTool(Position center, SeverityCategory cat)
 	{
 		if(instance == null)
-			instance = new DebugTool(new HashMap<ConfigInfo, Object>(), cat, "graphic.conf", "default");
+			instance = new DebugTool(new HashMap<ConfigInfo, Object>(), center, cat, "graphic.conf", "default");
 		return instance;
 	}
 	
@@ -38,14 +38,14 @@ public class DebugTool {
 		return instance;
 	}
 	
-	public static DebugTool getDebugTool(HashMap<ConfigInfo, Object> override, SeverityCategory cat, String configFilename, String... configprofile)
+	public static DebugTool getDebugTool(HashMap<ConfigInfo, Object> override, Position center, SeverityCategory cat, String configFilename, String... configprofile)
 	{
 		if(instance == null)
-			instance = new DebugTool(override, cat, configFilename, configprofile);
+			instance = new DebugTool(override, center, cat, configFilename, configprofile);
 		return instance;
 	}
 	
-	private DebugTool(HashMap<ConfigInfo, Object> override, SeverityCategory cat, String configFilename, String... configprofile)
+	private DebugTool(HashMap<ConfigInfo, Object> override, Position center, SeverityCategory cat, String configFilename, String... configprofile)
 	{
 		config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
 		config.override(override);
@@ -56,6 +56,13 @@ public class DebugTool {
 			log = new Log(cat, injector.getService(ConsoleDisplay.class));
 			log.useConfig(config);
 			injector.addService(log);
+			WindowFrame fenetre;
+			GraphicDisplay gd = new GraphicDisplay();
+			injector.addService(gd);
+			GraphicPanel g = new GraphicPanel(center, config, gd);
+			injector.addService(g);
+			fenetre = injector.getService(WindowFrame.class);
+			injector.addService(fenetre);
 		} catch (InjectorException e) {
 			e.printStackTrace();
 		}
@@ -103,28 +110,9 @@ public class DebugTool {
 		}
 	}
 	
-	public WindowFrame getWindowFrame(Position center)
+	public WindowFrame getWindowFrame()
 	{
-		WindowFrame fenetre;
-		try {
-			fenetre = injector.getExistingService(WindowFrame.class);
-			if(fenetre == null)
-			{
-				GraphicPanel g = injector.getExistingService(GraphicPanel.class);
-				if(g == null)
-				{
-					g = new GraphicPanel(center, config);
-					injector.addService(GraphicPanel.class, g);
-					fenetre = injector.getService(WindowFrame.class);
-				}
-			}
-			injector.addService(WindowFrame.class, fenetre);
-			return fenetre;
-		} catch (InjectorException e) {
-			e.printStackTrace();
-			assert false : e;
-			return null;
-		}
+		return injector.getExistingService(WindowFrame.class);
 	}
 	
 	public Log getLog()

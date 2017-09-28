@@ -58,6 +58,7 @@ public class WindowFrame extends JFrame
 	{
 		super("Debug window");
 		this.graphic = graphic;
+		graphic.getPrintBuffer().setWindowFrame(this);
 //		this.console = console;
 		contentPane = getContentPane();
 		
@@ -109,7 +110,6 @@ public class WindowFrame extends JFrame
 
 	public GraphicDisplay getPrintBuffer()
 	{
-		graphic.getPrintBuffer().setWindowFrame(this);
 		return graphic.getPrintBuffer();
 	}
 

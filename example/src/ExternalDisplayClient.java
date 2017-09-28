@@ -16,9 +16,7 @@ public class ExternalDisplayClient
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		DebugTool dt = DebugTool.getDebugTool(null);
-		dt.getWindowFrame(new Vec2RO(0, 0));
-		dt.startAutomaticRefresh();
+		DebugTool dt = DebugTool.getDebugTool(new Vec2RO(0,0), null);
 		dt.startPrintClient("127.0.0.1");
 		while(true)
 			Thread.sleep(1000);

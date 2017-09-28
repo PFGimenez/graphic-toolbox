@@ -22,8 +22,8 @@ public class Example
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		DebugTool dt = DebugTool.getDebugTool(null);
-		WindowFrame f = dt.getWindowFrame(new Vec2RO(0, 0));
+		DebugTool dt = DebugTool.getDebugTool(new Vec2RO(0, 0), null);
+		WindowFrame f = dt.getWindowFrame();
 		Log log = dt.getLog();
 		GraphicDisplay buffer = f.getPrintBuffer();
 		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10));

@@ -45,9 +45,9 @@ public class GraphicPanel extends JPanel
 	private Vec2RW coinHautDroiteEcran;
 	private double sizeXUnitaryZoom, sizeYUnitaryZoom;
 
-	public GraphicPanel(Position center, Config config)
+	public GraphicPanel(Position center, Config config, GraphicDisplay buffer)
 	{
-		buffer = new GraphicDisplay();
+		this.buffer = buffer;
 		aff = new Chart("Debug", "Time", "Value");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
 		boolean afficheFond = !backgroundPath.isEmpty();

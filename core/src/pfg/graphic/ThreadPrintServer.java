@@ -33,7 +33,7 @@ public class ThreadPrintServer extends Thread
 	 * @author pf
 	 *
 	 */
-	private class ThreadSocket implements Runnable
+	private class ThreadSocket extends Thread
 	{
 //		protected Log log;
 		private GraphicDisplay buffer;
@@ -52,20 +52,21 @@ public class ThreadPrintServer extends Thread
 		public void run()
 		{
 			Thread.currentThread().setName(getClass().getSimpleName() + "-" + nb);
-//			log.write("Connexion d'un client au serveur d'affichage", Subject.DUMMY);
+			System.out.println("Connexion d'un client au serveur d'affichage");
 			try
 			{
 				ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 				while(true)
 				{
 					buffer.send(out);
-					System.out.println("Envoi !");
+					System.out.println("Envoi de "+out.hashCode());
 					Thread.sleep(200); // on met à jour toutes les 200ms
 				}
 			}
 			catch(InterruptedException | IOException e)
 			{
-//				log.write("Arrêt de " + Thread.currentThread().getName(), Subject.DUMMY);
+				e.printStackTrace();
+				System.out.println("Arrêt de " + Thread.currentThread().getName());
 				Thread.currentThread().interrupt();
 			}
 		}
@@ -102,7 +103,7 @@ public class ThreadPrintServer extends Thread
 					Socket socket = ssocket.accept();
 					socket.setTcpNoDelay(true);
 					System.out.println("Nouvelle connexion !");
-					Thread t = new Thread(new ThreadSocket(buffer, socket, nbConnexions++));
+					Thread t = new ThreadSocket(buffer, socket, nbConnexions++);
 					t.start();
 					threads.add(t);
 				}

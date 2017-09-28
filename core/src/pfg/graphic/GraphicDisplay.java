@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -32,15 +31,6 @@ import pfg.graphic.printable.Printable;
 
 public class GraphicDisplay
 {	
-	private class ColoredPrintableComparator implements Comparator<ColoredPrintable>
-	{
-		@Override
-		public int compare(ColoredPrintable arg0, ColoredPrintable arg1)
-		{
-			return arg0.l - arg1.l;
-		}
-	}
-	
 	List<Plottable> plottables = new ArrayList<Plottable>();
 	private PriorityQueue<ColoredPrintable> printables = new PriorityQueue<ColoredPrintable>(500, new ColoredPrintableComparator());
 	private boolean needRefresh = false;
