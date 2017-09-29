@@ -20,9 +20,8 @@ import pfg.log.SeverityCategory;
  *
  */
 
-public class DebugTool {
-
-	private Config config;
+public class DebugTool
+{
 	private Injector injector;
 	private static DebugTool instance = null;
 	
@@ -47,18 +46,18 @@ public class DebugTool {
 	
 	private DebugTool(HashMap<ConfigInfo, Object> override, Position center, SeverityCategory cat, String configFilename, String... configprofile)
 	{
-		config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
+		Config config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
 		config.override(override);
 		injector = new Injector();
 		injector.addService(config);
 		Log log;
 		try {
-			log = new Log(cat, injector.getService(ConsoleDisplay.class));
+			log = Log.getLog(cat);
+			log.addConsoleDisplay(injector.getService(ConsoleDisplay.class));
 			log.useConfig(config);
 			injector.addService(log);
 			WindowFrame fenetre;
-			GraphicDisplay gd = new GraphicDisplay();
-			injector.addService(gd);
+			GraphicDisplay gd = injector.getService(GraphicDisplay.class);
 			GraphicPanel g = new GraphicPanel(center, config, gd);
 			injector.addService(g);
 			fenetre = injector.getService(WindowFrame.class);

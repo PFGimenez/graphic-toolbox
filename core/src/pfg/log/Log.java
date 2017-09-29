@@ -30,6 +30,7 @@ public class Log
 	private BufferedWriter writer = null;
 	private String file;
 	private boolean save;
+	private static Log instance = null;
 
 	// Ecriture plus rapide sans appel à la pile d'exécution
 	private boolean fastLog = false;
@@ -43,15 +44,26 @@ public class Log
 	private static final long dateInitiale = System.currentTimeMillis();
 	private long dateDebutMatch = -1;
 
-	public Log(SeverityCategory defaultSeverity, ConsoleDisplay console)
+	public static Log getLog(SeverityCategory defaultSeverity)
+	{
+		if(instance == null)
+			instance = new Log(defaultSeverity);
+		return instance;
+	}
+	
+	private Log(SeverityCategory defaultSeverity)
 	{
 		this.defaultSeverity = defaultSeverity;
-		this.console = console;
 		try {
 			Runtime.getRuntime().exec("rm logs/last.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void addConsoleDisplay(ConsoleDisplay console)
+	{
+		this.console = console;
 	}
 	
 	public synchronized void write(String message, LogCategory categorie)
@@ -100,7 +112,8 @@ public class Log
 				StackTraceElement elem = Thread.currentThread().getStackTrace()[3];
 				affichage = date + tempsMatch + " "+ niveau + " " + elem.getClassName().substring(elem.getClassName().lastIndexOf(".") + 1) + ":" + elem.getLineNumber() + " (" + Thread.currentThread().getName() + ") > " + message;
 			}
-			console.write(affichage + "\n");
+			if(console != null)
+				console.write(affichage + "\n");
 
 			if(writer != null)
 			{
