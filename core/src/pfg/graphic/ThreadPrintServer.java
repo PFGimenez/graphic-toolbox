@@ -59,7 +59,6 @@ public class ThreadPrintServer extends Thread
 				while(true)
 				{
 					buffer.send(out);
-					System.out.println("Envoi de "+out.hashCode());
 					Thread.sleep(200); // on met à jour toutes les 200ms
 				}
 			}

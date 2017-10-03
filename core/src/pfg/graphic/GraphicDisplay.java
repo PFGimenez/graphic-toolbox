@@ -179,7 +179,12 @@ public class GraphicDisplay
 	 */
 	synchronized void send(ObjectOutputStream out) throws IOException
 	{
+		out.reset();
 		out.writeObject(printables);
+//		System.out.println("Envoi de "+printables.hashCode()+" "+printables.size());
+//		for(ColoredPrintable c : printables)
+//			System.out.println("  "+c);
+
 		// TODO : plottables aussi !
 		out.flush(); // on force l'envoi !
 	}

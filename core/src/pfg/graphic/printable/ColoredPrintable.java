@@ -46,4 +46,10 @@ public class ColoredPrintable implements Serializable
 	{
 		return o == p;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return p+" "+c+" "+l;
+	}
 }

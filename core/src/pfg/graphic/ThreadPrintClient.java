@@ -102,7 +102,9 @@ public class ThreadPrintClient extends Thread
 					{
 						@SuppressWarnings("unchecked")
 						PriorityQueue<ColoredPrintable> tab = (PriorityQueue<ColoredPrintable>) in.readObject();
-						System.out.println("Lecture de "+tab.hashCode());
+//						System.out.println("Réception de "+tab.hashCode()+" "+tab.size());
+//						for(ColoredPrintable c : tab)
+//							System.out.println("  "+c);
 						buffer.updatePrintable(tab);
 						buffer.refresh();
 					}
