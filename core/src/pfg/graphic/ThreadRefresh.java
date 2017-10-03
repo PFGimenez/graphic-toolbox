@@ -15,18 +15,25 @@ import pfg.log.Log;
  *
  */
 
-public class ThreadPrinting extends Thread
+public class ThreadRefresh extends Thread
 {
 
 	protected Log log;
 	private WindowFrame fenetre;
 	private GraphicDisplay buffer;
+	private volatile int period;
 
-	public ThreadPrinting(Log log, GraphicDisplay buffer, WindowFrame fenetre)
+	public ThreadRefresh(Log log, GraphicDisplay buffer, WindowFrame fenetre)
 	{
 		this.fenetre = fenetre;
 		this.log = log;
 		this.buffer = buffer;
+		setFrequency(50);
+	}
+	
+	public synchronized void setFrequency(double frequency)
+	{
+		period = (int) Math.round(1000/frequency);
 	}
 
 	@Override
@@ -43,9 +50,9 @@ public class ThreadPrinting extends Thread
 					if(!buffer.needRefresh())
 						buffer.wait();
 				}
+				System.out.println("Refresh !");
 				fenetre.refresh();
-				Thread.sleep(50); // on ne met pas à jour plus souvent que
-									// toutes les 50ms
+				Thread.sleep(period);
 			}
 		}
 		catch(InterruptedException e)

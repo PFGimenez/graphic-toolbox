@@ -31,6 +31,7 @@ public enum ConfigInfoGraphic implements ConfigInfo
 	
 	BACKGROUND_PATH(""), // background path ; empty if none	
 	DISPLAY_GRID(true), // display the grid (over the background if there is one)
+	REFRESH_FREQUENCY(5), // in Hertz, 0 to disable
 	GRAPHIC_SERVER_PORT_NUMBER(13370), // port number of the graphic server
 	SIZE_X_WINDOW(900), // taille par défaut (sans image) de la fenêtre
 	SIZE_Y_WINDOW(600), // taille par défaut (sans image) de la fenêtre

@@ -62,6 +62,14 @@ public class DebugTool
 			injector.addService(g);
 			fenetre = injector.getService(WindowFrame.class);
 			injector.addService(fenetre);
+			double frequency = config.getDouble(ConfigInfoGraphic.REFRESH_FREQUENCY);
+			if(frequency != 0)
+			{
+				ThreadRefresh t = injector.getService(ThreadRefresh.class);
+				t.setFrequency(frequency);
+				t.start();
+
+			}
 		} catch (InjectorException e) {
 			e.printStackTrace();
 		}
@@ -93,16 +101,6 @@ public class DebugTool
 	{
 		try {
 			injector.getService(ThreadSaveVideo.class).start();;
-		} catch (InjectorException e) {
-			e.printStackTrace();
-			assert false : e;
-		}
-	}
-	
-	public void startAutomaticRefresh()
-	{
-		try {
-			injector.getService(ThreadPrinting.class).start();
 		} catch (InjectorException e) {
 			e.printStackTrace();
 			assert false : e;
