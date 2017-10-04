@@ -9,10 +9,10 @@ import java.util.HashMap;
 
 import pfg.config.Config;
 import pfg.config.ConfigInfo;
+import pfg.graphic.log.Log;
+import pfg.graphic.log.SeverityCategory;
 import pfg.injector.Injector;
 import pfg.injector.InjectorException;
-import pfg.log.Log;
-import pfg.log.SeverityCategory;
 
 /**
  * The debug tool

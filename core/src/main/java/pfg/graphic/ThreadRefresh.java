@@ -6,7 +6,7 @@
 package pfg.graphic;
 
 import pfg.graphic.GraphicDisplay;
-import pfg.log.Log;
+import pfg.graphic.log.Log;
 
 /**
  * S'occupe de la mise à jour graphique

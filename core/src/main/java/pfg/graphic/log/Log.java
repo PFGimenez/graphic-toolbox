@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package pfg.log;
+package pfg.graphic.log;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;

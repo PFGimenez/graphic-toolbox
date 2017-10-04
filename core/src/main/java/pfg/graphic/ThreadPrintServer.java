@@ -14,7 +14,7 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import pfg.config.Config;
-import pfg.log.Log;
+import pfg.graphic.log.Log;
 
 /**
  * Thread du serveur d'affichage

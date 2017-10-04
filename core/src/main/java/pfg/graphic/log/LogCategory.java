@@ -3,7 +3,7 @@
  * Distributed under the MIT License.
  */
 
-package pfg.log;
+package pfg.graphic.log;
 
 /**
  * A log category

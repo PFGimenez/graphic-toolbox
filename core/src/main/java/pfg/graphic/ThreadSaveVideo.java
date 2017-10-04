@@ -5,7 +5,7 @@
 
 package pfg.graphic;
 
-import pfg.log.Log;
+import pfg.graphic.log.Log;
 
 /**
  * S'occupe d'enregistrer la vidéo
