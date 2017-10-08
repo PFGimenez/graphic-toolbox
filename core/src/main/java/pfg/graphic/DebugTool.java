@@ -49,6 +49,7 @@ public class DebugTool
 		Config config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
 		config.override(override);
 		injector = new Injector();
+		injector.addService(injector);
 		injector.addService(config);
 		Log log;
 		try {
@@ -65,6 +66,7 @@ public class DebugTool
 			double frequency = config.getDouble(ConfigInfoGraphic.REFRESH_FREQUENCY);
 			if(frequency != 0)
 			{
+				assert injector.getExistingService(ThreadRefresh.class) == null;
 				ThreadRefresh t = injector.getService(ThreadRefresh.class);
 				t.setFrequency(frequency);
 				t.start();
@@ -78,9 +80,12 @@ public class DebugTool
 	public void startPrintClient(String hostname)
 	{
 		try {
-			ThreadPrintClient th = injector.getService(ThreadPrintClient.class);
-			th.setHostname(hostname);
-			th.start();
+			if(injector.getExistingService(ThreadPrintClient.class) == null)
+			{
+				ThreadPrintClient th = injector.getService(ThreadPrintClient.class);
+				th.setHostname(hostname);
+				th.start();
+			}
 		} catch (InjectorException e) {
 			e.printStackTrace();
 			assert false : e;
@@ -90,7 +95,8 @@ public class DebugTool
 	public void startPrintServer()
 	{
 		try {
-			injector.getService(ThreadPrintServer.class).start();
+			if(injector.getExistingService(ThreadPrintServer.class) == null)
+				injector.getService(ThreadPrintServer.class).start();
 		} catch (InjectorException e) {
 			e.printStackTrace();
 			assert false : e;
@@ -100,7 +106,8 @@ public class DebugTool
 	public void startSaveVideo()
 	{
 		try {
-			injector.getService(ThreadSaveVideo.class).start();;
+			if(injector.getExistingService(ThreadSaveVideo.class) == null)
+				injector.getService(ThreadSaveVideo.class).start();;
 		} catch (InjectorException e) {
 			e.printStackTrace();
 			assert false : e;

@@ -50,14 +50,13 @@ public class ThreadRefresh extends Thread
 					if(!buffer.needRefresh())
 						buffer.wait();
 				}
-				System.out.println("Refresh !");
 				fenetre.refresh();
 				Thread.sleep(period);
 			}
 		}
 		catch(InterruptedException e)
 		{
-//			log.write("Arrêt de " + Thread.currentThread().getName(), Subject.DUMMY);
+//			System.out.println("Arrêt de " + Thread.currentThread().getName());
 			Thread.currentThread().interrupt();
 		}
 		catch(Exception e)
