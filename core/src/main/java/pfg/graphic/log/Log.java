@@ -115,12 +115,12 @@ public class Log
 			if(console != null)
 				console.write(affichage + "\n");
 
+			if(stdoutLog)
+				System.out.println(affichage);
 			if(writer != null)
 			{
 				try
 				{
-					if(stdoutLog)
-						System.out.println(affichage);
 					writer.write(categorie.getMask() + " " + affichage + "\n");
 				}
 				catch(IOException e)

@@ -46,7 +46,7 @@ public class DebugTool
 	
 	private DebugTool(HashMap<ConfigInfo, Object> override, Position center, SeverityCategory cat, String configFilename, String... configprofile)
 	{
-		Config config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
+		Config config = new Config(ConfigInfoGraphic.values(), true, configFilename, configprofile);
 		config.override(override);
 		injector = new Injector();
 		injector.addService(injector);

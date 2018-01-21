@@ -5,6 +5,7 @@
 
 package pfg.graphic;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.WindowAdapter;
@@ -12,7 +13,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-
+import javax.swing.JScrollPane;
 import pfg.config.Config;
 import pfg.injector.Injector;
 
@@ -82,7 +83,8 @@ public class WindowFrame extends JFrame
 		
 		contentPane.add(graphic);
 		if(config.getBoolean(ConfigInfoGraphic.ENABLE_CONSOLE))
-			contentPane.add(console);
+			contentPane.add(new JScrollPane(console), BorderLayout.CENTER);
+
 		setBackground(Color.WHITE);
 		pack();
 		setVisible(true);
