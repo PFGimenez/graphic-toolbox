@@ -30,6 +30,14 @@
             <updatePolicy>always</updatePolicy>
         </snapshots>
     </repository>
+    <repository>
+        <id>log-pfg-mvn-repo</id>
+        <url>https://raw.githubusercontent.com/PFGimenez/log/mvn-repo/</url>
+        <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+        </snapshots>
+    </repository>
 </repositories>
 
   <properties>
