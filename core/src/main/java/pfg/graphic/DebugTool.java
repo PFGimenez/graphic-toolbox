@@ -9,10 +9,10 @@ import java.util.HashMap;
 
 import pfg.config.Config;
 import pfg.config.ConfigInfo;
-import pfg.graphic.log.Log;
-import pfg.graphic.log.SeverityCategory;
 import pfg.injector.Injector;
 import pfg.injector.InjectorException;
+import pfg.log.Log;
+import pfg.log.Severity;
 
 /**
  * The debug tool
@@ -25,7 +25,7 @@ public class DebugTool
 	private Injector injector;
 	private static DebugTool instance = null;
 	
-	public static DebugTool getDebugTool(Position center, SeverityCategory cat)
+	public static DebugTool getDebugTool(Position center, Severity cat)
 	{
 		if(instance == null)
 			instance = new DebugTool(new HashMap<ConfigInfo, Object>(), center, cat, "graphic.conf", "default");
@@ -37,14 +37,14 @@ public class DebugTool
 		return instance;
 	}
 	
-	public static DebugTool getDebugTool(HashMap<ConfigInfo, Object> override, Position center, SeverityCategory cat, String configFilename, String... configprofile)
+	public static DebugTool getDebugTool(HashMap<ConfigInfo, Object> override, Position center, Severity cat, String configFilename, String... configprofile)
 	{
 		if(instance == null)
 			instance = new DebugTool(override, center, cat, configFilename, configprofile);
 		return instance;
 	}
 	
-	private DebugTool(HashMap<ConfigInfo, Object> override, Position center, SeverityCategory cat, String configFilename, String... configprofile)
+	private DebugTool(HashMap<ConfigInfo, Object> override, Position center, Severity cat, String configFilename, String... configprofile)
 	{
 		Config config = new Config(ConfigInfoGraphic.values(), true, configFilename, configprofile);
 		config.override(override);
@@ -53,9 +53,7 @@ public class DebugTool
 		injector.addService(config);
 		Log log;
 		try {
-			log = Log.getLog(cat);
-			log.addConsoleDisplay(injector.getService(ConsoleDisplay.class));
-			log.useConfig(config);
+			log = new Log(cat, "log.conf", "graphic");
 			injector.addService(log);
 			WindowFrame fenetre;
 			GraphicDisplay gd = injector.getService(GraphicDisplay.class);

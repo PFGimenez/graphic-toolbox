@@ -9,8 +9,8 @@ import java.net.UnknownHostException;
 import java.util.PriorityQueue;
 
 import pfg.config.Config;
-import pfg.graphic.log.Log;
 import pfg.graphic.printable.ColoredPrintable;
+import pfg.log.Log;
 
 public class ThreadPrintClient extends Thread
 {

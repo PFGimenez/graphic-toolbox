@@ -21,11 +21,6 @@ import pfg.config.ConfigInfo;
 
 public enum ConfigInfoGraphic implements ConfigInfo
 {
-	ENABLE_CONSOLE(true), // enable the console
-	SAVE_LOG(false), // save the log into a log file
-	FAST_LOG(false), // log rapide, sans reflection
-	STDOUT_LOG(false), // log into the stdout
-	
 	CONSOLE_NB_ROWS(10), // nombre de lignes dans la console affichée
 	CONSOLE_NB_COLUMNS(30), // nombre de colonnes dans la console affichée
 	
