@@ -59,16 +59,19 @@ public class DebugTool
 			GraphicDisplay gd = injector.getService(GraphicDisplay.class);
 			GraphicPanel g = new GraphicPanel(center, config, gd);
 			injector.addService(g);
-			fenetre = injector.getService(WindowFrame.class);
-			injector.addService(fenetre);
-			double frequency = config.getDouble(ConfigInfoGraphic.REFRESH_FREQUENCY);
-			if(frequency != 0)
+			if(config.getBoolean(ConfigInfoGraphic.GRAPHIC_ENABLE))
 			{
-				assert injector.getExistingService(ThreadRefresh.class) == null;
-				ThreadRefresh t = injector.getService(ThreadRefresh.class);
-				t.setFrequency(frequency);
-				t.start();
-
+				fenetre = injector.getService(WindowFrame.class);
+				injector.addService(fenetre);
+				double frequency = config.getDouble(ConfigInfoGraphic.REFRESH_FREQUENCY);
+				if(frequency != 0)
+				{
+					assert injector.getExistingService(ThreadRefresh.class) == null;
+					ThreadRefresh t = injector.getService(ThreadRefresh.class);
+					t.setFrequency(frequency);
+					t.start();
+	
+				}
 			}
 		} catch (InjectorException e) {
 			e.printStackTrace();
@@ -105,7 +108,7 @@ public class DebugTool
 	{
 		try {
 			if(injector.getExistingService(ThreadSaveVideo.class) == null)
-				injector.getService(ThreadSaveVideo.class).start();;
+				injector.getService(ThreadSaveVideo.class).start();
 		} catch (InjectorException e) {
 			e.printStackTrace();
 			assert false : e;

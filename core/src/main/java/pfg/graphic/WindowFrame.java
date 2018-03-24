@@ -12,7 +12,6 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import pfg.config.Config;
 import pfg.injector.Injector;
 
 /**
@@ -64,7 +63,7 @@ public class WindowFrame extends JFrame
 	private Container contentPane;
 //	private ConsoleDisplay console;
 	
-	public WindowFrame(Config config, GraphicPanel graphic, Injector injector)
+	public WindowFrame(GraphicPanel graphic, Injector injector)
 	{
 		super("Debug window");
 		this.graphic = graphic;
