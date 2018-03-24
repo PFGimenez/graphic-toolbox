@@ -24,16 +24,16 @@ public class DebugTool
 {
 	private Injector injector;
 	private static DebugTool instance = null;
-	
-	public static DebugTool getDebugTool(Position center, Severity cat)
-	{
-		if(instance == null)
-			instance = new DebugTool(new HashMap<ConfigInfo, Object>(), center, cat, "graphic.conf", "default");
-		return instance;
-	}
-	
+
 	public static DebugTool getExistingDebugTool()
 	{
+		return instance;
+	}
+
+	public static DebugTool getDebugTool(Position center, Severity cat, String configFilename, String... configprofile)
+	{
+		if(instance == null)
+			instance = new DebugTool(new HashMap<ConfigInfo, Object>(), center, cat, configFilename, configprofile);
 		return instance;
 	}
 	
@@ -46,14 +46,14 @@ public class DebugTool
 	
 	private DebugTool(HashMap<ConfigInfo, Object> override, Position center, Severity cat, String configFilename, String... configprofile)
 	{
-		Config config = new Config(ConfigInfoGraphic.values(), true, configFilename, configprofile);
+		Config config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
 		config.override(override);
 		injector = new Injector();
 		injector.addService(injector);
 		injector.addService(config);
 		Log log;
 		try {
-			log = new Log(cat, configFilename, "log");
+			log = new Log(cat, configFilename, configprofile);
 			injector.addService(log);
 			WindowFrame fenetre;
 			GraphicDisplay gd = injector.getService(GraphicDisplay.class);

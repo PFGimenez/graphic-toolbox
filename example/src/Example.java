@@ -20,7 +20,7 @@ public class Example
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		DebugTool dt = DebugTool.getDebugTool(new Vec2RO(0, 0), null);
+		DebugTool dt = DebugTool.getDebugTool(new Vec2RO(0, 0), null, "graphic.conf", "default");
 		WindowFrame f = dt.getWindowFrame();
 		GraphicDisplay buffer = f.getPrintBuffer();
 		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10));
