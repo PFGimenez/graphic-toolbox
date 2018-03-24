@@ -17,11 +17,13 @@ public class ThreadPrintClient extends Thread
 	protected Log log;
 	private GraphicDisplay buffer;
 	private String hostname;
+	private Config config;
 	
-	public ThreadPrintClient(Log log, GraphicDisplay buffer)
+	public ThreadPrintClient(Log log, GraphicDisplay buffer, Config config)
 	{
 		this.log = log;
 		this.buffer = buffer;
+		this.config = config;
 	}
 	
 	public void setHostname(String hostname)
@@ -35,7 +37,6 @@ public class ThreadPrintClient extends Thread
 		try {
 			assert hostname != null;
 			InetAddress rpiAdresse = null;
-			Config config = new Config(ConfigInfoGraphic.values(), false, "graphic.conf", "default");
 			boolean loop = false;
 			System.out.println("Démarrage du client d'affichage");
 			try

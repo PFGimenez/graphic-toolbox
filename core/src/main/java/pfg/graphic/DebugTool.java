@@ -53,7 +53,7 @@ public class DebugTool
 		injector.addService(config);
 		Log log;
 		try {
-			log = new Log(cat, "log.conf", "graphic");
+			log = new Log(cat, configFilename, "log");
 			injector.addService(log);
 			WindowFrame fenetre;
 			GraphicDisplay gd = injector.getService(GraphicDisplay.class);
@@ -116,10 +116,4 @@ public class DebugTool
 	{
 		return injector.getExistingService(WindowFrame.class);
 	}
-	
-	public Log getLog()
-	{
-		return injector.getExistingService(Log.class);
-	}
-
 }
