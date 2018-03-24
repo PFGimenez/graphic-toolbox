@@ -24,6 +24,7 @@ public enum ConfigInfoGraphic implements ConfigInfo
 	CONSOLE_NB_ROWS(10), // nombre de lignes dans la console affichée
 	CONSOLE_NB_COLUMNS(30), // nombre de colonnes dans la console affichée
 	
+	DEFAULT_ZOOM(0), // zoom par défaut
 	GRAPHIC_ENABLE(false), // autorise l'affichage 
 	BACKGROUND_PATH(""), // background path ; empty if none	
 	DISPLAY_GRID(true), // display the grid (over the background if there is one)

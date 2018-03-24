@@ -38,7 +38,7 @@ public class GraphicPanel extends JPanel
 
 	private int sizeX, sizeY;
 	private double zoom;
-	private Vec2RO center;
+	private Position center;
 	private Vec2RO deltaBasGauche, deltaHautDroite;
 	private String backgroundPath;
 	private Vec2RW coinBasGaucheEcran;
@@ -47,12 +47,13 @@ public class GraphicPanel extends JPanel
 
 	public GraphicPanel(Position center, Config config, GraphicDisplay buffer)
 	{
+		this.center = center;
 		this.buffer = buffer;
 		aff = new Chart("Debug", "Time", "Value");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
 		boolean afficheFond = !backgroundPath.isEmpty();
 		boolean afficheGrid = config.getBoolean(ConfigInfoGraphic.DISPLAY_GRID);
-		zoom = 0;
+
 		sizeXUnitaryZoom = config.getInt(ConfigInfoGraphic.SIZE_X_WITH_UNITARY_ZOOM);
 		sizeYUnitaryZoom = config.getInt(ConfigInfoGraphic.SIZE_Y_WITH_UNITARY_ZOOM);
 
@@ -82,6 +83,8 @@ public class GraphicPanel extends JPanel
 		if(afficheGrid)
 			buffer.addPrintable(new BackgroundGrid(), new Color(200,200,200), Layer.IMAGE_BACKGROUND.layer);
 		setPreferredSize(new Dimension(sizeX, sizeY));
+		
+		setZoom(config.getInt(ConfigInfoGraphic.DEFAULT_ZOOM));
 	}
 	
 	/**
@@ -90,6 +93,7 @@ public class GraphicPanel extends JPanel
 	 */
 	public void setZoom(double zoom)
 	{
+		this.zoom = zoom;
 		if(zoom != 0)
 		{
 			double deltaX, deltaY;
@@ -141,7 +145,7 @@ public class GraphicPanel extends JPanel
 		super.paintComponent(g);
 
 		g.clearRect(0, 0, sizeX, sizeY);
-		if(zoom != 0)
+		if(zoom != 0 && center != null)
 		{
 			Vec2RO positionRobot = new Vec2RO(center.getX(), center.getY());
 			Vec2RO currentCenter = positionRobot;
