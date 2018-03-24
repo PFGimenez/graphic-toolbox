@@ -12,7 +12,6 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import pfg.injector.Injector;
 
 /**
  * La fenêtre
@@ -27,12 +26,10 @@ public class WindowFrame extends JFrame
 	private class WindowExit extends WindowAdapter
 	{
 		private JFrame frame;
-		private Injector injector;
 		public volatile boolean alreadyExited = false;
 
-		public WindowExit(JFrame frame, Injector injector)
+		public WindowExit(JFrame frame)
 		{
-			this.injector = injector;
 			this.frame = frame;
 		}
 		
@@ -47,14 +44,6 @@ public class WindowFrame extends JFrame
 			notify();
 			alreadyExited = true;
 			frame.dispose();
-			if(injector.getExistingService(ThreadRefresh.class) != null)
-				injector.getExistingService(ThreadRefresh.class).interrupt();
-			if(injector.getExistingService(ThreadPrintClient.class) != null)
-				injector.getExistingService(ThreadPrintClient.class).interrupt();
-			if(injector.getExistingService(ThreadPrintServer.class) != null)
-				injector.getExistingService(ThreadPrintServer.class).interrupt();
-			if(injector.getExistingService(ThreadSaveVideo.class) != null)
-				injector.getExistingService(ThreadSaveVideo.class).interrupt();
 		}
 	}
 
@@ -63,7 +52,7 @@ public class WindowFrame extends JFrame
 	private Container contentPane;
 //	private ConsoleDisplay console;
 	
-	public WindowFrame(GraphicPanel graphic, Injector injector)
+	public WindowFrame(GraphicPanel graphic)
 	{
 		super("Debug window");
 		this.graphic = graphic;
@@ -75,7 +64,7 @@ public class WindowFrame extends JFrame
 		/*
 		 * Fermeture de la fenêtre quand on clique sur la croix
 		 */
-		exit = new WindowExit(this, injector);
+		exit = new WindowExit(this);
 		addWindowListener(exit);
 		
 		contentPane.add(graphic);

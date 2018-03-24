@@ -77,6 +77,22 @@ public class DebugTool
 			e.printStackTrace();
 		}
 	}
+	
+	public void destructor()
+	{
+		WindowFrame f = injector.getExistingService(WindowFrame.class);
+		if(f != null)
+			f.close();
+		
+		if(injector.getExistingService(ThreadRefresh.class) != null)
+			injector.getExistingService(ThreadRefresh.class).interrupt();
+		if(injector.getExistingService(ThreadPrintClient.class) != null)
+			injector.getExistingService(ThreadPrintClient.class).interrupt();
+		if(injector.getExistingService(ThreadPrintServer.class) != null)
+			injector.getExistingService(ThreadPrintServer.class).interrupt();
+		if(injector.getExistingService(ThreadSaveVideo.class) != null)
+			injector.getExistingService(ThreadSaveVideo.class).interrupt();
+	}
 
 	public void startPrintClient(String hostname)
 	{
