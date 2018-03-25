@@ -31,7 +31,7 @@ public class VideoReader
 	{
 		String filename = null, logfile = null;
 		double vitesse = 1;
-		boolean debug = false;
+//		boolean debug = false;
 		long[] breakPoints = new long[0];
 		int indexBP = 0;
 		boolean stopOnWarning = false, stopOnCritical = false;
@@ -48,8 +48,8 @@ public class VideoReader
 				vitesse = Double.parseDouble(args[++i]);
 			else if(args[i].equals("-S")) // skip
 				dateSkip = Long.parseLong(args[++i]);
-			else if(args[i].equals("-d")) // debug
-				debug = true;
+//			else if(args[i].equals("-d")) // debug
+//				debug = true;
 			else if(args[i].equals("-v")) // video
 				filename = args[++i];
 			else if(args[i].equals("-w")) // warning
@@ -58,34 +58,6 @@ public class VideoReader
 				stopOnCritical = true;
 			else if(args[i].equals("-l")) // log
 				logfile = args[++i];
-/*			else if(args[i].equals("-withsprite")) // pas de sprite du robot
-				ConfigInfoGraphic.ROBOT_AND_SENSORS.setDefaultValue(true);
-			else if(args[i].equals("-vcapt")) // verbose capteurs
-				ConfigInfoGraphic.DEBUG_CAPTEURS.setDefaultValue(true);
-			else if(args[i].equals("-vscripts")) // verbose scripts
-				ConfigInfoGraphic.DEBUG_SCRIPTS.setDefaultValue(true);
-			else if(args[i].equals("-vasser")) // verbose asser
-				ConfigInfoGraphic.DEBUG_ASSER.setDefaultValue(true);
-			else if(args[i].equals("-vdebug")) // verbose capteurs
-				ConfigInfoGraphic.DEBUG_DEBUG.setDefaultValue(true);
-			else if(args[i].equals("-vpf")) // verbose pf
-				ConfigInfoGraphic.DEBUG_PF.setDefaultValue(true);
-			else if(args[i].equals("-vreplanif")) // verbose replanif
-				ConfigInfoGraphic.DEBUG_REPLANIF.setDefaultValue(true);
-			else if(args[i].equals("-vserie")) // verbose série
-				ConfigInfoGraphic.DEBUG_SERIE.setDefaultValue(true);
-			else if(args[i].equals("-vcorr")) // verbose correction
-				ConfigInfoGraphic.DEBUG_CORRECTION.setDefaultValue(true);*/
-/*			else if(args[i].equals("-b")) // bof
-			{
-				// Robot bof : (630, 1320), angle = 0
-
-				double posX = Double.parseDouble(args[++i]);
-				double posY = Double.parseDouble(args[++i]);
-				double angle = Double.parseDouble(args[++i]);
-
-				robotBof = new ObstacleRectangular(new Vec2RO(posX, posY), 300, 240, angle, Couleur.ROBOT_BOF);
-			}*/
 			else if(args[i].equals("-B")) // break
 			{
 				int nb = Integer.parseInt(args[++i]);
@@ -99,27 +71,18 @@ public class VideoReader
 
 		if(filename == null && logfile == null)
 		{
-			System.out.println("Utilisation : VideoReader -v videoFile -l logFile [-s speed] [-w] [-c] [-b posX posY angle] [-B n ...]");
+			System.out.println("Utilisation : VideoReader -v videoFile -l logFile [-s speed] [-w] [-c] [-B n ...]");
 			System.out.println("-w : autostop on warning ");
 			System.out.println("-c : autostop on critical ");
 			System.out.println("-S date : start at this date");
-			System.out.println("-b : add robot bof© ");
 			System.out.println("-B n t1 t2 … tn: add n breakpoints at timestamps t1,… tn ");
 			System.out.println("-s speed : set reading speed. 2 is twice as fast, 0.5 twice as slow");
-			System.out.println("-withsprite : affiche le sprite du robot et des capteurs");
-			System.out.println("-vcapt : verbose capteurs");
-			System.out.println("-vscripts : verbose scripts");
-			System.out.println("-vasser : verbose pour asser");
-			System.out.println("-vdebug : verbose debug général");
-			System.out.println("-vpf : verbose pathfinding");
-			System.out.println("-vreplanif : verbose de la replanification à la volée");
-			System.out.println("-vserie : verbose de la série");
-			System.out.println("-vcorr : verbose de la correction d'odométrie");
 			return;
 		}
 
+		Vec2RW center = new Vec2RW(0,1000);
 		Scanner sc = new Scanner(System.in);
-		DebugTool debugTool = DebugTool.getDebugTool(override, new Vec2RO(0, 1000), null, "reader.conf", "default");
+		DebugTool debugTool = DebugTool.getDebugTool(override, center, null, "reader.conf", "default");
 		GraphicDisplay buffer = debugTool.getWindowFrame().getPrintBuffer();
 
 		try
@@ -131,8 +94,8 @@ public class VideoReader
 			special("Vitesse : " + vitesse);
 			if(dateSkip != -1)
 				special("Skip to : " + dateSkip);
-			if(debug)
-				special("Debug activé");
+//			if(debug)
+//				special("Debug activé");
 
 			if(filename != null)
 			{
@@ -172,8 +135,6 @@ public class VideoReader
 			else
 				nextVid = listes.getTimestamp(0);
 			
-			System.out.println(nextVid);
-
 			long firstTimestamp = Math.min(nextLog, nextVid);
 
 			int indexListe = 0;
@@ -220,7 +181,8 @@ public class VideoReader
 					}
 					else if(l.equals("stop"))
 					{
-						br.close();
+						if(logfile != null)
+							br.close();
 						throw new InterruptedException();
 					}
 					else if(frameToFrame && l.equals("normal"))
@@ -257,7 +219,11 @@ public class VideoReader
 					if(delta > 0 && dateSkip < nextVid)
 						Thread.sleep(delta);
 
+					Position p = listes.getPosition(indexListe);
+					center.setX(p.getX());
+					center.setY(p.getY());
 					buffer.updatePrintable(tab);
+					buffer.refresh();
 /*					synchronized(buffer)
 					{
 						buffer.clearTemporaryPrintables();
@@ -324,7 +290,7 @@ public class VideoReader
 			if(logfile != null)
 				br.close();
 			
-//			fenetre.waitUntilExit(0);
+			debugTool.destructor();
 		}
 		catch(Exception e)
 		{
@@ -351,7 +317,7 @@ public class VideoReader
 		return null;
 	}
 
-	private static int extractMasque(String line)
+/*	private static int extractMasque(String line)
 	{
 		try
 		{
@@ -361,7 +327,7 @@ public class VideoReader
 		{
 			return 0;//Verbose.all;
 		}
-	}
+	}*/
 
 	private static long getTimestampLog(String line)
 	{

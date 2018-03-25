@@ -40,6 +40,11 @@ public class TimestampedList implements Serializable
 		this.dateInitiale = dateInitiale;
 	}
 	
+	public synchronized Position getPosition(int indexList)
+	{
+		return positions.get(indexList);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public synchronized PriorityQueue<ColoredPrintable> getList(int indexList)
 	{
@@ -47,9 +52,9 @@ public class TimestampedList implements Serializable
 			byte b[] = listes.get(indexList);
 			ByteArrayInputStream array = new ByteArrayInputStream(b);
 			ObjectInputStream input = new ObjectInputStream(array);
-			Object o = input.readObject();
-//			PriorityQueue<ColoredPrintable> o = (PriorityQueue<ColoredPrintable>) input.readObject();
-			return (PriorityQueue<ColoredPrintable>) o;
+//			Object o = input.readObject();
+			PriorityQueue<ColoredPrintable> o = (PriorityQueue<ColoredPrintable>) input.readObject();
+			return o;
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 			assert false : e;
@@ -109,6 +114,7 @@ public class TimestampedList implements Serializable
 		{
 			System.out.println("Timestamp : "+listesTimestamped.get(i));
 			System.out.println("Center : "+positions.get(i));
+			System.out.println("Taille objet brut : "+listes.get(i).length);
 			System.out.println("Objets : ");
 			describeQueue(getList(i));
 		}
@@ -116,7 +122,7 @@ public class TimestampedList implements Serializable
 	
 	private void describeQueue(PriorityQueue<ColoredPrintable> pq)
 	{
-		while(pq.isEmpty())
+		while(!pq.isEmpty())
 			System.out.println("	"+pq.poll());
 	}
 

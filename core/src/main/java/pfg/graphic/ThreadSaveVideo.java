@@ -34,12 +34,8 @@ public class ThreadSaveVideo extends Thread
 		{
 			while(true)
 			{
-				Thread.sleep(100);
-				synchronized(buffer)
-				{
-					buffer.wait(400);
-					buffer.saveState();
-				}
+				Thread.sleep(500);
+				buffer.saveState();
 			}
 		}
 		catch(InterruptedException e)

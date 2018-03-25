@@ -84,7 +84,7 @@ public class GraphicPanel extends JPanel
 			buffer.addPrintable(new BackgroundGrid(), new Color(200,200,200), Layer.IMAGE_BACKGROUND.layer);
 		setPreferredSize(new Dimension(sizeX, sizeY));
 		
-		setZoom(config.getInt(ConfigInfoGraphic.DEFAULT_ZOOM));
+		setZoom(config.getDouble(ConfigInfoGraphic.DEFAULT_ZOOM));
 	}
 	
 	/**
