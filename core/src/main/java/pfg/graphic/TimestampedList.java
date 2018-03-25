@@ -29,19 +29,13 @@ public class TimestampedList implements Serializable
 	private static final long serialVersionUID = -5167892162649965305L;
 	private final List<Long> listesTimestamped = new ArrayList<Long>();
 	private final List<byte[]> listes = new ArrayList<byte[]>();
-	private long dateInitiale;
-	private transient ObjectOutputStream tmp;
+//	private final List<byte[]> listesPlottable = new ArrayList<byte[]>();
+	private transient long dateInitiale;
 	private transient ByteArrayOutputStream array;
 
 	public TimestampedList(long dateInitiale)
 	{
-		try {
-			array = new ByteArrayOutputStream();
-			tmp = new ObjectOutputStream(array);
-		} catch (IOException e) {
-			e.printStackTrace();
-			assert false : e;
-		}
+		array = new ByteArrayOutputStream();
 		this.dateInitiale = dateInitiale;
 	}
 	
@@ -52,8 +46,9 @@ public class TimestampedList implements Serializable
 			byte b[] = listes.get(indexList);
 			ByteArrayInputStream array = new ByteArrayInputStream(b);
 			ObjectInputStream input = new ObjectInputStream(array);
-			PriorityQueue<ColoredPrintable> o = (PriorityQueue<ColoredPrintable>) input.readObject();
-			return o;
+			Object o = input.readObject();
+//			PriorityQueue<ColoredPrintable> o = (PriorityQueue<ColoredPrintable>) input.readObject();
+			return (PriorityQueue<ColoredPrintable>) o;
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 			assert false : e;
@@ -68,12 +63,19 @@ public class TimestampedList implements Serializable
 	public synchronized void add(PriorityQueue<ColoredPrintable> o)
 	{
 		try {
+			listesTimestamped.add(System.currentTimeMillis() - dateInitiale);
+			ObjectOutputStream tmp = new ObjectOutputStream(array);
 			tmp.writeObject(o);
 			tmp.flush();
-			listesTimestamped.add(System.currentTimeMillis() - dateInitiale);
 			listes.add(array.toByteArray());
 			array.reset();
-			assert listesTimestamped.size() == listes.size();
+			
+/*			tmp.writeObject(p);
+			tmp.flush();
+			listesPlottable.add(array.toByteArray());
+			array.reset();*/
+			
+			assert listesTimestamped.size() == listes.size();// && listesTimestamped.size() == listesPlottable.size();
 		} catch (IOException e) {
 			e.printStackTrace(); // Impossible
 			assert false : e;
@@ -87,13 +89,13 @@ public class TimestampedList implements Serializable
 
 	public int size()
 	{
-		assert listesTimestamped.size() == listes.size();
+		assert listesTimestamped.size() == listes.size();// && listesTimestamped.size() == listesPlottable.size();
 		return listesTimestamped.size();
 	}
 
 	public boolean isEmpty()
 	{
-		assert listesTimestamped.isEmpty() == listes.isEmpty();
+		assert listesTimestamped.isEmpty() == listes.isEmpty();// && listesTimestamped.isEmpty() == listesPlottable.isEmpty();
 		return listesTimestamped.isEmpty();
 	}
 

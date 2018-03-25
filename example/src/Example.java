@@ -39,6 +39,8 @@ public class Example
 			f.refresh();
 			Thread.sleep(200);
 		}
+		dt.destructor();
+
 	}
 	
 	public static class RandomValue implements Plottable

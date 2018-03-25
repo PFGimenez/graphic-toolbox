@@ -11,9 +11,10 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.Scanner;
-
+import pfg.config.ConfigInfo;
 import pfg.graphic.printable.ColoredPrintable;
 
 /**
@@ -128,11 +129,11 @@ public class VideoReader
 		}
 
 		Scanner sc = new Scanner(System.in);
-		GraphicPanel fenetre = null;//new DebugTool().getFenetre(new Vec2RO(0, 1000));
+		DebugTool debugTool = DebugTool.getDebugTool(new HashMap<ConfigInfo, Object>(), new Vec2RO(0, 1000), null, "reader.conf", "default");
+		GraphicDisplay buffer = debugTool.getWindowFrame().getPrintBuffer();
 
 		try
 		{
-			GraphicDisplay buffer = fenetre.getPrintBuffer();
 			TimestampedList listes = null;
 
 			special("Fichier vidéo : " + filename);
@@ -180,6 +181,8 @@ public class VideoReader
 				nextVid = Long.MAX_VALUE;
 			else
 				nextVid = listes.getTimestamp(0);
+			
+			System.out.println(nextVid);
 
 			long firstTimestamp = Math.min(nextLog, nextVid);
 
@@ -327,12 +330,16 @@ public class VideoReader
 				}
 			}
 			special("Fin de l'enregistrement");
-			br.close();
+			
+			if(logfile != null)
+				br.close();
 			
 //			fenetre.waitUntilExit(0);
 		}
 		catch(Exception e)
-		{}
+		{
+			e.printStackTrace();
+		}
 		finally
 		{
 			sc.close();
