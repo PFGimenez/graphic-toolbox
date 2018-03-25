@@ -19,17 +19,15 @@ public class ExampleVideo
 	{
 		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10));
 		DebugTool dt = DebugTool.getDebugTool(s1.a, null, "graphic.conf", "default");
-		WindowFrame f = dt.getWindowFrame();
-		GraphicDisplay buffer = f.getPrintBuffer();
+		GraphicDisplay buffer = dt.getGraphicDisplay();
 		dt.startSaveVideo();
 		double angle = 0;
-		buffer.addPrintable(s1, Color.RED, Layer.FOREGROUND.layer);		
-		f.refresh();
+		buffer.addPrintable(s1, Color.RED, Layer.FOREGROUND.layer);
 		for(int i = 0; i < 30; i++)
 		{
 			s1.a.set(10, angle);
 			s1.b.set(10, angle + Math.PI);
-			f.refresh();
+			buffer.refresh();
 			Thread.sleep(200);
 			angle += 0.1;
 		}

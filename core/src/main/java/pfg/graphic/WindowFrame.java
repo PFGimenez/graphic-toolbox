@@ -105,9 +105,4 @@ public class WindowFrame extends JFrame
 		graphic.repaint();
 	}
 
-	public GraphicDisplay getPrintBuffer()
-	{
-		return graphic.getPrintBuffer();
-	}
-
 }

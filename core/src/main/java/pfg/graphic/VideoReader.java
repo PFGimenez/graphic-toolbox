@@ -83,7 +83,7 @@ public class VideoReader
 		Vec2RW center = new Vec2RW(0,1000);
 		Scanner sc = new Scanner(System.in);
 		DebugTool debugTool = DebugTool.getDebugTool(override, center, null, "reader.conf", "default");
-		GraphicDisplay buffer = debugTool.getWindowFrame().getPrintBuffer();
+		GraphicDisplay buffer = debugTool.getGraphicDisplay();
 
 		try
 		{

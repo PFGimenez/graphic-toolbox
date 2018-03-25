@@ -21,22 +21,21 @@ public class Example
 	public static void main(String[] args) throws InterruptedException
 	{
 		DebugTool dt = DebugTool.getDebugTool(new Vec2RO(0, 0), null, "graphic.conf", "default");
-		WindowFrame f = dt.getWindowFrame();
-		GraphicDisplay buffer = f.getPrintBuffer();
+		GraphicDisplay buffer = dt.getGraphicDisplay();
 		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10));
 		buffer.addPrintable(s1, Color.RED, Layer.FOREGROUND.layer);
 		Segment s2 = new Segment(new Vec2RO(-20, 20), new Vec2RO(-20, -20));
 		buffer.addTemporaryPrintable(s2, Color.BLUE, Layer.FOREGROUND.layer);
-		f.refresh();
+		buffer.refresh();
 		Thread.sleep(1000);
 		buffer.clearTemporaryPrintables();
-		f.refresh();
+		buffer.refresh();
 		Thread.sleep(1000);
 		buffer.addPlottable(new RandomValue("Test 1"));
 		buffer.addPlottable(new RandomValue("Test 2"));
 		for(int i = 0; i < 10; i++)
 		{
-			f.refresh();
+			buffer.refresh();
 			Thread.sleep(200);
 		}
 		dt.destructor();

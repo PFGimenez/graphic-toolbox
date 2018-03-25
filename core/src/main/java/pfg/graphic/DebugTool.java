@@ -132,8 +132,13 @@ public class DebugTool
 		}
 	}
 	
+	public GraphicDisplay getGraphicDisplay()
+	{
+		return injector.getExistingService(GraphicDisplay.class);
+	}
+	/*
 	public WindowFrame getWindowFrame()
 	{
 		return injector.getExistingService(WindowFrame.class);
-	}
+	}*/
 }

@@ -56,7 +56,8 @@ public class GraphicDisplay
 	 */
 	public void refresh()
 	{
-		f.refresh();
+		if(f != null)
+			f.refresh();
 	}
 	
 	synchronized void updatePrintable(PriorityQueue<ColoredPrintable> l)

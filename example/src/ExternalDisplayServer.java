@@ -25,8 +25,7 @@ public class ExternalDisplayServer
 	public static void main(String[] args) throws InterruptedException
 	{
 		DebugTool dt = DebugTool.getDebugTool(new Vec2RO(0, 0), null, "graphic.conf", "default");
-		WindowFrame f = dt.getWindowFrame();
-		GraphicDisplay buffer = f.getPrintBuffer();
+		GraphicDisplay buffer = dt.getGraphicDisplay();
 		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10));
 		buffer.addPrintable(s1, Color.RED, Layer.FOREGROUND.layer);
 		Segment s2 = new Segment(new Vec2RO(-20, 20), new Vec2RO(-20, -20));
@@ -40,7 +39,7 @@ public class ExternalDisplayServer
 			s1.b.plus(tmp);
 			s2.a.copy(s2.b);
 			s2.b.minus(tmp);
-			f.refresh();
+			buffer.refresh();
 			Thread.sleep(50);
 		}
 	}
