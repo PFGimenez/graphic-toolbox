@@ -58,10 +58,10 @@ public class DebugTool
 			WindowFrame fenetre;
 			GraphicDisplay gd = new GraphicDisplay(center);
 			injector.addService(gd);
-			GraphicPanel g = new GraphicPanel(center, config, gd);
-			injector.addService(g);
 			if(config.getBoolean(ConfigInfoGraphic.GRAPHIC_ENABLE))
 			{
+				GraphicPanel g = new GraphicPanel(center, config, gd);
+				injector.addService(g);
 				fenetre = injector.getService(WindowFrame.class);
 				injector.addService(fenetre);
 				double frequency = config.getDouble(ConfigInfoGraphic.REFRESH_FREQUENCY);
