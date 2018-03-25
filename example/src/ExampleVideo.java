@@ -17,12 +17,12 @@ public class ExampleVideo
 
 	public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException
 	{
-		DebugTool dt = DebugTool.getDebugTool(new Vec2RO(0, 0), null, "graphic.conf", "default");
+		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10));
+		DebugTool dt = DebugTool.getDebugTool(s1.a, null, "graphic.conf", "default");
 		WindowFrame f = dt.getWindowFrame();
 		GraphicDisplay buffer = f.getPrintBuffer();
 		dt.startSaveVideo();
 		double angle = 0;
-		Segment s1 = new Segment(new Vec2RO(-10, -10), new Vec2RO(10, 10));
 		buffer.addPrintable(s1, Color.RED, Layer.FOREGROUND.layer);		
 		f.refresh();
 		for(int i = 0; i < 30; i++)

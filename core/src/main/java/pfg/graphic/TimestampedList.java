@@ -28,6 +28,7 @@ public class TimestampedList implements Serializable
 {
 	private static final long serialVersionUID = -5167892162649965305L;
 	private final List<Long> listesTimestamped = new ArrayList<Long>();
+	private final List<Position> positions = new ArrayList<Position>();
 	private final List<byte[]> listes = new ArrayList<byte[]>();
 //	private final List<byte[]> listesPlottable = new ArrayList<byte[]>();
 	private transient long dateInitiale;
@@ -60,9 +61,10 @@ public class TimestampedList implements Serializable
 	 * On sérialise directement en byte[], ce qui fait donc une copie de l'objet à l'instant où cette méthode est appelée
 	 * @param o
 	 */
-	public synchronized void add(PriorityQueue<ColoredPrintable> o)
+	public synchronized void add(Position currentCenter, PriorityQueue<ColoredPrintable> o)
 	{
 		try {
+			positions.add(new Vec2RO(currentCenter.getX(), currentCenter.getY()));
 			listesTimestamped.add(System.currentTimeMillis() - dateInitiale);
 			ObjectOutputStream tmp = new ObjectOutputStream(array);
 			tmp.writeObject(o);
@@ -97,6 +99,25 @@ public class TimestampedList implements Serializable
 	{
 		assert listesTimestamped.isEmpty() == listes.isEmpty();// && listesTimestamped.isEmpty() == listesPlottable.isEmpty();
 		return listesTimestamped.isEmpty();
+	}
+	
+	public void describe()
+	{
+		int size = size();
+		System.out.println("Il y a "+size+" elements :");
+		for(int i = 0; i < size; i++)
+		{
+			System.out.println("Timestamp : "+listesTimestamped.get(i));
+			System.out.println("Center : "+positions.get(i));
+			System.out.println("Objets : ");
+			describeQueue(getList(i));
+		}
+	}
+	
+	private void describeQueue(PriorityQueue<ColoredPrintable> pq)
+	{
+		while(pq.isEmpty())
+			System.out.println("	"+pq.poll());
 	}
 
 }

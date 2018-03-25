@@ -36,11 +36,12 @@ public class GraphicDisplay
 	private boolean needRefresh = false;
 	private TimestampedList sauvegarde;
 	private WindowFrame f;
-
+	private Position center;
 	private String filename;
 	
-	public GraphicDisplay()
+	public GraphicDisplay(Position center)
 	{
+		this.center = center;
 		sauvegarde = new TimestampedList(System.currentTimeMillis());
 		filename = "videos/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".dat";
 	}
@@ -167,7 +168,7 @@ public class GraphicDisplay
 	 */
 	synchronized void saveState()
 	{
-		sauvegarde.add(printables);
+		sauvegarde.add(center, printables);
 		// TODO : plottables aussi !
 	}
 

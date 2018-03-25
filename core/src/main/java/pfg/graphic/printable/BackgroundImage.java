@@ -20,7 +20,7 @@ import pfg.graphic.GraphicPanel;
 public class BackgroundImage implements Printable
 {
 	private static final long serialVersionUID = 1422929627673510227L;
-	private Image image;
+	private transient Image image;
 
 	public BackgroundImage(Image image)
 	{

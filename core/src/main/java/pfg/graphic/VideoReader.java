@@ -40,17 +40,7 @@ public class VideoReader
 		boolean skipdone = false;
 		long nextStopFTF = 0;
 		
-//		ConfigInfoGraphic.ROBOT_AND_SENSORS.setDefaultValue(false);
-
-/*		ConfigInfoGraphic.DEBUG_CAPTEURS.setDefaultValue(false);
-		ConfigInfoGraphic.DEBUG_SCRIPTS.setDefaultValue(false);
-		ConfigInfoGraphic.DEBUG_ASSER.setDefaultValue(false);
-		ConfigInfoGraphic.DEBUG_DEBUG.setDefaultValue(false);
-		ConfigInfoGraphic.DEBUG_PF.setDefaultValue(false);
-		ConfigInfoGraphic.DEBUG_CORRECTION.setDefaultValue(false);		
-		ConfigInfoGraphic.DEBUG_REPLANIF.setDefaultValue(false);
-		ConfigInfoGraphic.DEBUG_SERIE.setDefaultValue(false);
-		ConfigInfoGraphic.DEBUG_SERIE_TRAME.setDefaultValue(false);*/
+		HashMap<ConfigInfo, Object> override = new HashMap<ConfigInfo, Object>();
 		
 		for(int i = 0; i < args.length; i++)
 		{
@@ -129,7 +119,7 @@ public class VideoReader
 		}
 
 		Scanner sc = new Scanner(System.in);
-		DebugTool debugTool = DebugTool.getDebugTool(new HashMap<ConfigInfo, Object>(), new Vec2RO(0, 1000), null, "reader.conf", "default");
+		DebugTool debugTool = DebugTool.getDebugTool(override, new Vec2RO(0, 1000), null, "reader.conf", "default");
 		GraphicDisplay buffer = debugTool.getWindowFrame().getPrintBuffer();
 
 		try

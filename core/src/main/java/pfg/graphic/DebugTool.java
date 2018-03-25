@@ -56,7 +56,8 @@ public class DebugTool
 			log = new Log(cat, configFilename, configprofile);
 			injector.addService(log);
 			WindowFrame fenetre;
-			GraphicDisplay gd = injector.getService(GraphicDisplay.class);
+			GraphicDisplay gd = new GraphicDisplay(center);
+			injector.addService(gd);
 			GraphicPanel g = new GraphicPanel(center, config, gd);
 			injector.addService(g);
 			if(config.getBoolean(ConfigInfoGraphic.GRAPHIC_ENABLE))
