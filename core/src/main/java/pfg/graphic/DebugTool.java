@@ -23,6 +23,7 @@ import pfg.log.Severity;
 public class DebugTool
 {
 	private Injector injector;
+	private Config config;
 	private static DebugTool instance = null;
 
 	public static DebugTool getExistingDebugTool()
@@ -46,7 +47,7 @@ public class DebugTool
 	
 	private DebugTool(HashMap<ConfigInfo, Object> override, Position center, Severity cat, String configFilename, String... configprofile)
 	{
-		Config config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
+		config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
 		config.override(override);
 		injector = new Injector();
 		injector.addService(injector);
@@ -141,4 +142,12 @@ public class DebugTool
 	{
 		return injector.getExistingService(WindowFrame.class);
 	}*/
+	
+	/**
+	 * Print the values overridden by the configuration file
+	 */
+	public void displayOverriddenConfigValues()
+	{
+		config.printChangedValues();
+	}
 }
