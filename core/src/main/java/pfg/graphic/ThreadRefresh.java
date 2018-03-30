@@ -29,6 +29,7 @@ public class ThreadRefresh extends Thread
 		this.log = log;
 		this.buffer = buffer;
 		setFrequency(50);
+		setDaemon(true);
 	}
 	
 	public synchronized void setFrequency(double frequency)

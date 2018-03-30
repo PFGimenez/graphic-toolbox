@@ -23,6 +23,7 @@ public class ThreadSaveVideo extends Thread
 	{
 		this.log = log;
 		this.buffer = buffer;
+		setDaemon(true);
 	}
 
 	@Override

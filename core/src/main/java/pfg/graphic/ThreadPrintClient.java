@@ -24,6 +24,7 @@ public class ThreadPrintClient extends Thread
 		this.log = log;
 		this.buffer = buffer;
 		this.config = config;
+		setDaemon(true);
 	}
 	
 	public void setHostname(String hostname)

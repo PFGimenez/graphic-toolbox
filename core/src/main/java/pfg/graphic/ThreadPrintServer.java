@@ -46,6 +46,7 @@ public class ThreadPrintServer extends Thread
 			this.buffer = buffer;
 			this.socket = socket;
 			this.nb = nb;
+			setDaemon(true);
 		}
 
 		@Override
