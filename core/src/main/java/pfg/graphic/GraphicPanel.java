@@ -38,6 +38,7 @@ public class GraphicPanel extends JPanel
 
 	private int sizeX, sizeY;
 	private double zoom;
+	private Position defaultCenter;
 	private Position center;
 	private Vec2RO deltaBasGauche, deltaHautDroite;
 	private String backgroundPath;
@@ -45,8 +46,9 @@ public class GraphicPanel extends JPanel
 	private Vec2RW coinHautDroiteEcran;
 	private double sizeXUnitaryZoom, sizeYUnitaryZoom;
 
-	public GraphicPanel(Position center, Config config, GraphicDisplay buffer)
+	public GraphicPanel(Position defaultCenter, Position center, Config config, GraphicDisplay buffer)
 	{
+		this.defaultCenter = defaultCenter;
 		this.center = center;
 		this.buffer = buffer;
 		aff = new Chart("Debug", "Time", "Value");
@@ -56,9 +58,6 @@ public class GraphicPanel extends JPanel
 
 		sizeXUnitaryZoom = config.getInt(ConfigInfoGraphic.SIZE_X_WITH_UNITARY_ZOOM);
 		sizeYUnitaryZoom = config.getInt(ConfigInfoGraphic.SIZE_Y_WITH_UNITARY_ZOOM);
-
-		coinBasGaucheEcran = new Vec2RW(-sizeXUnitaryZoom / 2 + center.getX(), -sizeYUnitaryZoom / 2 + center.getY());
-		coinHautDroiteEcran = new Vec2RW(sizeXUnitaryZoom / 2 + center.getX(), sizeYUnitaryZoom / 2 + center.getY());
 		
 		if(afficheFond)
 		{
@@ -94,7 +93,12 @@ public class GraphicPanel extends JPanel
 	public void setZoom(double zoom)
 	{
 		this.zoom = zoom;
-		if(zoom != 0)
+		if(zoom == 0)
+		{
+			coinBasGaucheEcran = new Vec2RW(-sizeXUnitaryZoom / 2 + defaultCenter.getX(), -sizeYUnitaryZoom / 2 + defaultCenter.getY());
+			coinHautDroiteEcran = new Vec2RW(sizeXUnitaryZoom / 2 + defaultCenter.getX(), sizeYUnitaryZoom / 2 + defaultCenter.getY());			
+		}
+		else
 		{
 			double deltaX, deltaY;
 			deltaX = sizeXUnitaryZoom / (2*zoom);
@@ -102,6 +106,7 @@ public class GraphicPanel extends JPanel
 			deltaBasGauche = new Vec2RO(-deltaX, -deltaY);
 			deltaHautDroite = new Vec2RO(deltaX, deltaY);
 		}
+			
 	}
 	
 	public GraphicDisplay getPrintBuffer()

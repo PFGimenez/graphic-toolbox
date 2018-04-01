@@ -4,7 +4,6 @@ import pfg.graphic.DebugTool;
 import pfg.graphic.GraphicDisplay;
 import pfg.graphic.Vec2RO;
 import pfg.graphic.Vec2RW;
-import pfg.graphic.WindowFrame;
 import pfg.graphic.printable.Layer;
 import pfg.graphic.printable.Segment;
 

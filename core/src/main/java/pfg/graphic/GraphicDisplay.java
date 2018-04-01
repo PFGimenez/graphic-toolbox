@@ -39,10 +39,10 @@ public class GraphicDisplay
 	private Position center;
 	private String filename;
 	
-	public GraphicDisplay(Position center)
+	public GraphicDisplay(Position defaultCenter, Position center)
 	{
 		this.center = center;
-		sauvegarde = new TimestampedList(System.currentTimeMillis());
+		sauvegarde = new TimestampedList(System.currentTimeMillis(), defaultCenter);
 		filename = "videos/" + new SimpleDateFormat("dd-MM.HH:mm").format(new Date()) + ".dat";
 	}
 	

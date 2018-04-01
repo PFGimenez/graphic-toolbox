@@ -31,22 +31,30 @@ public class DebugTool
 		return instance;
 	}
 
-	public static DebugTool getDebugTool(Position center, Severity cat, String configFilename, String... configprofile)
+	public static DebugTool getDebugTool(Position defaultCenter, Severity cat, String configFilename, String... configprofile)
 	{
 		if(instance == null)
-			instance = new DebugTool(new HashMap<ConfigInfo, Object>(), center, cat, configFilename, configprofile);
+			instance = new DebugTool(new HashMap<ConfigInfo, Object>(), defaultCenter, defaultCenter, cat, configFilename, configprofile);
 		return instance;
 	}
 	
-	public static DebugTool getDebugTool(HashMap<ConfigInfo, Object> override, Position center, Severity cat, String configFilename, String... configprofile)
+	public static DebugTool getDebugTool(HashMap<ConfigInfo, Object> override, Position defaultCenter, Position center, Severity cat, String configFilename, String... configprofile)
 	{
 		if(instance == null)
-			instance = new DebugTool(override, center, cat, configFilename, configprofile);
+			instance = new DebugTool(override, defaultCenter, center, cat, configFilename, configprofile);
 		return instance;
 	}
-	
-	private DebugTool(HashMap<ConfigInfo, Object> override, Position center, Severity cat, String configFilename, String... configprofile)
+
+	public static DebugTool getDebugTool(HashMap<ConfigInfo, Object> override, Position defaultCenter, Severity cat, String configFilename, String... configprofile)
 	{
+		if(instance == null)
+			instance = new DebugTool(override, defaultCenter, defaultCenter, cat, configFilename, configprofile);
+		return instance;
+	}
+
+	private DebugTool(HashMap<ConfigInfo, Object> override, Position defaultCenter, Position center, Severity cat, String configFilename, String... configprofile)
+	{
+		Position defaultCenter2 = new Vec2RO(defaultCenter.getX(), defaultCenter.getY());
 		config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
 		config.override(override);
 		injector = new Injector();
@@ -57,11 +65,11 @@ public class DebugTool
 			log = new Log(cat, configFilename, configprofile);
 			injector.addService(log);
 			WindowFrame fenetre;
-			GraphicDisplay gd = new GraphicDisplay(center);
+			GraphicDisplay gd = new GraphicDisplay(defaultCenter2, center);
 			injector.addService(gd);
 			if(config.getBoolean(ConfigInfoGraphic.GRAPHIC_ENABLE))
 			{
-				GraphicPanel g = new GraphicPanel(center, config, gd);
+				GraphicPanel g = new GraphicPanel(defaultCenter2, center, config, gd);
 				injector.addService(g);
 				fenetre = injector.getService(WindowFrame.class);
 				injector.addService(fenetre);

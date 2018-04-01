@@ -80,10 +80,7 @@ public class VideoReader
 			return;
 		}
 
-		Vec2RW center = new Vec2RW(0,1000);
 		Scanner sc = new Scanner(System.in);
-		DebugTool debugTool = DebugTool.getDebugTool(override, center, null, "reader.conf", "default");
-		GraphicDisplay buffer = debugTool.getGraphicDisplay();
 
 		try
 		{
@@ -97,6 +94,10 @@ public class VideoReader
 //			if(debug)
 //				special("Debug activé");
 
+			DebugTool debugTool = null;
+			Vec2RW center = null;
+			GraphicDisplay buffer = null;
+			
 			if(filename != null)
 			{
 				try
@@ -111,7 +112,16 @@ public class VideoReader
 					System.err.println("Chargement échoué ! "+e);
 					return;
 				}
+				
+				Position d = listes.getDefaultCenter();
+				Vec2RO defaultCenter = new Vec2RO(d.getX(), d.getY());
+				center = defaultCenter.clone();
+				debugTool = DebugTool.getDebugTool(override, defaultCenter, center, null, "reader.conf", "default");
+				buffer = debugTool.getGraphicDisplay();
 			}
+			
+
+
 			
 			long initialDate = System.currentTimeMillis();
 
@@ -290,7 +300,8 @@ public class VideoReader
 			if(logfile != null)
 				br.close();
 			
-			debugTool.destructor();
+			if(debugTool != null)
+				debugTool.destructor();
 		}
 		catch(Exception e)
 		{

@@ -33,11 +33,13 @@ public class TimestampedList implements Serializable
 //	private final List<byte[]> listesPlottable = new ArrayList<byte[]>();
 	private transient long dateInitiale;
 	private transient ByteArrayOutputStream array;
+	private Position defaultCenter;
 
-	public TimestampedList(long dateInitiale)
+	public TimestampedList(long dateInitiale, Position defaultCenter)
 	{
 		array = new ByteArrayOutputStream();
 		this.dateInitiale = dateInitiale;
+		this.defaultCenter = defaultCenter;
 	}
 	
 	public synchronized Position getPosition(int indexList)
@@ -124,6 +126,11 @@ public class TimestampedList implements Serializable
 	{
 		while(!pq.isEmpty())
 			System.out.println("	"+pq.poll());
+	}
+
+	public Position getDefaultCenter()
+	{
+		return defaultCenter;
 	}
 
 }
