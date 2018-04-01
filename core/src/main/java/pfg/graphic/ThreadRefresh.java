@@ -46,11 +46,11 @@ public class ThreadRefresh extends Thread
 		{
 			while(true)
 			{
-				synchronized(buffer)
+/*				synchronized(buffer)
 				{
 					if(!buffer.needRefresh())
 						buffer.wait();
-				}
+				}*/
 				fenetre.refresh();
 				Thread.sleep(period);
 			}

@@ -80,7 +80,6 @@ public class DebugTool
 					ThreadRefresh t = injector.getService(ThreadRefresh.class);
 					t.setFrequency(frequency);
 					t.start();
-	
 				}
 			}
 		} catch (InjectorException e) {
