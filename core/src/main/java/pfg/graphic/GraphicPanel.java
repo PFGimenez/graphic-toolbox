@@ -68,7 +68,8 @@ public class GraphicPanel extends JPanel
 				InputStream is = getClass().getResourceAsStream(backgroundPath);
 				if(is != null)
 					image = ImageIO.read(is);
-				image = ImageIO.read(new File(backgroundPath));
+				else
+					image = ImageIO.read(new File(backgroundPath));
 				sizeX = image.getWidth(this); // on ajuste la taille de la fenêtre à l'image
 				sizeY = image.getHeight(this);
 				buffer.addPrintable(new BackgroundImage(image), null, Layer.IMAGE_BACKGROUND.layer);
