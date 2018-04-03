@@ -14,6 +14,7 @@ import pfg.graphic.printable.Layer;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Interface graphique
@@ -63,7 +64,11 @@ public class GraphicPanel extends JPanel
 		{
 			try
 			{
-				Image image = ImageIO.read(new File(backgroundPath));
+				Image image;
+				InputStream is = getClass().getResourceAsStream(backgroundPath);
+				if(is != null)
+					image = ImageIO.read(is);
+				image = ImageIO.read(new File(backgroundPath));
 				sizeX = image.getWidth(this); // on ajuste la taille de la fenêtre à l'image
 				sizeY = image.getHeight(this);
 				buffer.addPrintable(new BackgroundImage(image), null, Layer.IMAGE_BACKGROUND.layer);
