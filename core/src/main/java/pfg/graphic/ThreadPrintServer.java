@@ -127,7 +127,6 @@ public class ThreadPrintServer extends Thread
 				catch(IOException e1)
 				{
 					e1.printStackTrace();
-					e1.printStackTrace(log.getPrintWriter());
 				}
 
 //			log.write("Arrêt de " + Thread.currentThread().getName(), Subject.DUMMY);
@@ -149,7 +148,6 @@ public class ThreadPrintServer extends Thread
 		catch(IOException e)
 		{
 			e.printStackTrace();
-			e.printStackTrace(log.getPrintWriter());
 		}
 		super.interrupt();
 	}
