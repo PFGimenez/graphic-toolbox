@@ -19,10 +19,21 @@ public class ThreadSaveVideo extends Thread
 	protected Log log;
 	private GraphicDisplay buffer;
 
+	public class ThreadSaveVideoOnShutdown extends Thread
+	{
+		@Override
+		public void run()
+		{
+			Thread.currentThread().setName(getClass().getSimpleName());
+			buffer.destructor();
+		}
+	}
+	
 	public ThreadSaveVideo(Log log, GraphicDisplay buffer)
 	{
 		this.log = log;
 		this.buffer = buffer;
+		Runtime.getRuntime().addShutdownHook(new ThreadSaveVideoOnShutdown());
 		setDaemon(true);
 	}
 
@@ -41,7 +52,6 @@ public class ThreadSaveVideo extends Thread
 		}
 		catch(InterruptedException e)
 		{
-			buffer.destructor();
 //			log.write("Arrêt de " + Thread.currentThread().getName(), Subject.DUMMY);
 			Thread.currentThread().interrupt();
 		}
