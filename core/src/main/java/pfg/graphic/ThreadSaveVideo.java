@@ -46,7 +46,7 @@ public class ThreadSaveVideo extends Thread
 		{
 			while(true)
 			{
-				Thread.sleep(500);
+				Thread.sleep(100);
 				buffer.saveState();
 			}
 		}
