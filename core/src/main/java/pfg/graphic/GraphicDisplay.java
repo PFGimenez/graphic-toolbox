@@ -60,7 +60,7 @@ public class GraphicDisplay
 			f.refresh();
 	}
 	
-	synchronized void updatePrintable(PriorityQueue<ColoredPrintable> l)
+	public synchronized void updatePrintable(PriorityQueue<ColoredPrintable> l)
 	{
 		printables = l;
 	}
