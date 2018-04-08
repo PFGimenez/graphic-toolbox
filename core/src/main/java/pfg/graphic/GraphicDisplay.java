@@ -33,7 +33,7 @@ public class GraphicDisplay
 {	
 	List<Plottable> plottables = new ArrayList<Plottable>();
 	private PriorityQueue<ColoredPrintable> printables = new PriorityQueue<ColoredPrintable>(500, new ColoredPrintableComparator());
-	private boolean needRefresh = false;
+	private volatile boolean needRefresh = false, needSave = false;
 	private TimestampedList sauvegarde;
 	private WindowFrame f;
 	private Position center;
@@ -63,6 +63,8 @@ public class GraphicDisplay
 	public synchronized void updatePrintable(PriorityQueue<ColoredPrintable> l)
 	{
 		printables = l;
+		needRefresh = true;
+		needSave = true;
 	}
 	
 	/**
@@ -78,6 +80,7 @@ public class GraphicDisplay
 				iter.remove();
 		notify();
 		needRefresh = true;
+		needSave = true;
 	}
 
 	/**
@@ -90,6 +93,7 @@ public class GraphicDisplay
 		printables.add(new ColoredPrintable(o, c, layer, true));
 		notify();
 		needRefresh = true;
+		needSave = true;
 	}
 
 	/**
@@ -102,6 +106,7 @@ public class GraphicDisplay
 		printables.add(new ColoredPrintable(o, c, layer, false));
 		notify();
 		needRefresh = true;
+		needSave = true;
 	}
 
 	/**
@@ -153,6 +158,8 @@ public class GraphicDisplay
 	 */
 	public synchronized boolean removePrintable(Printable o)
 	{
+		needSave = true;
+		needRefresh = true;
 		return printables.remove(o);
 	}
 
@@ -169,7 +176,9 @@ public class GraphicDisplay
 	 */
 	synchronized void saveState()
 	{
-		sauvegarde.add(center, printables);
+		if(needSave)
+			sauvegarde.add(center, printables);
+		needSave = false;
 		// TODO : plottables aussi !
 	}
 
