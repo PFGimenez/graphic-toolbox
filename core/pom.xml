@@ -4,7 +4,7 @@
 
   <groupId>pfg.graphic</groupId>
   <artifactId>graphic-toolbox</artifactId>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
 
   <packaging>jar</packaging>
 
@@ -17,26 +17,14 @@
     <repository>
         <id>injector-pfg-mvn-repo</id>
         <url>https://raw.githubusercontent.com/PFGimenez/injector/mvn-repo/</url>
-        <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-        </snapshots>
     </repository>
     <repository>
         <id>config-pfg-mvn-repo</id>
         <url>https://raw.githubusercontent.com/PFGimenez/config/mvn-repo/</url>
-        <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-        </snapshots>
     </repository>
     <repository>
         <id>log-pfg-mvn-repo</id>
         <url>https://raw.githubusercontent.com/PFGimenez/log/mvn-repo/</url>
-        <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
-        </snapshots>
     </repository>
 </repositories>
 
