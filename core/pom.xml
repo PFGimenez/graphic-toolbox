@@ -16,7 +16,7 @@
 <repositories>
     <repository>
         <id>injector-pfg-mvn-repo</id>
-        <url>https://raw.githubusercontent.com/PFGimenez/injector/mvn-repo/</url>
+        <url>https://raw.githubusercontent.com/PFGimenez/dependency-injector/mvn-repo/</url>
     </repository>
     <repository>
         <id>config-pfg-mvn-repo</id>
