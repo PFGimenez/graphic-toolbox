@@ -1,14 +1,6 @@
 language : java
-install :
-    - git clone https://github.com/PFGimenez/dependency-injector.git --depth 1
-    - cd dependency-injector
-    - mvn install
-    - cd ..
-    - git clone https://github.com/PFGimenez/config.git --depth 1
-    - cd config/core
-    - mvn install
-    - cd ../../core
 script :
+    - cd core
     - mvn install
     - cd ../example
     - ant
