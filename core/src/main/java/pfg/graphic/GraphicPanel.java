@@ -43,8 +43,8 @@ public class GraphicPanel extends JPanel
 	private Position center;
 	private Vec2RO deltaBasGauche, deltaHautDroite;
 	private String backgroundPath;
-	private Vec2RW coinBasGaucheEcran;
-	private Vec2RW coinHautDroiteEcran;
+	private Vec2RW coinBasGaucheEcran = new Vec2RW();
+	private Vec2RW coinHautDroiteEcran = new Vec2RW();
 	private double sizeXUnitaryZoom, sizeYUnitaryZoom;
 
 	public GraphicPanel(Position defaultCenter, Position center, Config config, GraphicDisplay buffer)
