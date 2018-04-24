@@ -88,6 +88,12 @@ public class Vec2RO implements Serializable, Position
 	}
 
 	@Override
+	public int hashCode()
+	{
+		return (int) Math.round(x*y);
+	}
+	
+	@Override
 	public final boolean equals(Object obj)
 	{
 		if(this == obj)
