@@ -156,11 +156,29 @@ public class GraphicDisplay
 	 * Unregister a printable
 	 * @param o
 	 */
-	public synchronized boolean removePrintable(Printable o)
+	public synchronized boolean removeColoredPrintable(ColoredPrintable o)
 	{
 		needSave = true;
 		needRefresh = true;
 		return printables.remove(o);
+	}
+	
+	public synchronized boolean removePrintable(Printable o)
+	{
+		needSave = true;
+		needRefresh = true;
+		boolean out = false;
+		Iterator<ColoredPrintable> iter = printables.iterator();
+		while(iter.hasNext())
+		{
+			ColoredPrintable n = iter.next();
+			if(n.p.equals(o))
+			{
+				out = true;
+				iter.remove();
+			}
+		}
+		return out;
 	}
 
 	boolean needRefresh()
