@@ -7,7 +7,7 @@
     <property name="junit.output.dir" value="junit"/>
     <path id="Graphic-example.classpath">
         <pathelement location="bin"/>
-        <pathelement location="../core/target/graphic-toolbox-1.2-SNAPSHOT.jar"/>
+        <pathelement location="../core/target/graphic-toolbox-1.2.jar"/>
         <pathelement location="${user.home}/.m2/repository/pfg/injector/dependency-injector/1.1/dependency-injector-1.1.jar"/>
         <pathelement location="${user.home}/.m2/repository/pfg/config/config/1.4/config-1.4.jar"/>
         <pathelement location="${user.home}/.m2/repository/pfg/log/log/1.0/log-1.0.jar"/>
