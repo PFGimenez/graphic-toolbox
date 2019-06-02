@@ -1,10 +1,6 @@
 language : java
 script :
-    - cd core
     - mvn install
-    - cd ../example
-    - ant
-    - cd ../core
 deploy:
   provider: script
   script: "cp ../.travis.settings.xml $HOME/.m2/settings.xml && mvn jar:jar deploy:deploy || :"
@@ -12,8 +8,3 @@ deploy:
 cache:
   directories: $HOME/.m2
 jdk : oraclejdk8
-notifications:
-    slack: intech-sudparis:Z3xKQEmZT2a9BFBqouokQ6J7
-    on_success: change
-    on_failure: always
-    email : false
