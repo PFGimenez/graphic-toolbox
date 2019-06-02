@@ -7,8 +7,9 @@ package pfg.graphic.printable;
 
 import java.awt.Graphics;
 
-import pfg.graphic.GraphicPanel;
-import pfg.graphic.Vec2RO;
+import pfg.kraken.display.Display;
+import pfg.kraken.display.Printable;
+import pfg.kraken.utils.XY;
 
 /**
  * A background grid
@@ -21,10 +22,10 @@ public class BackgroundGrid implements Printable
 	private static final long serialVersionUID = 1422929627673510227L;
 	
 	@Override
-	public void print(Graphics g, GraphicPanel f)
+	public void print(Graphics g, Display f)
 	{
-		Vec2RO basGauche = f.getCurrentCoinBasGauche();
-		Vec2RO hautDroite = f.getCurrentCoinHautDroite();
+		XY basGauche = f.getCurrentCoinBasGauche();
+		XY hautDroite = f.getCurrentCoinHautDroite();
 		
 		double pasX = Math.pow(10, Math.floor(Math.log10(hautDroite.getX() - basGauche.getX()))-1);
 		double startX = Math.ceil(basGauche.getX() / pasX) * pasX;

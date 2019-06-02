@@ -11,16 +11,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 import java.util.PriorityQueue;
 
-import pfg.graphic.printable.ColoredPrintable;
-import pfg.graphic.printable.Plottable;
-import pfg.graphic.printable.Printable;
+import pfg.kraken.display.ColoredPrintable;
+import pfg.kraken.display.Printable;
+import pfg.kraken.utils.XY;
 
 /**
  * Buffer de ce qu'il faut afficher
@@ -31,15 +31,25 @@ import pfg.graphic.printable.Printable;
 
 public class GraphicDisplay
 {	
-	List<Plottable> plottables = new ArrayList<Plottable>();
+	private class ColoredPrintableComparator implements Comparator<ColoredPrintable>, Serializable
+	{
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public int compare(ColoredPrintable arg0, ColoredPrintable arg1)
+		{
+			return arg0.l - arg1.l;
+		}
+	}
+	
 	private PriorityQueue<ColoredPrintable> printables = new PriorityQueue<ColoredPrintable>(500, new ColoredPrintableComparator());
 	private volatile boolean needRefresh = false, needSave = false;
 	private TimestampedList sauvegarde;
 	private WindowFrame f;
-	private Position center;
+	private XY center;
 	private String filename;
 	
-	public GraphicDisplay(Position defaultCenter, Position center)
+	public GraphicDisplay(XY defaultCenter, XY center)
 	{
 		this.center = center;
 		sauvegarde = new TimestampedList(System.currentTimeMillis(), defaultCenter);
@@ -126,32 +136,7 @@ public class GraphicDisplay
 			p.print(g, f);
 		}
 	}
-
-	synchronized void plot(Chart aff)
-	{
-		for(Plottable p : plottables)
-			p.plot(aff);
-	}
 	
-	/**
-	 * Register a new plottable
-	 * @param p
-	 */
-	public synchronized void addPlottable(Plottable p)
-	{
-		plottables.add(p);
-	}
-
-	/**
-	 * Unregister a plottable
-	 * @param p
-	 * @return
-	 */
-	public synchronized boolean removePlottable(Plottable p)
-	{
-		return plottables.remove(p);
-	}
-
 	/**
 	 * Unregister a printable
 	 * @param o
@@ -183,7 +168,7 @@ public class GraphicDisplay
 
 	boolean needRefresh()
 	{
-		return needRefresh || !plottables.isEmpty(); // si on a des plottables, on refresh quand même
+		return needRefresh; // si on a des plottables, on refresh quand même
 	}
 
 	/**

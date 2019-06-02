@@ -11,10 +11,16 @@ import pfg.config.Config;
 import pfg.graphic.printable.BackgroundGrid;
 import pfg.graphic.printable.BackgroundImage;
 import pfg.graphic.printable.Layer;
+import pfg.kraken.display.ColoredPrintable;
+import pfg.kraken.display.Display;
+import pfg.kraken.display.Printable;
+import pfg.kraken.utils.XY;
+import pfg.kraken.utils.XY_RW;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.PriorityQueue;
 
 /**
  * Interface graphique
@@ -23,7 +29,7 @@ import java.io.InputStream;
  *
  */
 
-public class GraphicPanel extends JPanel
+public class GraphicPanel extends JPanel implements Display
 {
 
 	/**
@@ -35,24 +41,22 @@ public class GraphicPanel extends JPanel
 
 	private static final long serialVersionUID = 1L;
 	private GraphicDisplay buffer;
-	private Chart aff;
 
 	private int sizeX, sizeY;
 	private double zoom;
-	private Position defaultCenter;
-	private Position center;
-	private Vec2RO deltaBasGauche, deltaHautDroite;
+	private XY defaultCenter;
+	private XY center;
+	private XY deltaBasGauche, deltaHautDroite;
 	private String backgroundPath;
-	private Vec2RW coinBasGaucheEcran = new Vec2RW();
-	private Vec2RW coinHautDroiteEcran = new Vec2RW();
+	private XY_RW coinBasGaucheEcran = new XY_RW();
+	private XY_RW coinHautDroiteEcran = new XY_RW();
 	private double sizeXUnitaryZoom, sizeYUnitaryZoom;
 
-	public GraphicPanel(Position defaultCenter, Position center, Config config, GraphicDisplay buffer)
+	public GraphicPanel(XY defaultCenter, XY center, Config config, GraphicDisplay buffer)
 	{
 		this.defaultCenter = defaultCenter;
 		this.center = center;
 		this.buffer = buffer;
-		aff = new Chart("Debug", "Time", "Value");
 		backgroundPath = config.getString(ConfigInfoGraphic.BACKGROUND_PATH);
 		boolean afficheFond = !backgroundPath.isEmpty();
 		boolean afficheGrid = config.getBoolean(ConfigInfoGraphic.DISPLAY_GRID);
@@ -101,16 +105,16 @@ public class GraphicPanel extends JPanel
 		this.zoom = zoom;
 		if(zoom == 0)
 		{
-			coinBasGaucheEcran = new Vec2RW(-sizeXUnitaryZoom / 2 + defaultCenter.getX(), -sizeYUnitaryZoom / 2 + defaultCenter.getY());
-			coinHautDroiteEcran = new Vec2RW(sizeXUnitaryZoom / 2 + defaultCenter.getX(), sizeYUnitaryZoom / 2 + defaultCenter.getY());			
+			coinBasGaucheEcran = new XY_RW(-sizeXUnitaryZoom / 2 + defaultCenter.getX(), -sizeYUnitaryZoom / 2 + defaultCenter.getY());
+			coinHautDroiteEcran = new XY_RW(sizeXUnitaryZoom / 2 + defaultCenter.getX(), sizeYUnitaryZoom / 2 + defaultCenter.getY());			
 		}
 		else
 		{
 			double deltaX, deltaY;
 			deltaX = sizeXUnitaryZoom / (2*zoom);
 			deltaY = sizeYUnitaryZoom / (2*zoom);
-			deltaBasGauche = new Vec2RO(-deltaX, -deltaY);
-			deltaHautDroite = new Vec2RO(deltaX, deltaY);
+			deltaBasGauche = new XY(-deltaX, -deltaY);
+			deltaHautDroite = new XY(deltaX, deltaY);
 		}
 			
 	}
@@ -120,12 +124,12 @@ public class GraphicPanel extends JPanel
 		return buffer;
 	}
 
-	public Vec2RO getCurrentCoinHautDroite()
+	public XY getCurrentCoinHautDroite()
 	{
 		return coinHautDroiteEcran;
 	}
 	
-	public Vec2RO getCurrentCoinBasGauche()
+	public XY getCurrentCoinBasGauche()
 	{
 		return coinBasGaucheEcran;
 	}
@@ -158,8 +162,8 @@ public class GraphicPanel extends JPanel
 		g.clearRect(0, 0, sizeX, sizeY);
 		if(zoom != 0 && center != null)
 		{
-			Vec2RO positionRobot = new Vec2RO(center.getX(), center.getY());
-			Vec2RO currentCenter = positionRobot;
+			XY positionRobot = new XY(center.getX(), center.getY());
+			XY currentCenter = positionRobot;
 //			Vec2RO currentCenter = new Vec2RO((int)(positionRobot.getX() / petitDeltaX) * petitDeltaX, (int)(positionRobot.getY() / petitDeltaY) * petitDeltaY);
 
 			currentCenter.copy(coinBasGaucheEcran);
@@ -168,6 +172,41 @@ public class GraphicPanel extends JPanel
 			coinHautDroiteEcran.plus(deltaHautDroite);
 		}
 		buffer.print(g, this);
-		buffer.plot(aff);
+	}
+
+	@Override
+	public void refresh()
+	{
+		buffer.refresh();
+	}
+
+	@Override
+	public void updatePrintable(PriorityQueue<ColoredPrintable> l)
+	{
+		buffer.updatePrintable(l);
+	}
+
+	@Override
+	public void clearTemporaryPrintables()
+	{
+		buffer.clearTemporaryPrintables();
+	}
+
+	@Override
+	public void addTemporaryPrintable(Printable o, Color c, int layer)
+	{
+		buffer.addTemporaryPrintable(o, c, layer);
+	}
+
+	@Override
+	public void addPrintable(Printable o, Color c, int layer)
+	{
+		buffer.addPrintable(o, c, layer);
+	}
+
+	@Override
+	public boolean removePrintable(Printable o)
+	{
+		return buffer.removePrintable(o);
 	}
 }

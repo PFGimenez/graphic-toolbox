@@ -8,9 +8,9 @@ package pfg.graphic.printable;
 import java.awt.Graphics;
 import java.io.Serializable;
 
-import pfg.graphic.GraphicPanel;
-import pfg.graphic.Position;
-import pfg.graphic.Vec2RW;
+import pfg.kraken.display.Display;
+import pfg.kraken.display.Printable;
+import pfg.kraken.utils.XY;
 
 /**
  * Un segment affichable
@@ -22,16 +22,16 @@ import pfg.graphic.Vec2RW;
 public class Segment implements Printable, Serializable
 {
 	private static final long serialVersionUID = 3887897521575363643L;
-	public Vec2RW a, b;
+	public XY a, b;
 
-	public Segment(Position a, Position b)
+	public Segment(XY a, XY b)
 	{
-		this.a = new Vec2RW(a.getX(), a.getY());
-		this.b = new Vec2RW(b.getX(), b.getY());
+		this.a = a.clone();
+		this.b = b.clone();
 	}
 
 	@Override
-	public void print(Graphics g, GraphicPanel f)
+	public void print(Graphics g, Display f)
 	{
 		g.drawLine(f.XtoWindow(a.getX()), f.YtoWindow(a.getY()), f.XtoWindow(b.getX()), f.YtoWindow(b.getY()));
 	}

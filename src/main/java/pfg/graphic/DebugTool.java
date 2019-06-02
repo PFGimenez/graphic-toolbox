@@ -5,12 +5,12 @@
 
 package pfg.graphic;
 
-import java.util.HashMap;
 
 import pfg.config.Config;
-import pfg.config.ConfigInfo;
 import pfg.injector.Injector;
 import pfg.injector.InjectorException;
+import pfg.kraken.display.Display;
+import pfg.kraken.utils.XY;
 import pfg.log.Log;
 import pfg.log.Severity;
 
@@ -31,32 +31,24 @@ public class DebugTool
 		return instance;
 	}
 
-	public static DebugTool getDebugTool(Position defaultCenter, Severity cat, String configFilename, String... configprofile)
+	public static DebugTool getDebugTool(XY defaultCenter, XY center, Severity cat, String configFilename, String... configprofile)
 	{
 		if(instance == null)
-			instance = new DebugTool(new HashMap<ConfigInfo, Object>(), defaultCenter, defaultCenter, cat, configFilename, configprofile);
-		return instance;
-	}
-	
-	public static DebugTool getDebugTool(HashMap<ConfigInfo, Object> override, Position defaultCenter, Position center, Severity cat, String configFilename, String... configprofile)
-	{
-		if(instance == null)
-			instance = new DebugTool(override, defaultCenter, center, cat, configFilename, configprofile);
+			instance = new DebugTool(defaultCenter, center, cat, configFilename, configprofile);
 		return instance;
 	}
 
-	public static DebugTool getDebugTool(HashMap<ConfigInfo, Object> override, Position defaultCenter, Severity cat, String configFilename, String... configprofile)
+	public static DebugTool getDebugTool(XY defaultCenter, Severity cat, String configFilename, String... configprofile)
 	{
 		if(instance == null)
-			instance = new DebugTool(override, defaultCenter, defaultCenter, cat, configFilename, configprofile);
+			instance = new DebugTool(defaultCenter, defaultCenter, cat, configFilename, configprofile);
 		return instance;
 	}
 
-	private DebugTool(HashMap<ConfigInfo, Object> override, Position defaultCenter, Position center, Severity cat, String configFilename, String... configprofile)
+	private DebugTool(XY defaultCenter, XY center, Severity cat, String configFilename, String... configprofile)
 	{
-		Position defaultCenter2 = new Vec2RO(defaultCenter.getX(), defaultCenter.getY());
+		XY defaultCenter2 = new XY(defaultCenter.getX(), defaultCenter.getY());
 		config = new Config(ConfigInfoGraphic.values(), false, configFilename, configprofile);
-		config.override(override);
 		injector = new Injector();
 		injector.addService(injector);
 		injector.addService(config);
@@ -140,10 +132,11 @@ public class DebugTool
 		}
 	}
 	
-	public GraphicDisplay getGraphicDisplay()
+	public Display getDisplay()
 	{
-		return injector.getExistingService(GraphicDisplay.class);
+		return injector.getExistingService(GraphicPanel.class);
 	}
+
 	/*
 	public WindowFrame getWindowFrame()
 	{

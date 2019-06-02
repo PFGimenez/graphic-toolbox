@@ -11,11 +11,12 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.Scanner;
-import pfg.config.ConfigInfo;
-import pfg.graphic.printable.ColoredPrintable;
+import pfg.kraken.display.ColoredPrintable;
+import pfg.kraken.display.Display;
+import pfg.kraken.utils.XY;
+import pfg.kraken.utils.XY_RW;
 
 /**
  * Un lecteur de vidéo enregistrée sur le rover
@@ -39,8 +40,7 @@ public class VideoReader
 		long dateSkip = -1;
 		boolean skipdone = false;
 		long nextStopFTF = 0;
-		
-		HashMap<ConfigInfo, Object> override = new HashMap<ConfigInfo, Object>();
+
 		
 		for(int i = 0; i < args.length; i++)
 		{
@@ -95,8 +95,8 @@ public class VideoReader
 //				special("Debug activé");
 
 			DebugTool debugTool = null;
-			Vec2RW center = null;
-			GraphicDisplay buffer = null;
+			XY_RW center = null;
+			Display buffer = null;
 			
 			if(filename != null)
 			{
@@ -113,11 +113,11 @@ public class VideoReader
 					return;
 				}
 				
-				Position d = listes.getDefaultCenter();
-				Vec2RO defaultCenter = new Vec2RO(d.getX(), d.getY());
+				XY d = listes.getDefaultCenter();
+				XY defaultCenter = new XY(d.getX(), d.getY());
 				center = defaultCenter.clone();
-				debugTool = DebugTool.getDebugTool(override, defaultCenter, center, null, "reader.conf", "default");
-				buffer = debugTool.getGraphicDisplay();
+				debugTool = DebugTool.getDebugTool(defaultCenter, center, null, "reader.conf", "default");
+				buffer = debugTool.getDisplay();
 			}
 			
 
@@ -229,7 +229,7 @@ public class VideoReader
 					if(delta > 0 && dateSkip < nextVid)
 						Thread.sleep(delta);
 
-					Position p = listes.getPosition(indexListe);
+					XY p = listes.getPosition(indexListe);
 					center.setX(p.getX());
 					center.setY(p.getY());
 					buffer.updatePrintable(tab);

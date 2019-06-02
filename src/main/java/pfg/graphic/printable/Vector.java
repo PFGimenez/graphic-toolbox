@@ -11,10 +11,10 @@ import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 
-import pfg.graphic.GraphicPanel;
-import pfg.graphic.Position;
-import pfg.graphic.Vec2RO;
-import pfg.graphic.Vec2RW;
+import pfg.kraken.display.Display;
+import pfg.kraken.display.Printable;
+import pfg.kraken.utils.XY;
+import pfg.kraken.utils.XY_RW;
 
 /**
  * Un vecteur affichable
@@ -26,30 +26,30 @@ import pfg.graphic.Vec2RW;
 public class Vector implements Printable, Serializable
 {
 	private static final long serialVersionUID = 3887897521575363643L;
-	private Vec2RO a, b;
+	private XY a, b;
 	private double orientation;
 	private AffineTransform tx = new AffineTransform();
 	private Polygon arrowHead = new Polygon();  
 	
-	public Vector(Position pos, double orientation)
+	public Vector(XY pos, double orientation)
 	{
-		a = new Vec2RO(pos.getX(), pos.getY());
-		b = new Vec2RW(50, orientation, true).plus(a);
+		a = pos.clone();
+		b = new XY_RW(50, orientation, true).plus(a);
 		this.orientation = orientation;
 		arrowHead.addPoint(0,5);
 		arrowHead.addPoint(-5,-5);
 		arrowHead.addPoint(5,-5);
 	}
 	
-	public void update(Position pos, double orientation)
+	public void update(XY pos, double orientation)
 	{
-		a = new Vec2RO(pos.getX(), pos.getY());
-		b = new Vec2RW(50, orientation, true).plus(a);
+		a = pos.clone();
+		b = new XY_RW(50, orientation, true).plus(a);
 		this.orientation = orientation;
 	}
 
 	@Override
-	public void print(Graphics g, GraphicPanel f)
+	public void print(Graphics g, Display f)
 	{
 		g.drawLine(f.XtoWindow(a.getX()), f.YtoWindow(a.getY()), f.XtoWindow(b.getX()), f.YtoWindow(b.getY()));
 	    tx.setToIdentity();

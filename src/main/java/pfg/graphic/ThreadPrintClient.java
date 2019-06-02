@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.util.PriorityQueue;
 
 import pfg.config.Config;
-import pfg.graphic.printable.ColoredPrintable;
+import pfg.kraken.display.ColoredPrintable;
 import pfg.log.Log;
 
 public class ThreadPrintClient extends Thread

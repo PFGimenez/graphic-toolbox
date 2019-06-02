@@ -8,7 +8,8 @@ package pfg.graphic.printable;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import pfg.graphic.GraphicPanel;
+import pfg.kraken.display.Display;
+import pfg.kraken.display.Printable;
 
 /**
  * Image de fond
@@ -28,7 +29,7 @@ public class BackgroundImage implements Printable
 	}
 
 	@Override
-	public void print(Graphics g, GraphicPanel f)
+	public void print(Graphics g, Display f)
 	{
 		g.drawImage(image, f.XtoWindow(-1500), f.YtoWindow(2000), f.distanceXtoWindow(3000), f.distanceYtoWindow(2000), f);
 	}

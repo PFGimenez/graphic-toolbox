@@ -14,8 +14,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
-
-import pfg.graphic.printable.ColoredPrintable;
+import pfg.kraken.display.ColoredPrintable;
+import pfg.kraken.utils.XY;
 
 /**
  * Une liste de listes d'objets timestampées
@@ -28,21 +28,21 @@ public class TimestampedList implements Serializable
 {
 	private static final long serialVersionUID = -5167892162649965305L;
 	private final List<Long> listesTimestamped = new ArrayList<Long>();
-	private final List<Position> positions = new ArrayList<Position>();
+	private final List<XY> positions = new ArrayList<XY>();
 	private final List<byte[]> listes = new ArrayList<byte[]>();
 //	private final List<byte[]> listesPlottable = new ArrayList<byte[]>();
 	private transient long dateInitiale;
 	private transient ByteArrayOutputStream array;
-	private Position defaultCenter;
+	private XY defaultCenter;
 
-	public TimestampedList(long dateInitiale, Position defaultCenter)
+	public TimestampedList(long dateInitiale, XY defaultCenter)
 	{
 		array = new ByteArrayOutputStream();
 		this.dateInitiale = dateInitiale;
 		this.defaultCenter = defaultCenter;
 	}
 	
-	public synchronized Position getPosition(int indexList)
+	public synchronized XY getPosition(int indexList)
 	{
 		return positions.get(indexList);
 	}
@@ -68,10 +68,10 @@ public class TimestampedList implements Serializable
 	 * On sérialise directement en byte[], ce qui fait donc une copie de l'objet à l'instant où cette méthode est appelée
 	 * @param o
 	 */
-	public synchronized void add(Position currentCenter, PriorityQueue<ColoredPrintable> o)
+	public synchronized void add(XY currentCenter, PriorityQueue<ColoredPrintable> o)
 	{
 		try {
-			positions.add(new Vec2RO(currentCenter.getX(), currentCenter.getY()));
+			positions.add(new XY(currentCenter.getX(), currentCenter.getY()));
 			listesTimestamped.add(System.currentTimeMillis() - dateInitiale);
 			ObjectOutputStream tmp = new ObjectOutputStream(array);
 			tmp.writeObject(o);
@@ -128,7 +128,7 @@ public class TimestampedList implements Serializable
 			System.out.println("	"+pq.poll());
 	}
 
-	public Position getDefaultCenter()
+	public XY getDefaultCenter()
 	{
 		return defaultCenter;
 	}
