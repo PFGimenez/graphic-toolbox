@@ -3,7 +3,7 @@ script :
     - mvn install
 deploy:
   provider: script
-  script: "cp ../.travis.settings.xml $HOME/.m2/settings.xml && mvn jar:jar deploy:deploy || :"
+  script: "cp .travis.settings.xml $HOME/.m2/settings.xml && mvn jar:jar deploy:deploy || :"
   skip_cleanup: true
 cache:
   directories: $HOME/.m2
