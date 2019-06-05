@@ -10,7 +10,7 @@ import pfg.config.Config;
 import pfg.injector.Injector;
 import pfg.injector.InjectorException;
 import pfg.kraken.display.Display;
-import pfg.kraken.utils.XY;
+import pfg.kraken.struct.XY;
 import pfg.log.Log;
 import pfg.log.Severity;
 

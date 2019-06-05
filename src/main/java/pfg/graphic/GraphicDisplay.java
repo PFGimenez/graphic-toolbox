@@ -20,7 +20,7 @@ import java.util.PriorityQueue;
 
 import pfg.kraken.display.ColoredPrintable;
 import pfg.kraken.display.Printable;
-import pfg.kraken.utils.XY;
+import pfg.kraken.struct.XY;
 
 /**
  * Buffer de ce qu'il faut afficher
@@ -29,7 +29,7 @@ import pfg.kraken.utils.XY;
  *
  */
 
-public class GraphicDisplay
+class GraphicDisplay
 {	
 	private class ColoredPrintableComparator implements Comparator<ColoredPrintable>, Serializable
 	{

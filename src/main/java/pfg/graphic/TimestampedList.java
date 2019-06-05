@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import pfg.kraken.display.ColoredPrintable;
-import pfg.kraken.utils.XY;
+import pfg.kraken.struct.XY;
 
 /**
  * Une liste de listes d'objets timestampées
