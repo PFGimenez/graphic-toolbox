@@ -124,12 +124,12 @@ public class GraphicPanel extends JPanel implements Display
 		return buffer;
 	}
 
-	public XY getCurrentCoinHautDroite()
+	public XY getCurrentTopRightCorner()
 	{
 		return coinHautDroiteEcran;
 	}
 	
-	public XY getCurrentCoinBasGauche()
+	public XY getCurrentBottomLeftCorner()
 	{
 		return coinBasGaucheEcran;
 	}
