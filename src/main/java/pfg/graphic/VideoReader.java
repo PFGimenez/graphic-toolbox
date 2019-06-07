@@ -15,8 +15,8 @@ import java.util.PriorityQueue;
 import java.util.Scanner;
 import pfg.kraken.display.ColoredPrintable;
 import pfg.kraken.display.Display;
-import pfg.kraken.utils.XY;
-import pfg.kraken.utils.XY_RW;
+import pfg.kraken.struct.XY;
+import pfg.kraken.struct.XY_RW;
 
 /**
  * Un lecteur de vidéo enregistrée sur le rover

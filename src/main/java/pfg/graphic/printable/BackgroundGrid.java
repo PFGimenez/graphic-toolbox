@@ -9,7 +9,7 @@ import java.awt.Graphics;
 
 import pfg.kraken.display.Display;
 import pfg.kraken.display.Printable;
-import pfg.kraken.utils.XY;
+import pfg.kraken.struct.XY;
 
 /**
  * A background grid
@@ -24,8 +24,8 @@ public class BackgroundGrid implements Printable
 	@Override
 	public void print(Graphics g, Display f)
 	{
-		XY basGauche = f.getCurrentCoinBasGauche();
-		XY hautDroite = f.getCurrentCoinHautDroite();
+		XY basGauche = f.getCurrentBottomLeftCorner();
+		XY hautDroite = f.getCurrentTopRightCorner();
 		
 		double pasX = Math.pow(10, Math.floor(Math.log10(hautDroite.getX() - basGauche.getX()))-1);
 		double startX = Math.ceil(basGauche.getX() / pasX) * pasX;

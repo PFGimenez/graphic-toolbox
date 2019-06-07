@@ -14,8 +14,8 @@ import pfg.graphic.printable.Layer;
 import pfg.kraken.display.ColoredPrintable;
 import pfg.kraken.display.Display;
 import pfg.kraken.display.Printable;
-import pfg.kraken.utils.XY;
-import pfg.kraken.utils.XY_RW;
+import pfg.kraken.struct.XY;
+import pfg.kraken.struct.XY_RW;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -124,12 +124,12 @@ public class GraphicPanel extends JPanel implements Display
 		return buffer;
 	}
 
-	public XY getCurrentCoinHautDroite()
+	public XY getCurrentTopRightCorner()
 	{
 		return coinHautDroiteEcran;
 	}
 	
-	public XY getCurrentCoinBasGauche()
+	public XY getCurrentBottomLeftCorner()
 	{
 		return coinBasGaucheEcran;
 	}
