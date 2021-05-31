@@ -13,18 +13,27 @@
 
   <url>https://github.com/PFGimenez/graphic-toolbox</url>
 
-<repositories>
-  <repository>
-    <id>PFGimenez-Kraken</id>
-    <url>https://packagecloud.io/PFGimenez/Kraken/maven2</url>
-    <releases>
-      <enabled>true</enabled>
-    </releases>
-    <snapshots>
-      <enabled>true</enabled>
-    </snapshots>
-  </repository>
-</repositories>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>https://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+          <id>github</id>
+          <url>https://maven.pkg.github.com/kraken-robotics/*</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+
+    <distributionManagement>
+   <repository>
+     <id>github</id>
+     <name>GitHub Kraken-robotics Apache Maven Packages</name>
+     <url>https://maven.pkg.github.com/kraken-robotics/kraken-display</url>
+   </repository>
+</distributionManagement>
 
   <properties>
       <maven.compiler.source>1.8</maven.compiler.source>
@@ -66,7 +75,7 @@
     <dependency>
     <groupId>pfg.kraken</groupId>
     <artifactId>kraken</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>[2.0.0,)</version>
     </dependency>
 
     <dependency>
@@ -95,21 +104,6 @@
 
   </dependencies>
 
-  <distributionManagement>
-  <repository>
-    <id>packagecloud-travis</id>
-    <url>
-        packagecloud+https://packagecloud.io/PFGimenez/Kraken
-    </url>
-  </repository>
-  <snapshotRepository>
-    <id>packagecloud-travis</id>
-    <url>
-        packagecloud+https://packagecloud.io/PFGimenez/Kraken
-    </url>
-  </snapshotRepository>
-</distributionManagement>
-
   <build>
       <plugins>
           <plugin>
@@ -121,13 +115,6 @@
         </configuration>
     </plugin>
       </plugins>
-    <extensions>
-    <extension>
-      <groupId>io.packagecloud.maven.wagon</groupId>
-      <artifactId>maven-packagecloud-wagon</artifactId>
-      <version>0.0.6</version>
-    </extension>
-</extensions>
   </build>
 
 </project>
